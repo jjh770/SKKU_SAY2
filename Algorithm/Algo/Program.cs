@@ -4,13 +4,12 @@ class Program
 {
     static void Main()
     {
-        string input = Console.ReadLine().Trim();
-        Console.WriteLine(input == "" ? 0 : input.Split().Length);
+        string input = Console.ReadLine();
+        char[] inputWord = input.ToCharArray();
+        int result = 0;
+        for (int i = 0; i < input.Length; i++)
+        {
+
+        }
     }
 }
-
-
-//long start = int.Parse(Console.ReadLine());
-//long end = int.Parse(Console.ReadLine());
-
-//Console.WriteLine(end * (end + 1) / 2 - start * (start + 1) / 2);
