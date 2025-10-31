@@ -32,41 +32,41 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleMovementInput()
     {
-        // Å° ´©¸§ Ã³¸®
-        if (Keyboard.current.leftArrowKey.wasPressedThisFrame || Keyboard.current.aKey.wasPressedThisFrame)
+        // í‚¤ ëˆ„ë¦„ ì²˜ë¦¬
+        if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             leftPressed = true;
             OnMoveInput?.Invoke(-1f);
             recordingSystem?.RecordInput(InputData.InputType.MoveLeft);
         }
-        if (Keyboard.current.rightArrowKey.wasPressedThisFrame || Keyboard.current.dKey.wasPressedThisFrame)
+        if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
             rightPressed = true;
             OnMoveInput?.Invoke(1f);
             recordingSystem?.RecordInput(InputData.InputType.MoveRight);
         }
 
-        // Å° ¶À Ã³¸®
-        if (Keyboard.current.leftArrowKey.wasReleasedThisFrame || Keyboard.current.aKey.wasReleasedThisFrame)
+        // í‚¤ ë—Œ ì²˜ë¦¬
+        if (Keyboard.current.leftArrowKey.wasReleasedThisFrame)
         {
             leftPressed = false;
             if (rightPressed)
             {
-                OnMoveInput?.Invoke(1f); // ¿À¸¥ÂÊ Å° ´­¸² À¯Áö
+                OnMoveInput?.Invoke(1f); // ì˜¤ë¥¸ìª½ í‚¤ ëˆŒë¦¼ ìœ ì§€
                 recordingSystem?.RecordInput(InputData.InputType.MoveRight);
             }
             else
             {
-                OnMoveInput?.Invoke(0f); // ÀÌµ¿ ¸ØÃã
+                OnMoveInput?.Invoke(0f); // ì´ë™ ë©ˆì¶¤
                 recordingSystem?.RecordInput(InputData.InputType.MoveStop);
             }
         }
-        if (Keyboard.current.rightArrowKey.wasReleasedThisFrame || Keyboard.current.dKey.wasReleasedThisFrame)
+        if (Keyboard.current.rightArrowKey.wasReleasedThisFrame)
         {
             rightPressed = false;
             if (leftPressed)
             {
-                OnMoveInput?.Invoke(-1f); // ¿ŞÂÊ Å° ´­¸² À¯Áö
+                OnMoveInput?.Invoke(-1f); // ì™¼ìª½ í‚¤ ëˆŒë¦¼ ìœ ì§€
                 recordingSystem?.RecordInput(InputData.InputType.MoveLeft);
             }
             else
@@ -76,7 +76,7 @@ public class PlayerInput : MonoBehaviour
             }
         }
 
-        // Å°°¡ °è¼Ó ´­·ÁÀÖÀ» ¶§(¸¶Áö¸·¿¡ ÇÑ¹ø¸¸ À§Ä¡ ¿äÃ»)
+        // í‚¤ê°€ ê³„ì† ëˆŒë ¤ìˆì„ ë•Œ(ë§ˆì§€ë§‰ì— í•œë²ˆë§Œ ìœ„ì¹˜ ìš”ì²­)
         if (leftPressed && !rightPressed)
         {
             OnMoveInput?.Invoke(-1f);

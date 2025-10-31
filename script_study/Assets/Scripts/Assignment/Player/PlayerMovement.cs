@@ -4,12 +4,12 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
-    private Rigidbody2D rb;
+    private Rigidbody2D rigidBody;
     private float currentDirection = 0f;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
     }
 
     public void Move(float direction)
@@ -19,6 +19,6 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(currentDirection * moveSpeed, rb.linearVelocity.y);
+        rigidBody.linearVelocity = new Vector2(currentDirection * moveSpeed, rigidBody.linearVelocity.y);
     }
 }

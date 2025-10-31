@@ -1,22 +1,20 @@
-// PlayerVisual.cs (³×¸ğ ÇÏ³ª¸¸ ÀÖ´Â ÄÚµå)
+// PlayerVisual.cs (ë„¤ëª¨ í•˜ë‚˜ë§Œ ìˆëŠ” ì½”ë“œ)
 using UnityEngine;
 
 public class PlayerVisual : MonoBehaviour
 {
-    [Header("³×¸ğ »ö»ó")]
+    [Header("ë„¤ëª¨ ìƒ‰ìƒ")]
     [SerializeField] private Color boxColor = Color.white;
 
     void Start()
     {
-        // ³×¸ğ(Å¥ºê) ÇÏ³ª¸¸ »ı¼º, Äİ¶óÀÌ´õÀÇ À§Ä¡/Å©±â¿Í ¸ÂÃß±â
         GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
         box.name = "PlayerBox";
         box.transform.SetParent(transform);
         box.transform.localPosition = Vector3.zero;
-        box.transform.localScale = new Vector3(1f, 2f, 1f);
+        box.transform.localScale = new Vector3(1f, 1f, 1f);
         box.GetComponent<Renderer>().material.color = boxColor;
 
-        // Renderer ¿Ü ³ª¸ÓÁö ÄÄÆ÷³ÍÆ®¸¸ À¯Áö
         Destroy(box.GetComponent<Collider>());
     }
 }

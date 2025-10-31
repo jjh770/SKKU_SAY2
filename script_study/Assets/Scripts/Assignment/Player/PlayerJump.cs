@@ -1,31 +1,38 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerJump : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 10f;
-    [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private float groundCheckDistance = 0.1f;
 
-    private Rigidbody2D rb;
+    private Rigidbody2D rigidBody;
+    private BoxCollider2D boxCollider;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     public void Jump()
     {
         if (IsGrounded())
         {
-            // 이동 속도 x 유지, y만 점프 힘으로 변경
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, jumpForce);
         }
     }
 
     private bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        // 박스 콜라이더의 하단 위치와 사이즈 기반으로 체크
+        Vector2 boxPosition = (Vector2)transform.position + boxCollider.offset;
+        boxPosition.y -= (boxCollider.size.y / 2 + groundCheckDistance);
+
+        Vector2 boxSize = boxCollider.size;
+
+        return Physics2D.OverlapBox(boxPosition, boxSize, 0f, groundLayer) != null;
     }
 }

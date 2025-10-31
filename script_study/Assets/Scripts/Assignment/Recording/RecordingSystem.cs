@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RecordingSystem : MonoBehaviour
@@ -38,5 +38,5 @@ public class RecordingSystem : MonoBehaviour
     public bool HasRecordedData()
     {
         return recordedInputs.Count > 0;
-    }
+    } 
 }
