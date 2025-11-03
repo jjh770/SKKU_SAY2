@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -9,8 +11,10 @@ public class PlayerMove : MonoBehaviour
     // 2. 방향 구하는 방법
     // 3. 이동
 
+    public float Speed = 3f;
+    private float _currentSpeed;
     [SerializeField]
-    private float Speed = 3f;
+    private float speedAcceleration = 1.5f;
     [SerializeField]
     private float minSpeed = 1f;
     [SerializeField]
@@ -27,35 +31,48 @@ public class PlayerMove : MonoBehaviour
         _cameraHalfHeight = Camera.main.orthographicSize;
         _cameraHalfWidth = Camera.main.orthographicSize * Camera.main.aspect;
         transform.position = Vector3.zero;
+        _currentSpeed = Speed;
     }
 
 
     // 게임 오브젝트가 게임을 시작한 후 최대한 많이 실행 (지속적으로)
     private void Update()
     {
-        MovePlayer();
+        if (Input.GetKey(KeyCode.R))
+        {
+            MovePlayer(true);
+        }
+        else
+        {
+            MovePlayer(false);
+        }
         HandleMoveSpeed();
     }
 
     private void HandleMoveSpeed()
     {
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Speed += speedChangeAmount;
-            if (Speed > maxSpeed)
-                Speed = maxSpeed;
-            Debug.Log($"Speed increased to: {Speed}");
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             Speed -= speedChangeAmount;
-            if (Speed < minSpeed)
-                Speed = minSpeed;
-            Debug.Log($"Speed decreased to: {Speed}");
+        }
+        Speed = Mathf.Clamp(Speed, minSpeed, maxSpeed);
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _currentSpeed = Speed * speedAcceleration;
+        }
+        else
+        {
+            _currentSpeed = Speed;
         }
     }
 
-    private void MovePlayer()
+    private void MovePlayer(bool isOrigin = false)
     {
         // 1. 키보드 입력을 감지한다.
         // 유니티에서는 Input이라는 모듈이 입력에 관한 모든 것을 담당함.
@@ -78,8 +95,9 @@ public class PlayerMove : MonoBehaviour
 
         // 새로운 위치 = 현재 위치 + (방향 * 속력) * 시간
         // 새로운 위치 = 현재 위치 + (속도)        * 시간
+
         //      새로운 위치 = 현재 위치 + (방향)   *  속도      * 시간
-        Vector2 newPosition = position + direction * Speed * Time.deltaTime;  // 새로운 위치
+        Vector2 newPosition = position + direction * _currentSpeed * Time.deltaTime;  // 새로운 위치
 
         // 화면 밖으로 나가려는 시도 감지 및 막기
         //Debug.Log("Attempted to move outside screen bounds.");
@@ -113,6 +131,21 @@ public class PlayerMove : MonoBehaviour
         // PC1 :  50FPS : Update -> 초당  50번 실행 -> 10 *  50 =  500 * (Time.deltaTime)
         // PC2 : 100FPS : Update -> 초당 100번 실행 -> 10 * 100 = 1000 * (Time.deltaTime) // PC1, PC2 두 값이 같아짐
 
-        transform.position = newPosition;      // 새로운 위치로 갱신
+        if (isOrigin)
+        {
+            // transform.position = Vector2.MoveTowards(this.transform.position, Vector2.zero, _currentSpeed * Time.deltaTime);
+            if (Mathf.Abs(transform.position.x) < 0.01f && Mathf.Abs(transform.position.y) < 0.01f)
+            {
+                transform.position = Vector2.zero;
+            }
+            else
+            {
+                transform.Translate(-(transform.position).normalized * _currentSpeed * Time.deltaTime);
+            }
+        }
+        else
+        {
+            transform.position = newPosition;      // 새로운 위치로 갱신
+        }
     }
 }
