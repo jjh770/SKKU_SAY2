@@ -6,20 +6,25 @@ class Program
 {
     static void Main()
     {
-        int input = int.Parse(Console.ReadLine());
-        int[] arr = new int[input];
+        int maxInt = int.MinValue;
+        int row = 0;
+        int col = 0;
 
-        for (int i = 0; i < input; i++)
+        for (int i = 0; i < 9; i++)
         {
-            int num = int.Parse(Console.ReadLine());
-
-            if (num == 0)
+            string[] input = Console.ReadLine().Split(" ");
+            int[] intInput = input.Select(int.Parse).ToArray();
+            for(int j = 0; j < intInput.Length; j++)
             {
-                if (arr.Length == 0)
+                if (intInput[j] > maxInt)
                 {
-                    Console.WriteLine(0);
+                    row = i;
+                    col = j;
+                    maxInt = intInput[j];
                 }
             }
         }
+        Console.WriteLine(maxInt);
+        Console.WriteLine($"{row + 1} {col + 1}");
     }
 }
