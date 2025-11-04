@@ -4,12 +4,12 @@ using UnityEngine.Profiling;
 
 public class PlayerMove : MonoBehaviour
 {
-    // ¸ñÇ¥
-    // Å°º¸µå ÀÔ·Â¿¡ µû¶ó ¹æÇâÀ» ±¸ÇÏ°í ±× ¹æÇâÀ¸·Î ÀÌµ¿½ÃÅ°°í ½Í´Ù.
+    // ëª©í‘œ
+    // í‚¤ë³´ë“œ ì…ë ¥ì— ë”°ë¼ ë°©í–¥ì„ êµ¬í•˜ê³  ê·¸ ë°©í–¥ìœ¼ë¡œ ì´ë™ì‹œí‚¤ê³  ì‹¶ë‹¤.
 
-    // 1. Å°º¸µå ÀÔ·Â
-    // 2. ¹æÇâ ±¸ÇÏ´Â ¹æ¹ı
-    // 3. ÀÌµ¿
+    // 1. í‚¤ë³´ë“œ ì…ë ¥
+    // 2. ë°©í–¥ êµ¬í•˜ëŠ” ë°©ë²•
+    // 3. ì´ë™
 
     public float Speed = 3f;
     private float _currentSpeed;
@@ -25,7 +25,7 @@ public class PlayerMove : MonoBehaviour
     private float _cameraHalfWidth;
     private float _cameraHalfHeight;
 
-    // °ÔÀÓ ¿ÀºêÁ§Æ®°¡ »ı¼ºµÉ ¶§ (´Ü ÇÑ¹ø)
+    // ê²Œì„ ì˜¤ë¸Œì íŠ¸ê°€ ìƒì„±ë  ë•Œ (ë‹¨ í•œë²ˆ)
     private void Start()
     {
         _cameraHalfHeight = Camera.main.orthographicSize;
@@ -35,7 +35,7 @@ public class PlayerMove : MonoBehaviour
     }
 
 
-    // °ÔÀÓ ¿ÀºêÁ§Æ®°¡ °ÔÀÓÀ» ½ÃÀÛÇÑ ÈÄ ÃÖ´ëÇÑ ¸¹ÀÌ ½ÇÇà (Áö¼ÓÀûÀ¸·Î)
+    // ê²Œì„ ì˜¤ë¸Œì íŠ¸ê°€ ê²Œì„ì„ ì‹œì‘í•œ í›„ ìµœëŒ€í•œ ë§ì´ ì‹¤í–‰ (ì§€ì†ì ìœ¼ë¡œ)
     private void Update()
     {
         if (Input.GetKey(KeyCode.R))
@@ -71,40 +71,44 @@ public class PlayerMove : MonoBehaviour
             _currentSpeed = Speed;
         }
     }
+    private void TranslateToOrigin(float speed)
+    {
+        Vector2 direction = new Vector2(0, 0) - (Vector2)transform.position;
+
+        transform.Translate(direction * speed * Time.deltaTime);
+    }
 
     private void MovePlayer(bool isOrigin = false)
     {
-        // 1. Å°º¸µå ÀÔ·ÂÀ» °¨ÁöÇÑ´Ù.
-        // À¯´ÏÆ¼¿¡¼­´Â InputÀÌ¶ó´Â ¸ğµâÀÌ ÀÔ·Â¿¡ °üÇÑ ¸ğµç °ÍÀ» ´ã´çÇÔ.
-        // GetAxis -> ¿øÇÏ´Â ÃàÀ» -1 ~ 1 ·Î °¡Á®¿Â´Ù. (ÀÔ·Â Çß³Ä ¾ÈÇß³Ä ÆÇº°)
-        // GetAxisRaw -> ¿øÇÏ´Â ÃàÀ» -1, 0, 1 ·Î ¹Ù·Î °¡Á®¿È (ºÎµå·¯¿î º¯È­ ¾øÀ½)
-        float h = Input.GetAxis("Horizontal"); // ¼öÆò ÀÔ·Â¿¡ ´ëÇÑ °ªÀ» -1 ~ 1 ·Î °¡Á®¿È
-        float v = Input.GetAxis("Vertical");   // ¼öÁ÷ ÀÔ·Â¿¡ ´ëÇÑ °ªÀ» -1 ~ 1 ·Î °¡Á®¿È
+        // 1. í‚¤ë³´ë“œ ì…ë ¥ì„ ê°ì§€í•œë‹¤.
+        // ìœ ë‹ˆí‹°ì—ì„œëŠ” Inputì´ë¼ëŠ” ëª¨ë“ˆì´ ì…ë ¥ì— ê´€í•œ ëª¨ë“  ê²ƒì„ ë‹´ë‹¹í•¨.
+        // GetAxis -> ì›í•˜ëŠ” ì¶•ì„ -1 ~ 1 ë¡œ ê°€ì ¸ì˜¨ë‹¤. (ì…ë ¥ í–ˆëƒ ì•ˆí–ˆëƒ íŒë³„)
+        // GetAxisRaw -> ì›í•˜ëŠ” ì¶•ì„ -1, 0, 1 ë¡œ ë°”ë¡œ ê°€ì ¸ì˜´ (ë¶€ë“œëŸ¬ìš´ ë³€í™” ì—†ìŒ)
+        float h = Input.GetAxis("Horizontal"); // ìˆ˜í‰ ì…ë ¥ì— ëŒ€í•œ ê°’ì„ -1 ~ 1 ë¡œ ê°€ì ¸ì˜´
+        float v = Input.GetAxis("Vertical");   // ìˆ˜ì§ ì…ë ¥ì— ëŒ€í•œ ê°’ì„ -1 ~ 1 ë¡œ ê°€ì ¸ì˜´
 
-        Debug.Log($"{h} {v}");
 
-        // 2. ÀÔ·ÂÀ¸·ÎºÎÅÍ ¹æÇâÀ» ±¸ÇÑ´Ù.
-        // Vector : Å©±â¿Í ¹æÇâÀ» Ç¥ÇöÇÏ´Â ¹°¸® °³³ä
+        // 2. ì…ë ¥ìœ¼ë¡œë¶€í„° ë°©í–¥ì„ êµ¬í•œë‹¤.
+        // Vector : í¬ê¸°ì™€ ë°©í–¥ì„ í‘œí˜„í•˜ëŠ” ë¬¼ë¦¬ ê°œë…
         Vector2 direction = new Vector2(h, v);
-        // 2-1. ¹æÇâÀ» Å©±â 1·Î ¸¸µå´Â Á¤±ÔÈ­¸¦ ÇÔ. (´ë°¢¼± ÀÌµ¿ ½Ã ¼Óµµ º¸Á¤À» À§ÇØ Á¤±ÔÈ­ÇÏ´Â °ÍÀÌ ÁÁÀ½)
+        // 2-1. ë°©í–¥ì„ í¬ê¸° 1ë¡œ ë§Œë“œëŠ” ì •ê·œí™”ë¥¼ í•¨. (ëŒ€ê°ì„  ì´ë™ ì‹œ ì†ë„ ë³´ì •ì„ ìœ„í•´ ì •ê·œí™”í•˜ëŠ” ê²ƒì´ ì¢‹ìŒ)
         direction.Normalize();
-        Debug.Log($"{direction.x} {direction.y}");
 
-        // 3. Vector ¹æÇâÀ¸·Î ÀÌµ¿ÇÑ´Ù.
-        Vector2 position = transform.position; // ÇöÀç À§Ä¡ (Vector3·Î ÇØµµ µÇÁö¸¸ zÃàÀº »ç¿ëÇÏÁö ¾Ê±â ¶§¹®¿¡ Vector2)
+        // 3. Vector ë°©í–¥ìœ¼ë¡œ ì´ë™í•œë‹¤.
+        Vector2 position = transform.position; // í˜„ì¬ ìœ„ì¹˜ (Vector3ë¡œ í•´ë„ ë˜ì§€ë§Œ zì¶•ì€ ì‚¬ìš©í•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— Vector2)
 
-        // »õ·Î¿î À§Ä¡ = ÇöÀç À§Ä¡ + (¹æÇâ * ¼Ó·Â) * ½Ã°£
-        // »õ·Î¿î À§Ä¡ = ÇöÀç À§Ä¡ + (¼Óµµ)        * ½Ã°£
+        // ìƒˆë¡œìš´ ìœ„ì¹˜ = í˜„ì¬ ìœ„ì¹˜ + (ë°©í–¥ * ì†ë ¥) * ì‹œê°„
+        // ìƒˆë¡œìš´ ìœ„ì¹˜ = í˜„ì¬ ìœ„ì¹˜ + (ì†ë„)        * ì‹œê°„
 
-        //      »õ·Î¿î À§Ä¡ = ÇöÀç À§Ä¡ + (¹æÇâ)   *  ¼Óµµ      * ½Ã°£
-        Vector2 newPosition = position + direction * _currentSpeed * Time.deltaTime;  // »õ·Î¿î À§Ä¡
+        //      ìƒˆë¡œìš´ ìœ„ì¹˜ = í˜„ì¬ ìœ„ì¹˜ + (ë°©í–¥)   *  ì†ë„      * ì‹œê°„
+        Vector2 newPosition = position + direction * _currentSpeed * Time.deltaTime;  // ìƒˆë¡œìš´ ìœ„ì¹˜
 
-        // È­¸é ¹ÛÀ¸·Î ³ª°¡·Á´Â ½Ãµµ °¨Áö ¹× ¸·±â
+        // í™”ë©´ ë°–ìœ¼ë¡œ ë‚˜ê°€ë ¤ëŠ” ì‹œë„ ê°ì§€ ë° ë§‰ê¸°
         //Debug.Log("Attempted to move outside screen bounds.");
         //newPosition.x = Mathf.Clamp(newPosition.x, -_cameraHalfWidth, _cameraHalfWidth);
         //newPosition.y = Mathf.Clamp(newPosition.y, -_cameraHalfHeight * (0.5f), _cameraHalfHeight);
 
-        // È­¸é ¹ÛÀ¸·Î ³ª°¡¸é ¹İ´ëÂÊ¿¡¼­ ³ª¿À±â
+        // í™”ë©´ ë°–ìœ¼ë¡œ ë‚˜ê°€ë©´ ë°˜ëŒ€ìª½ì—ì„œ ë‚˜ì˜¤ê¸°
         if (newPosition.x > _cameraHalfWidth)
         {
             newPosition.x = -_cameraHalfWidth;
@@ -123,13 +127,13 @@ public class PlayerMove : MonoBehaviour
             newPosition.y = 0f;
         }
 
-        // Time.deltaTime : ÀÌÀü ÇÁ·¹ÀÓÀ¸·ÎºÎÅÍ ÇöÀç ÇÁ·¹ÀÓ±îÁö ½Ã°£ÀÌ ¾ó¸¶³ª Èê·¶´ÂÁö ³ªÅ¸³»´Â °ª (delta : ¾ó¸¶³ª º¯Çß´Â°¡)
-        // °¢ PC »ç¾ç¿¡ µû¶ó ´Ù¸¥ FPS °ªÀÇ Â÷ÀÌ¸¦ ¸Ş²ãÁÙ ¼ö ÀÖÀ½.
-        // 1ÃÊ / FPS ÀÇ °ª°ú ºñ½ÁÇÔ.
+        // Time.deltaTime : ì´ì „ í”„ë ˆì„ìœ¼ë¡œë¶€í„° í˜„ì¬ í”„ë ˆì„ê¹Œì§€ ì‹œê°„ì´ ì–¼ë§ˆë‚˜ í˜ë €ëŠ”ì§€ ë‚˜íƒ€ë‚´ëŠ” ê°’ (delta : ì–¼ë§ˆë‚˜ ë³€í–ˆëŠ”ê°€)
+        // ê° PC ì‚¬ì–‘ì— ë”°ë¼ ë‹¤ë¥¸ FPS ê°’ì˜ ì°¨ì´ë¥¼ ë©”ê¿”ì¤„ ìˆ˜ ìˆìŒ.
+        // 1ì´ˆ / FPS ì˜ ê°’ê³¼ ë¹„ìŠ·í•¨.
 
-        // ÀÌµ¿¼Óµµ : 10
-        // PC1 :  50FPS : Update -> ÃÊ´ç  50¹ø ½ÇÇà -> 10 *  50 =  500 * (Time.deltaTime)
-        // PC2 : 100FPS : Update -> ÃÊ´ç 100¹ø ½ÇÇà -> 10 * 100 = 1000 * (Time.deltaTime) // PC1, PC2 µÎ °ªÀÌ °°¾ÆÁü
+        // ì´ë™ì†ë„ : 10
+        // PC1 :  50FPS : Update -> ì´ˆë‹¹  50ë²ˆ ì‹¤í–‰ -> 10 *  50 =  500 * (Time.deltaTime)
+        // PC2 : 100FPS : Update -> ì´ˆë‹¹ 100ë²ˆ ì‹¤í–‰ -> 10 * 100 = 1000 * (Time.deltaTime) // PC1, PC2 ë‘ ê°’ì´ ê°™ì•„ì§
 
         if (isOrigin)
         {
@@ -145,7 +149,7 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
-            transform.position = newPosition;      // »õ·Î¿î À§Ä¡·Î °»½Å
+            transform.position = newPosition;      // ìƒˆë¡œìš´ ìœ„ì¹˜ë¡œ ê°±ì‹ 
         }
     }
 }
