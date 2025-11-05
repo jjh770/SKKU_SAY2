@@ -26,6 +26,9 @@ public class PlayerMove : MonoBehaviour
     private float _cameraHalfWidth;
     private float _cameraHalfHeight;
 
+    [Header("체력 카운트")]
+    public int HealthCount = 3;
+
     // 게임 오브젝트가 생성될 때 (단 한번)
     private void Start()
     {
@@ -34,7 +37,6 @@ public class PlayerMove : MonoBehaviour
         transform.position = initPosition;
         _currentSpeed = Speed;
     }
-
 
     // 게임 오브젝트가 게임을 시작한 후 최대한 많이 실행 (지속적으로)
     private void Update()
@@ -48,8 +50,15 @@ public class PlayerMove : MonoBehaviour
             MovePlayer(false);
         }
         HandleMoveSpeed();
+        PlayerIsDead();
     }
-
+    private void PlayerIsDead()
+    {
+        if (HealthCount <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
     private void HandleMoveSpeed()
     {
 

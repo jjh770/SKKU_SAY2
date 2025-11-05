@@ -18,8 +18,10 @@ public class PlayerFire : MonoBehaviour
     public Transform SubFirePositionRight;
 
     [Header("쿨다운")]
-    public const float CoolTime = 0.6f;
-    private float _coolTimer;
+    public const float MainCoolTime = 0.6f;
+    public const float SubCoolTime = 0.4f;
+    private float _mainCoolTimer;
+    private float _subCoolTimer;
 
     private bool _autoFire = true;
 
@@ -30,12 +32,19 @@ public class PlayerFire : MonoBehaviour
     }
     private void CoolDown()
     {
-        _coolTimer -= Time.deltaTime;
-        if (_coolTimer > 0) return;
-        if (_autoFire || Input.GetKey(KeyCode.Space))
+        _mainCoolTimer -= Time.deltaTime;
+        _subCoolTimer -= Time.deltaTime;
+        // 메인 쿨다운
+        if (_mainCoolTimer <= 0f && (_autoFire || Input.GetKey(KeyCode.Space)))
         {
-            _coolTimer = CoolTime;
+            _mainCoolTimer = MainCoolTime;
             Fire();
+        }
+
+        // 서브 쿨다운
+        if (_subCoolTimer <= 0f && (_autoFire || Input.GetKey(KeyCode.Space)))
+        {
+            _subCoolTimer = SubCoolTime;
             SubFire();
         }
     }

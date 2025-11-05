@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -22,13 +23,17 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        _speed += Time.deltaTime * ((EndSpeed - StartSpeed) / Acceleration); // 1초당 +1과 같다
+        SetSpeed();
+        
 
-        _speed = Mathf.Min(_speed, EndSpeed);
-
-        MoveBullet_Acceleration();
+        MoveBulletAcceleration();
     }
-    private void MoveBullet_Acceleration()
+    private void SetSpeed()
+    {
+        _speed += Time.deltaTime * ((EndSpeed - StartSpeed) / Acceleration); // 1초당 +1과 같다
+        _speed = Mathf.Min(_speed, EndSpeed);
+    }
+    private void MoveBulletAcceleration()
     {
         Vector2 position = transform.position;
         Vector2 direction = Vector2.up; // 위쪽 방향
@@ -36,6 +41,16 @@ public class Bullet : MonoBehaviour
         transform.position = newPosition;      // 새로운 위치로 갱신
     }
 
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 충돌한 상대방이 적 태그를 가지고 있다면
+        if (!collision.gameObject.CompareTag("Enemy")) return;
+
+        Destroy(this.gameObject); // 총알 오브젝트 파괴
+        // GetComponent는 게임 오브젝트에 붙어있는 컴포넌트를 가져올 수 있음.
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+        enemy.Health -= 6f;
+    }
     IEnumerator SpeedUp()
     {
         while (_currentSpeed < 7f)

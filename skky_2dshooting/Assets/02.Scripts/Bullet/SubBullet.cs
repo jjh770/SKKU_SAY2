@@ -27,6 +27,16 @@ public class SubBullet : MonoBehaviour
         MoveBullet_Acceleration();
         //MoveBullet();
     }
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 충돌한 상대방이 적 태그를 가지고 있다면
+        if (!collision.gameObject.CompareTag("Enemy")) return;
+
+        Destroy(this.gameObject); // 총알 오브젝트 파괴
+        // GetComponent는 게임 오브젝트에 붙어있는 컴포넌트를 가져올 수 있음.
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+        enemy.Health -= 4f;
+    }
     private void MoveBullet_Acceleration()
     {
         Vector2 position = transform.position;
