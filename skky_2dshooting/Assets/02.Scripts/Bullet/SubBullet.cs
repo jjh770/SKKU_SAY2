@@ -14,15 +14,13 @@ public class SubBullet : MonoBehaviour
     [Header("좌우 구분")]
     public bool IsLeft;
     [Header("베지어 곡선 설정")]
-    public bool useBezierCurve = false;
-    public bool curveLeft = false;
-    public float curveDuration = 1f;
-    public float curveAmount = 3f;
+    public float CurveDuration = 1f;
+    public float CurveAmount = 3f;
 
     private Vector3 _startPos;
     private Vector3 _targetPosition ; 
     private float _curveTime = 0f;
-    private Vector3 _lastDirection;  // 마지막 이동 방향 저장
+    private Vector3 _lastDirection;
     private bool _curveFinished = false;
 
     void Start()
@@ -39,7 +37,7 @@ public class SubBullet : MonoBehaviour
 
         if (!_curveFinished)
         {
-            MoveBezier();
+            MoveCurve();
         }
         else if (_curveFinished)
         {
@@ -99,10 +97,10 @@ public class SubBullet : MonoBehaviour
         transform.position += Vector3.up * _speed * Time.deltaTime;
     }
 
-    private void MoveBezier()
+    private void MoveCurve()
     {
         _curveTime += Time.deltaTime;
-        float t = _curveTime / curveDuration;
+        float t = _curveTime / CurveDuration;
 
         if (t >= 1f)
         {
@@ -113,7 +111,7 @@ public class SubBullet : MonoBehaviour
         Vector3 prevPos = transform.position;
 
         Vector3 mid = (_startPos + _targetPosition) / 2f;
-        mid += Vector3.right * (IsLeft ? -curveAmount : curveAmount);
+        mid += Vector3.right * (IsLeft ? -CurveAmount : CurveAmount);
 
         Vector3 point1 = Vector3.Lerp(_startPos, mid, t);
         Vector3 point2 = Vector3.Lerp(mid, _targetPosition, t);
