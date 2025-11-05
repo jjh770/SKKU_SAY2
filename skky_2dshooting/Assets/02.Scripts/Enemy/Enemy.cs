@@ -5,6 +5,9 @@ public class Enemy : MonoBehaviour
     [Header("적 스탯")]
     public float Speed;
     public float Health = 100f;
+    [Header("추가 충돌 구역")]
+    public Collider2D LeftCollider;
+    public Collider2D RightCollider;
 
     private Vector2 _direction = Vector2.down;
 
@@ -27,13 +30,10 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("충돌 시작");
-
         // 몬스터는 플레이어만 죽인다.
         if (!collision.gameObject.CompareTag("Player")) return;
-
         PlayerMove playerMove = collision.gameObject.GetComponent<PlayerMove>();
         playerMove.HealthCount--;
-
         // Destroy(this.gameObject); // 나 사망
     }
     private void OnTriggerStay2D(Collider2D collision)

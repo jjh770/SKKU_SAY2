@@ -33,9 +33,17 @@ public class SubBullet : MonoBehaviour
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
         Destroy(this.gameObject); // 총알 오브젝트 파괴
+
         // GetComponent는 게임 오브젝트에 붙어있는 컴포넌트를 가져올 수 있음.
-        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-        enemy.Health -= 4f;
+        Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+        if (collision == enemy.LeftCollider || collision == enemy.RightCollider)
+        {
+            enemy.Health -= 4f * 0.8f;
+        }
+        else
+        {
+            enemy.Health -= 4f;
+        }
     }
     private void MoveBullet_Acceleration()
     {
