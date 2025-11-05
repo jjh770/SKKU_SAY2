@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -24,9 +25,15 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         SetSpeed();
-        
-
         MoveBulletAcceleration();
+        CheckIsOut();
+    }
+    private void CheckIsOut()
+    {
+        if (transform.position.y > GameManager.Instance.CameraHalfHeight + 1f)
+        {
+            Destroy(this.gameObject);
+        }
     }
     private void SetSpeed()
     {
@@ -49,14 +56,7 @@ public class Bullet : MonoBehaviour
         Destroy(this.gameObject); // 총알 오브젝트 파괴
 
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
-        if (collision == enemy.LeftCollider || collision == enemy.RightCollider)
-        {
-            enemy.Health -= 6f * 0.8f;
-        }
-        else
-        {
-            enemy.Health -= 6f;
-        }
+        enemy.Hit(0.6f, collision);
     }
     IEnumerator SpeedUp()
     {

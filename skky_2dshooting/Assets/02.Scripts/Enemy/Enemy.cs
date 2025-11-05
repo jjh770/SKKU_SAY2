@@ -8,7 +8,8 @@ public class Enemy : MonoBehaviour
     [Header("추가 충돌 구역")]
     public Collider2D LeftCollider;
     public Collider2D RightCollider;
-
+    [Header("적 충돌 데미지")]
+    public float Damage = 1f;
     private Vector2 _direction = Vector2.down;
 
     private void Start()
@@ -18,10 +19,25 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         MovingEnemy();
-        EnemyIsDead();
+        CheckIsOut();
     }
-    private void EnemyIsDead()
+    private void CheckIsOut()
     {
+        if (transform.position.y < (-1) * GameManager.Instance.CameraHalfHeight - 1f)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    public void Hit(float damage, Collider2D collision)
+    {
+        if (collision == LeftCollider || collision == RightCollider)
+        {
+            Health -= 6f * 0.8f;
+        }
+        else
+        {
+            Health -= 6f;
+        }
         if (Health <= 0f)
         {
             Destroy(this.gameObject);
@@ -29,20 +45,17 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("충돌 시작");
         // 몬스터는 플레이어만 죽인다.
         if (!collision.gameObject.CompareTag("Player")) return;
-        PlayerMove playerMove = collision.gameObject.GetComponent<PlayerMove>();
-        playerMove.HealthCount--;
+        Player player = collision.gameObject.GetComponent<Player>();
+        player.Hit(Damage);
         // Destroy(this.gameObject); // 나 사망
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log("충돌 지속");
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("충돌 종료");
     }
     private void MovingEnemy()
     {

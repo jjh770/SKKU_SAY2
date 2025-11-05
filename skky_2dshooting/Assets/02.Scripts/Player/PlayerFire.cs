@@ -63,7 +63,9 @@ public class PlayerFire : MonoBehaviour
     private void SubFire()
     {
         GameObject subBulletLeft = Instantiate(SubBulletPrefab, SubFirePositionLeft.position, Quaternion.EulerAngles(Vector3.zero));
+        subBulletLeft.GetComponent<SubBullet>().IsLeft = true;
         GameObject subBulletRight = Instantiate(SubBulletPrefab, SubFirePositionRight.position, Quaternion.EulerAngles(Vector3.zero));
+        subBulletRight.GetComponent<SubBullet>().IsLeft = false;
     }
     private void Fire()
     {

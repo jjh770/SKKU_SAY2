@@ -3,53 +3,122 @@ using UnityEngine;
 
 public class SubBullet : MonoBehaviour
 {
-
     [Header("총알 속도")]
-    [SerializeField] // 유니티가 데이터를 읽고 쓸 수 있게 하겠다.
+    [SerializeField]
     private float _speed = 1;
     [Header("총알 시작, 종료 속도")]
     public float StartSpeed = 1;
     public float EndSpeed = 6;
     [Header("총알 가속도")]
     public float Acceleration = 0.7f;
+    [Header("좌우 구분")]
+    public bool IsLeft;
+    [Header("베지어 곡선 설정")]
+    public bool useBezierCurve = false;
+    public bool curveLeft = false;
+    public float curveDuration = 1f;
+    public float curveAmount = 3f;
+
+    private Vector3 _startPos;
+    private Vector3 _targetPosition ; 
+    private float _curveTime = 0f;
+    private Vector3 _lastDirection;  // 마지막 이동 방향 저장
+    private bool _curveFinished = false;
 
     void Start()
     {
         _speed = StartSpeed;
+        _startPos = transform.position;
+        _targetPosition = new Vector3(0, GameManager.Instance.CameraHalfHeight, 0);
     }
 
     void Update()
     {
-        _speed += Time.deltaTime * ((EndSpeed - StartSpeed)/ Acceleration); // 1초당 +1과 같다
-
+        _speed += Time.deltaTime * ((EndSpeed - StartSpeed) / Acceleration);
         _speed = Mathf.Min(_speed, EndSpeed);
 
-        MoveBullet_Acceleration();
-        //MoveBullet();
+        if (!_curveFinished)
+        {
+            MoveBezier();
+        }
+        else if (_curveFinished)
+        {
+            transform.position += _lastDirection * _speed * Time.deltaTime;
+        }
+
+        CheckIsOut();
+        FindNearestEnemy();
     }
+
+    private void FindNearestEnemy()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        if (enemies.Length == 0) return;
+
+        float nearestDist = float.MaxValue;
+
+        foreach (GameObject enemy in enemies)
+        {
+            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+
+            if (dist < nearestDist)
+            {
+                nearestDist = dist;
+                _targetPosition = enemy.transform.position;
+            }
+        }
+    }
+
+    private void CheckIsOut()
+    {
+        if (GameManager.Instance != null)
+        {
+            if (transform.position.y > GameManager.Instance.CameraHalfHeight + 1f)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        // 충돌한 상대방이 적 태그를 가지고 있다면
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        Destroy(this.gameObject); // 총알 오브젝트 파괴
+        Destroy(this.gameObject);
 
-        // GetComponent는 게임 오브젝트에 붙어있는 컴포넌트를 가져올 수 있음.
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
-        if (collision == enemy.LeftCollider || collision == enemy.RightCollider)
+        if (enemy != null)
         {
-            enemy.Health -= 4f * 0.8f;
-        }
-        else
-        {
-            enemy.Health -= 4f;
+            enemy.Hit(0.4f, collision);
         }
     }
-    private void MoveBullet_Acceleration()
+
+    private void MoveStraight()
     {
-        Vector2 position = transform.position;
-        Vector2 direction = Vector2.up; // 위쪽 방향
-        Vector2 newPosition = position + direction * _speed * Time.deltaTime;  // 새로운 위치
-        transform.position = newPosition;      // 새로운 위치로 갱신
+        transform.position += Vector3.up * _speed * Time.deltaTime;
+    }
+
+    private void MoveBezier()
+    {
+        _curveTime += Time.deltaTime;
+        float t = _curveTime / curveDuration;
+
+        if (t >= 1f)
+        {
+            _curveFinished = true;  
+            return;
+        }
+
+        Vector3 prevPos = transform.position;
+
+        Vector3 mid = (_startPos + _targetPosition) / 2f;
+        mid += Vector3.right * (IsLeft ? -curveAmount : curveAmount);
+
+        Vector3 point1 = Vector3.Lerp(_startPos, mid, t);
+        Vector3 point2 = Vector3.Lerp(mid, _targetPosition, t);
+        transform.position = Vector3.Lerp(point1, point2, t);
+
+        _lastDirection = (transform.position - prevPos).normalized;
     }
 }

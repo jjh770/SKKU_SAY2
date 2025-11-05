@@ -23,17 +23,10 @@ public class PlayerMove : MonoBehaviour
     private float speedChangeAmount = 0.5f;
     [SerializeField]
     private Vector2 initPosition = Vector2.zero;
-    private float _cameraHalfWidth;
-    private float _cameraHalfHeight;
-
-    [Header("체력 카운트")]
-    public int HealthCount = 3;
 
     // 게임 오브젝트가 생성될 때 (단 한번)
     private void Start()
     {
-        _cameraHalfHeight = Camera.main.orthographicSize;
-        _cameraHalfWidth = Camera.main.orthographicSize * Camera.main.aspect;
         transform.position = initPosition;
         _currentSpeed = Speed;
     }
@@ -50,15 +43,8 @@ public class PlayerMove : MonoBehaviour
             MovePlayer(false);
         }
         HandleMoveSpeed();
-        PlayerIsDead();
     }
-    private void PlayerIsDead()
-    {
-        if (HealthCount <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
+
     private void HandleMoveSpeed()
     {
 
@@ -119,20 +105,20 @@ public class PlayerMove : MonoBehaviour
         //newPosition.y = Mathf.Clamp(newPosition.y, -_cameraHalfHeight * (0.5f), _cameraHalfHeight);
 
         // 화면 밖으로 나가면 반대쪽에서 나오기
-        if (newPosition.x > _cameraHalfWidth)
+        if (newPosition.x > GameManager.Instance.CameraHalfWidth)
         {
-            newPosition.x = -_cameraHalfWidth;
+            newPosition.x = (-1) * GameManager.Instance.CameraHalfWidth;
         }
-        else if (newPosition.x < -_cameraHalfWidth)
+        else if (newPosition.x < (-1) * GameManager.Instance.CameraHalfWidth)
         {
-            newPosition.x = _cameraHalfWidth;
+            newPosition.x = GameManager.Instance.CameraHalfWidth;
         }
 
         if (newPosition.y > 0)
         {
-            newPosition.y = -_cameraHalfHeight ;
+            newPosition.y = (-1) * GameManager.Instance.CameraHalfHeight;
         }
-        else if (newPosition.y < -_cameraHalfHeight)
+        else if (newPosition.y < (-1) * GameManager.Instance.CameraHalfHeight)
         {
             newPosition.y = 0f;
         }

@@ -102,9 +102,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1
-  StartSpeed: 2
-  EndSpeed: 6
-  Acceleration: 0.7
+  StartSpeed: 10
+  EndSpeed: 10
+  Acceleration: 3
+  IsLeft: 0
+  useBezierCurve: 1
+  curveLeft: 0
+  curveDuration: 1
+  curveAmount: 3
 --- !u!58 &-7535805579749615108
 CircleCollider2D:
   m_ObjectHideFlags: 0
