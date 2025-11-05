@@ -25,15 +25,11 @@ public class PlayerFire : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            _autoFire = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            _autoFire = false;
-        }
-
+        ChangeAuto();
+        CoolDown();
+    }
+    private void CoolDown()
+    {
         _coolTimer -= Time.deltaTime;
         if (_coolTimer > 0) return;
         if (_autoFire || Input.GetKey(KeyCode.Space))
@@ -41,7 +37,18 @@ public class PlayerFire : MonoBehaviour
             _coolTimer = CoolTime;
             Fire();
             SubFire();
+        }
+    }
 
+    private void ChangeAuto()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _autoFire = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            _autoFire = false;
         }
     }
     private void SubFire()

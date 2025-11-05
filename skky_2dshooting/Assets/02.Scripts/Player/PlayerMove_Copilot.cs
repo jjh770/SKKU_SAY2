@@ -2,107 +2,107 @@ using UnityEngine;
 
 public class PlayerMove_Copilot : MonoBehaviour
 {
-    // ¸ñÇ¥
-    // Å°º¸µå ÀÔ·Â¿¡ µû¶ó ¹æÇâÀ» ±¸ÇÏ°í ±× ¹æÇâÀ¸·Î ÀÌµ¿½ÃÅ°°í ½Í´Ù.
+    // ëª©í‘œ
+    // í‚¤ë³´ë“œ ì…ë ¥ì— ë”°ë¼ ë°©í–¥ì„ êµ¬í•˜ê³  ê·¸ ë°©í–¥ìœ¼ë¡œ ì´ë™ì‹œí‚¤ê³  ì‹¶ë‹¤.
 
-    // 1. Å°º¸µå ÀÔ·Â
-    // 2. ¹æÇâ ±¸ÇÏ´Â ¹æ¹ı
-    // 3. ÀÌµ¿
+    // 1. í‚¤ë³´ë“œ ì…ë ¥
+    // 2. ë°©í–¥ êµ¬í•˜ëŠ” ë°©ë²•
+    // 3. ì´ë™
 
-    public float Speed = 3f; // ±âº» ÀÌµ¿ ¼Óµµ
+    public float Speed = 3f; // ê¸°ë³¸ ì´ë™ ì†ë„
 
     [SerializeField]
-    private float _minSpeed = 1f; // ÃÖ¼Ò ÀÌµ¿ ¼Óµµ
+    private float _minSpeed = 1f; // ìµœì†Œ ì´ë™ ì†ë„
     [SerializeField]
-    private float _maxSpeed = 10f; // ÃÖ´ë ÀÌµ¿ ¼Óµµ
+    private float _maxSpeed = 10f; // ìµœëŒ€ ì´ë™ ì†ë„
     [SerializeField]
-    private float _speedChangeAmount = 0.5f; // ¼Óµµ º¯°æ·®
+    private float _speedChangeAmount = 0.5f; // ì†ë„ ë³€ê²½ëŸ‰
 
-    private float _boundaryX; // XÃà ÀÌµ¿ Á¦ÇÑ °æ°è
-    private float _boundaryY; // YÃà ÀÌµ¿ Á¦ÇÑ °æ°è
+    private float _boundaryX; // Xì¶• ì´ë™ ì œí•œ ê²½ê³„
+    private float _boundaryY; // Yì¶• ì´ë™ ì œí•œ ê²½ê³„
 
-    // °ÔÀÓ ¿ÀºêÁ§Æ®°¡ »ı¼ºµÉ ¶§ (´Ü ÇÑ¹ø)
+    // ê²Œì„ ì˜¤ë¸Œì íŠ¸ê°€ ìƒì„±ë  ë•Œ (ë‹¨ í•œë²ˆ)
     private void Start()
     {
-        // Ä«¸Ş¶óÀÇ ½Ã¾ß¸¦ ±âÁØÀ¸·Î È­¸é °æ°è °è»ê
-        // orthographicSize´Â Ä«¸Ş¶ó ºäÀÇ Àı¹İ ³ôÀÌ¸¦ ¿ùµå ´ÜÀ§·Î ³ªÅ¸³À´Ï´Ù.
-        // aspect´Â È­¸é ºñÀ² (³Êºñ / ³ôÀÌ) ÀÔ´Ï´Ù.
+        // ì¹´ë©”ë¼ì˜ ì‹œì•¼ë¥¼ ê¸°ì¤€ìœ¼ë¡œ í™”ë©´ ê²½ê³„ ê³„ì‚°
+        // orthographicSizeëŠ” ì¹´ë©”ë¼ ë·°ì˜ ì ˆë°˜ ë†’ì´ë¥¼ ì›”ë“œ ë‹¨ìœ„ë¡œ ë‚˜íƒ€ëƒ…ë‹ˆë‹¤.
+        // aspectëŠ” í™”ë©´ ë¹„ìœ¨ (ë„ˆë¹„ / ë†’ì´) ì…ë‹ˆë‹¤.
         float worldHeightHalf = Camera.main.orthographicSize;
         float worldWidthHalf = Camera.main.orthographicSize * Camera.main.aspect;
 
-        // "È­¸é ¹İÀ» ³Ñ¾î°¡Áö ¾Ê°Ô" Á¶ÀÛÇÏ±â À§ÇØ °è»êµÈ ¿ùµå °æ°èÀÇ Àı¹İÀ» »ç¿ëÇÕ´Ï´Ù.
-        // ¿øÁ¡À» ±âÁØÀ¸·Î ¿òÁ÷ÀÌ¹Ç·Î -_boundaryX ~ +_boundaryX, -_boundaryY ~ +_boundaryY ¹üÀ§°¡ µË´Ï´Ù.
+        // "í™”ë©´ ë°˜ì„ ë„˜ì–´ê°€ì§€ ì•Šê²Œ" ì¡°ì‘í•˜ê¸° ìœ„í•´ ê³„ì‚°ëœ ì›”ë“œ ê²½ê³„ì˜ ì ˆë°˜ì„ ì‚¬ìš©í•©ë‹ˆë‹¤.
+        // ì›ì ì„ ê¸°ì¤€ìœ¼ë¡œ ì›€ì§ì´ë¯€ë¡œ -_boundaryX ~ +_boundaryX, -_boundaryY ~ +_boundaryY ë²”ìœ„ê°€ ë©ë‹ˆë‹¤.
         _boundaryX = worldWidthHalf / 2f;
         _boundaryY = worldHeightHalf / 2f;
     }
 
-    // °ÔÀÓ ¿ÀºêÁ§Æ®°¡ °ÔÀÓÀ» ½ÃÀÛÇÑ ÈÄ ÃÖ´ëÇÑ ¸¹ÀÌ ½ÇÇà (Áö¼ÓÀûÀ¸·Î)
+    // ê²Œì„ ì˜¤ë¸Œì íŠ¸ê°€ ê²Œì„ì„ ì‹œì‘í•œ í›„ ìµœëŒ€í•œ ë§ì´ ì‹¤í–‰ (ì§€ì†ì ìœ¼ë¡œ)
     private void Update()
     {
-        HandleSpeedInput(); // ½ºÇÇµå Á¶ÀÛ Ã³¸®
-        MovePlayer();       // ÇÃ·¹ÀÌ¾î ÀÌµ¿ Ã³¸®
+        HandleSpeedInput(); // ìŠ¤í”¼ë“œ ì¡°ì‘ ì²˜ë¦¬
+        MovePlayer();       // í”Œë ˆì´ì–´ ì´ë™ ì²˜ë¦¬
     }
 
     private void HandleSpeedInput()
     {
-        // Q Å°¸¦ ´©¸£¸é ½ºÇÇµå ¾÷
+        // Q í‚¤ë¥¼ ëˆ„ë¥´ë©´ ìŠ¤í”¼ë“œ ì—…
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Speed = Mathf.Min(Speed + _speedChangeAmount, _maxSpeed); // ÃÖ´ë ½ºÇÇµå¸¦ ³ÑÁö ¾Êµµ·Ï Á¦ÇÑ
+            Speed = Mathf.Min(Speed + _speedChangeAmount, _maxSpeed); // ìµœëŒ€ ìŠ¤í”¼ë“œë¥¼ ë„˜ì§€ ì•Šë„ë¡ ì œí•œ
             Debug.Log($"Speed increased to: {Speed}");
         }
 
-        // E Å°¸¦ ´©¸£¸é ½ºÇÇµå ´Ù¿î
+        // E í‚¤ë¥¼ ëˆ„ë¥´ë©´ ìŠ¤í”¼ë“œ ë‹¤ìš´
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Speed = Mathf.Max(Speed - _speedChangeAmount, _minSpeed); // ÃÖ¼Ò ½ºÇÇµå¸¦ ³ÑÁö ¾Êµµ·Ï Á¦ÇÑ
+            Speed = Mathf.Max(Speed - _speedChangeAmount, _minSpeed); // ìµœì†Œ ìŠ¤í”¼ë“œë¥¼ ë„˜ì§€ ì•Šë„ë¡ ì œí•œ
             Debug.Log($"Speed decreased to: {Speed}");
         }
     }
 
     private void MovePlayer()
     {
-        // 1. Å°º¸µå ÀÔ·ÂÀ» °¨ÁöÇÑ´Ù.
-        // À¯´ÏÆ¼¿¡¼­´Â InputÀÌ¶ó´Â ¸ğµâÀÌ ÀÔ·Â¿¡ °üÇÑ ¸ğµç °ÍÀ» ´ã´çÇÔ.
-        // GetAxtis -> ¿øÇÏ´Â ÃàÀ» -1 ~ 1 ·Î °¡Á®¿Â´Ù. (ÀÔ·Â Çß³Ä ¾ÈÇß³Ä ÆÇº°)
-        float h = Input.GetAxis("Horizontal"); // ¼öÆò ÀÔ·Â¿¡ ´ëÇÑ °ªÀ» -1 ~ 1 ·Î °¡Á®¿È
-        float v = Input.GetAxis("Vertical");   // ¼öÁ÷ ÀÔ·Â¿¡ ´ëÇÑ °ªÀ» -1 ~ 1 ·Î °¡Á®¿È
+        // 1. í‚¤ë³´ë“œ ì…ë ¥ì„ ê°ì§€í•œë‹¤.
+        // ìœ ë‹ˆí‹°ì—ì„œëŠ” Inputì´ë¼ëŠ” ëª¨ë“ˆì´ ì…ë ¥ì— ê´€í•œ ëª¨ë“  ê²ƒì„ ë‹´ë‹¹í•¨.
+        // GetAxtis -> ì›í•˜ëŠ” ì¶•ì„ -1 ~ 1 ë¡œ ê°€ì ¸ì˜¨ë‹¤. (ì…ë ¥ í–ˆëƒ ì•ˆí–ˆëƒ íŒë³„)
+        float h = Input.GetAxis("Horizontal"); // ìˆ˜í‰ ì…ë ¥ì— ëŒ€í•œ ê°’ì„ -1 ~ 1 ë¡œ ê°€ì ¸ì˜´
+        float v = Input.GetAxis("Vertical");   // ìˆ˜ì§ ì…ë ¥ì— ëŒ€í•œ ê°’ì„ -1 ~ 1 ë¡œ ê°€ì ¸ì˜´
 
-        // Debug.Log($"{h} {v}"); // ÇÊ¿ä ¾øÀ¸¹Ç·Î ÁÖ¼® Ã³¸®
+        // Debug.Log($"{h} {v}"); // í•„ìš” ì—†ìœ¼ë¯€ë¡œ ì£¼ì„ ì²˜ë¦¬
 
-        // 2. ÀÔ·ÂÀ¸·ÎºÎÅÍ ¹æÇâÀ» ±¸ÇÑ´Ù.
-        // Vector : Å©±â¿Í ¹æÇâÀ» Ç¥ÇöÇÏ´Â ¹°¸® °³³ä
+        // 2. ì…ë ¥ìœ¼ë¡œë¶€í„° ë°©í–¥ì„ êµ¬í•œë‹¤.
+        // Vector : í¬ê¸°ì™€ ë°©í–¥ì„ í‘œí˜„í•˜ëŠ” ë¬¼ë¦¬ ê°œë…
         Vector2 direction = new Vector2(h, v);
-        // Debug.Log($"{direction.x} {direction.y}"); // ÇÊ¿ä ¾øÀ¸¹Ç·Î ÁÖ¼® Ã³¸®
+        // Debug.Log($"{direction.x} {direction.y}"); // í•„ìš” ì—†ìœ¼ë¯€ë¡œ ì£¼ì„ ì²˜ë¦¬
 
-        // ÀÔ·ÂÀÌ ¾øÀ» °æ¿ì Á¤±ÔÈ­ÇÏÁö ¾Ê¾Æµµ µÇÁö¸¸, ´ë°¢¼± ÀÌµ¿ ½Ã ¼Óµµ º¸Á¤À» À§ÇØ Á¤±ÔÈ­ÇÏ´Â °ÍÀÌ ÁÁ½À´Ï´Ù.
-        // ¿¹¸¦ µé¾î (1,1) ¹æÇâÀº ±æÀÌ°¡ sqrt(2) ÀÌ¹Ç·Î ±×³É »ç¿ëÇÏ¸é ¼Óµµ°¡ »¡¶óÁı´Ï´Ù.
-        if (direction.sqrMagnitude > 1f) // º¤ÅÍÀÇ Á¦°ö Å©±â°¡ 1º¸´Ù Å©¸é (´ë°¢¼± ÀÔ·Â)
+        // ì…ë ¥ì´ ì—†ì„ ê²½ìš° ì •ê·œí™”í•˜ì§€ ì•Šì•„ë„ ë˜ì§€ë§Œ, ëŒ€ê°ì„  ì´ë™ ì‹œ ì†ë„ ë³´ì •ì„ ìœ„í•´ ì •ê·œí™”í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
+        // ì˜ˆë¥¼ ë“¤ì–´ (1,1) ë°©í–¥ì€ ê¸¸ì´ê°€ sqrt(2) ì´ë¯€ë¡œ ê·¸ëƒ¥ ì‚¬ìš©í•˜ë©´ ì†ë„ê°€ ë¹¨ë¼ì§‘ë‹ˆë‹¤.
+        if (direction.sqrMagnitude > 1f) // ë²¡í„°ì˜ ì œê³± í¬ê¸°ê°€ 1ë³´ë‹¤ í¬ë©´ (ëŒ€ê°ì„  ì…ë ¥)
         {
-            direction.Normalize(); // º¤ÅÍÀÇ ±æÀÌ¸¦ 1·Î ¸¸µé¾î ½ÇÁ¦ ÀÌµ¿ ¼Óµµ¸¦ ÀÏÁ¤ÇÏ°Ô À¯Áö
+            direction.Normalize(); // ë²¡í„°ì˜ ê¸¸ì´ë¥¼ 1ë¡œ ë§Œë“¤ì–´ ì‹¤ì œ ì´ë™ ì†ë„ë¥¼ ì¼ì •í•˜ê²Œ ìœ ì§€
         }
 
 
-        // 3. Vector ¹æÇâÀ¸·Î ÀÌµ¿ÇÑ´Ù.
-        Vector2 position = transform.position; // ÇöÀç À§Ä¡ (Vector3·Î ÇØµµ µÇÁö¸¸ zÃàÀº »ç¿ëÇÏÁö ¾Ê±â ¶§¹®¿¡ Vector2)
+        // 3. Vector ë°©í–¥ìœ¼ë¡œ ì´ë™í•œë‹¤.
+        Vector2 position = transform.position; // í˜„ì¬ ìœ„ì¹˜ (Vector3ë¡œ í•´ë„ ë˜ì§€ë§Œ zì¶•ì€ ì‚¬ìš©í•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— Vector2)
 
-        // »õ·Î¿î À§Ä¡ = ÇöÀç À§Ä¡ + (¹æÇâ * ¼Ó·Â) * ½Ã°£
-        // »õ·Î¿î À§Ä¡ = ÇöÀç À§Ä¡ + (¼Óµµ)        * ½Ã°£
-        //      »õ·Î¿î À§Ä¡ = ÇöÀç À§Ä¡ + (¹æÇâ)   *  ¼Óµµ      * ½Ã°£
-        Vector2 newPosition = position + direction * Speed * Time.deltaTime;  // »õ·Î¿î À§Ä¡
+        // ìƒˆë¡œìš´ ìœ„ì¹˜ = í˜„ì¬ ìœ„ì¹˜ + (ë°©í–¥ * ì†ë ¥) * ì‹œê°„
+        // ìƒˆë¡œìš´ ìœ„ì¹˜ = í˜„ì¬ ìœ„ì¹˜ + (ì†ë„)        * ì‹œê°„
+        //      ìƒˆë¡œìš´ ìœ„ì¹˜ = í˜„ì¬ ìœ„ì¹˜ + (ë°©í–¥)   *  ì†ë„      * ì‹œê°„
+        Vector2 newPosition = position + direction * Speed * Time.deltaTime;  // ìƒˆë¡œìš´ ìœ„ì¹˜
 
-        // Time.deltaTime : ÀÌÀü ÇÁ·¹ÀÓÀ¸·ÎºÎÅÍ ÇöÀç ÇÁ·¹ÀÓ±îÁö ½Ã°£ÀÌ ¾ó¸¶³ª Èê·¶´ÂÁö ³ªÅ¸³»´Â °ª (delta : ¾ó¸¶³ª º¯Çß´Â°¡)
-        // °¢ PC »ç¾ç¿¡ µû¶ó ´Ù¸¥ FPS °ªÀÇ Â÷ÀÌ¸¦ ¸Ş²ãÁÙ ¼ö ÀÖÀ½.
-        // 1ÃÊ / FPS ÀÇ °ª°ú ºñ½ÁÇÔ.
+        // Time.deltaTime : ì´ì „ í”„ë ˆì„ìœ¼ë¡œë¶€í„° í˜„ì¬ í”„ë ˆì„ê¹Œì§€ ì‹œê°„ì´ ì–¼ë§ˆë‚˜ í˜ë €ëŠ”ì§€ ë‚˜íƒ€ë‚´ëŠ” ê°’ (delta : ì–¼ë§ˆë‚˜ ë³€í–ˆëŠ”ê°€)
+        // ê° PC ì‚¬ì–‘ì— ë”°ë¼ ë‹¤ë¥¸ FPS ê°’ì˜ ì°¨ì´ë¥¼ ë©”ê¿”ì¤„ ìˆ˜ ìˆìŒ.
+        // 1ì´ˆ / FPS ì˜ ê°’ê³¼ ë¹„ìŠ·í•¨.
 
-        // ÀÌµ¿¼Óµµ : 10
-        // PC1 :  50FPS : Update -> ÃÊ´ç  50¹ø ½ÇÇà -> 10 *  50 =  500 * (Time.deltaTime)
-        // PC2 : 100FPS : Update -> ÃÊ´ç 100¹ø ½ÇÇà -> 10 * 100 = 1000 * (Time.deltaTime) // PC1, PC2 µÎ °ªÀÌ °°¾ÆÁü
+        // ì´ë™ì†ë„ : 10
+        // PC1 :  50FPS : Update -> ì´ˆë‹¹  50ë²ˆ ì‹¤í–‰ -> 10 *  50 =  500 * (Time.deltaTime)
+        // PC2 : 100FPS : Update -> ì´ˆë‹¹ 100ë²ˆ ì‹¤í–‰ -> 10 * 100 = 1000 * (Time.deltaTime) // PC1, PC2 ë‘ ê°’ì´ ê°™ì•„ì§
 
-        // »õ·Î °è»êµÈ À§Ä¡°¡ °æ°è¸¦ ³ÑÁö ¾Êµµ·Ï Á¦ÇÑ (clamp)
+        // ìƒˆë¡œ ê³„ì‚°ëœ ìœ„ì¹˜ê°€ ê²½ê³„ë¥¼ ë„˜ì§€ ì•Šë„ë¡ ì œí•œ (clamp)
         newPosition.x = Mathf.Clamp(newPosition.x, -_boundaryX, _boundaryX);
         newPosition.y = Mathf.Clamp(newPosition.y, -_boundaryY, _boundaryY);
 
-        transform.position = newPosition;      // »õ·Î¿î À§Ä¡·Î °»½Å
+        transform.position = newPosition;      // ìƒˆë¡œìš´ ìœ„ì¹˜ë¡œ ê°±ì‹ 
     }
 }

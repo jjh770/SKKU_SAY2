@@ -21,7 +21,8 @@ public class PlayerMove : MonoBehaviour
     private float maxSpeed = 10f;
     [SerializeField]
     private float speedChangeAmount = 0.5f;
-
+    [SerializeField]
+    private Vector2 initPosition = Vector2.zero;
     private float _cameraHalfWidth;
     private float _cameraHalfHeight;
 
@@ -30,7 +31,7 @@ public class PlayerMove : MonoBehaviour
     {
         _cameraHalfHeight = Camera.main.orthographicSize;
         _cameraHalfWidth = Camera.main.orthographicSize * Camera.main.aspect;
-        transform.position = Vector3.zero;
+        transform.position = initPosition;
         _currentSpeed = Speed;
     }
 
@@ -140,11 +141,11 @@ public class PlayerMove : MonoBehaviour
             // transform.position = Vector2.MoveTowards(this.transform.position, Vector2.zero, _currentSpeed * Time.deltaTime);
             if (Mathf.Abs(transform.position.x) < 0.01f && Mathf.Abs(transform.position.y) < 0.01f)
             {
-                transform.position = Vector2.zero;
+                transform.position = initPosition;
             }
             else
             {
-                transform.Translate(-(transform.position).normalized * _currentSpeed * Time.deltaTime);
+                transform.Translate((initPosition - (Vector2)transform.position).normalized * _currentSpeed * Time.deltaTime);
             }
         }
         else
