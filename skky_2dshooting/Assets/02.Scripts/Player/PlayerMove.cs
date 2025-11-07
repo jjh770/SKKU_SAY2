@@ -28,7 +28,6 @@ public class PlayerMove : MonoBehaviour
     private float _speedUpAmount = 1.5f;
     private float _moveSpeedUpTimer = 5f;
     private float _startMoveSpeed;
-    private float _maxMoveSpeed;
 
     // 게임 오브젝트가 생성될 때 (단 한번)
     private void Start()

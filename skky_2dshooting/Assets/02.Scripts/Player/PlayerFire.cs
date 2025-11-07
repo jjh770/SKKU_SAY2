@@ -22,12 +22,10 @@ public class PlayerFire : MonoBehaviour
     private float _subCoolTimer;
 
     private bool _isAttackSpeedUp = false;
-    private float _speedMultiflier = 0.5f;
+    private float _speedMultiflier = 0.7f;
     private float _attackSpeedUpTimer = 5f;
     private float _startMainCoolTime;
     private float _startSubCoolTime;
-    private float _maxMainCoolTime = 0.3f;
-    private float _maxSubCoolTime = 0.2f;
 
     private bool _autoFire = true;
 
@@ -73,8 +71,8 @@ public class PlayerFire : MonoBehaviour
 
             if (_attackSpeedUpTimer > 0f)
             {
-                MainCoolTime = Mathf.Clamp(_startMainCoolTime * _speedMultiflier, _maxMainCoolTime, _startMainCoolTime);
-                SubCoolTime = Mathf.Clamp(_startSubCoolTime * _speedMultiflier, _maxSubCoolTime, _startSubCoolTime);
+                MainCoolTime = Mathf.Min(_startMainCoolTime * _speedMultiflier, _startMainCoolTime);
+                SubCoolTime = Mathf.Min(_startSubCoolTime * _speedMultiflier, _startSubCoolTime);
             }
             else
             {
