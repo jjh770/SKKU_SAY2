@@ -57,7 +57,7 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    public void SpeedUp(int value)
+    public void MoveSpeedUp(int value)
     {
         Speed += value;
     }

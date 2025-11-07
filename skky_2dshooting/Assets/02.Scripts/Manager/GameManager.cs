@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     private float _cameraHalfWidth;
     private float _cameraHalfHeight;
 
+
+
     private void Awake()
     {
         if (Instance == null)

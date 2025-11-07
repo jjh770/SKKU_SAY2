@@ -67,18 +67,7 @@ public class EnemySpawner : MonoBehaviour
 
         ResetCoolTime();
         EMovementType type = GetMovementType();
-        if (type == EMovementType.DirectionalMovement)
-        {
-            _enemy = Instantiate(_enemyPrefab[(int)EMovementType.DirectionalMovement]);
-        }
-        else if (type == EMovementType.ChasingMovement)
-        {
-            _enemy = Instantiate(_enemyPrefab[(int)EMovementType.ChasingMovement]);
-        }
-        else if (type == EMovementType.RushMovement)
-        {
-            _enemy = Instantiate(_enemyPrefab[(int)EMovementType.RushMovement]);
-        }
+        _enemy = Instantiate(_enemyPrefab[(int)type]);
         _enemy.transform.position = new Vector2(UnityEngine.Random.Range(_minSpawnX, _maxSpawnX), UnityEngine.Random.Range(_minSpawnY, _maxSpawnY));
     }
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
@@ -18,12 +19,24 @@ public class PlayerFire : MonoBehaviour
     public Transform SubFirePositionRight;
 
     [Header("쿨다운")]
-    public const float MainCoolTime = 0.6f;
-    public const float SubCoolTime = 0.4f;
+    public float MainCoolTime = 0.6f;
+    public float SubCoolTime = 0.4f;
     private float _mainCoolTimer;
     private float _subCoolTimer;
 
+    private float _speedUpTimer = 5f;
+    private float _startMainCoolTime;
+    private float _startSubCoolTime;
+    private float _maxMainCoolTime = 0.3f;
+    private float _maxSubCoolTime = 0.2f;
+
     private bool _autoFire = true;
+
+    private void Start()
+    {
+        _startMainCoolTime = MainCoolTime;
+        _startSubCoolTime = SubCoolTime;
+    }
 
     private void Update()
     {
@@ -47,6 +60,11 @@ public class PlayerFire : MonoBehaviour
             _subCoolTimer = SubCoolTime;
             SubFire();
         }
+    }
+    public void AttackSpeedUp(float attackSpeedValue)
+    {
+        MainCoolTime = Mathf.Clamp(_startMainCoolTime * attackSpeedValue, _maxMainCoolTime, _startMainCoolTime);
+        SubCoolTime = Mathf.Clamp(_startSubCoolTime * attackSpeedValue, _maxSubCoolTime, _startSubCoolTime);
     }
 
     private void ChangeAuto()

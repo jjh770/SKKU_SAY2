@@ -6,6 +6,9 @@ public class Enemy : MonoBehaviour
     public float Health = 100f;
     [Header("적 충돌 데미지")]
     public float Damage = 1f;
+    [Header("아이템 드롭")]
+    [SerializeField]
+    private ItemTable _itemTable;
 
     private void Update()
     {
@@ -25,9 +28,21 @@ public class Enemy : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
+            TryDropItem();
             Destroy(this.gameObject);
         }
     }
+    private void TryDropItem()
+    {
+        if (_itemTable == null) return;
+
+        GameObject droppedItem = _itemTable.DropItem();
+        if (droppedItem != null)
+        {
+            Instantiate(droppedItem, transform.position, Quaternion.identity);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // 몬스터는 플레이어만 죽인다.

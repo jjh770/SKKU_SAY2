@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2244881201548034341}
   - component: {fileID: 1398314625572452502}
-  - component: {fileID: 1837467091064146724}
   - component: {fileID: 5113488123898125101}
   - component: {fileID: 5930537479639069036}
   - component: {fileID: 3511811310774542061}
+  - component: {fileID: 1837467091064146724}
   m_Layer: 0
   m_Name: ChasingEnemy
   m_TagString: Enemy
@@ -91,18 +91,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1837467091064146724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7565436770753488498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ed9ea78a9b024b468af5150531ad393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &5113488123898125101
 Rigidbody2D:
   serializedVersion: 5
@@ -178,8 +166,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2816e1d99c7aa4bb6c0a8656bc2fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 0
   Health: 100
-  LeftCollider: {fileID: 0}
-  RightCollider: {fileID: 0}
   Damage: 1
+  _itemTable: {fileID: 11400000, guid: 45da61e7e56fc114c8fbc3e5711c803c, type: 2}
+--- !u!114 &1837467091064146724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7565436770753488498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ed9ea78a9b024b468af5150531ad393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
