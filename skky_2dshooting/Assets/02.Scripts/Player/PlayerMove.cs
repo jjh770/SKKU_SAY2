@@ -35,7 +35,6 @@ public class PlayerMove : MonoBehaviour
         transform.position = _initPosition;
         _startMoveSpeed = Speed;
         _currentSpeed = Speed;
-        _maxMoveSpeed = Speed + _speedUpAmount;
     }
 
     // 게임 오브젝트가 게임을 시작한 후 최대한 많이 실행 (지속적으로)
