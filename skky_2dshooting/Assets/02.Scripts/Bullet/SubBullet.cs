@@ -88,13 +88,8 @@ public class SubBullet : MonoBehaviour
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            enemy.Hit(0.4f, collision);
+            enemy.Hit(10f);
         }
-    }
-
-    private void MoveStraight()
-    {
-        transform.position += Vector3.up * _speed * Time.deltaTime;
     }
 
     private void MoveCurve()

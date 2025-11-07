@@ -14,20 +14,20 @@ public class PlayerMove : MonoBehaviour
     public float Speed = 3f;
     private float _currentSpeed;
     [SerializeField]
-    private float speedAcceleration = 1.5f;
+    private float _speedAcceleration = 1.5f;
     [SerializeField]
-    private float minSpeed = 1f;
+    private float _minSpeed = 1f;
     [SerializeField]
-    private float maxSpeed = 10f;
+    private float _maxSpeed = 10f;
     [SerializeField]
-    private float speedChangeAmount = 0.5f;
+    private float _speedChangeAmount = 0.5f;
     [SerializeField]
-    private Vector2 initPosition = Vector2.zero;
+    private Vector2 _initPosition = Vector2.zero;
 
     // 게임 오브젝트가 생성될 때 (단 한번)
     private void Start()
     {
-        transform.position = initPosition;
+        transform.position = _initPosition;
         _currentSpeed = Speed;
     }
 
@@ -47,31 +47,19 @@ public class PlayerMove : MonoBehaviour
 
     private void HandleMoveSpeed()
     {
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Speed += speedChangeAmount;
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            Speed -= speedChangeAmount;
-        }
-        Speed = Mathf.Clamp(Speed, minSpeed, maxSpeed);
-
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            _currentSpeed = Speed * speedAcceleration;
+            _currentSpeed = Speed * _speedAcceleration;
         }
         else
         {
             _currentSpeed = Speed;
         }
     }
-    private void TranslateToOrigin(float speed)
-    {
-        Vector2 direction = new Vector2(0, 0) - (Vector2)transform.position;
 
-        transform.Translate(direction * speed * Time.deltaTime);
+    public void SpeedUp(int value)
+    {
+        Speed += value;
     }
 
     private void MovePlayer(bool isOrigin = false)
@@ -136,11 +124,11 @@ public class PlayerMove : MonoBehaviour
             // transform.position = Vector2.MoveTowards(this.transform.position, Vector2.zero, _currentSpeed * Time.deltaTime);
             if (Mathf.Abs(transform.position.x) < 0.01f && Mathf.Abs(transform.position.y) < 0.01f)
             {
-                transform.position = initPosition;
+                transform.position = _initPosition;
             }
             else
             {
-                transform.Translate((initPosition - (Vector2)transform.position).normalized * _currentSpeed * Time.deltaTime);
+                transform.Translate((_initPosition - (Vector2)transform.position).normalized * _currentSpeed * Time.deltaTime);
             }
         }
         else

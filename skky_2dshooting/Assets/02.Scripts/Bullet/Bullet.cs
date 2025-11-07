@@ -19,7 +19,6 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         _speed = StartSpeed;
-        //StartCoroutine(SpeedUp());
     }
 
     void Update()
@@ -50,30 +49,14 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        // 충돌한 상대방이 적 태그를 가지고 있다면
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
         Destroy(this.gameObject); // 총알 오브젝트 파괴
 
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
-        enemy.Hit(0.6f, collision);
-    }
-    IEnumerator SpeedUp()
-    {
-        while (_currentSpeed < 7f)
+        if (enemy != null)
         {
-            _currentSpeed += 1f; // 속도 증가
-            yield return new WaitForSeconds(0.171f); // 1초 대기
+            enemy.Hit(15f);
         }
-        _currentSpeed = 7f; // 최대 속도 설정
-    }
-    private void MoveBullet()
-    {
-        Vector2 position = transform.position;
-        int scalar = 1; // 속도 조절용 스칼라 값
-        Vector2 direction = Vector2.up; // 위쪽 방향
-
-        Vector2 newPosition = position + direction * _currentSpeed * Time.deltaTime;  // 새로운 위치
-        transform.position = newPosition;      // 새로운 위치로 갱신
     }
 }
