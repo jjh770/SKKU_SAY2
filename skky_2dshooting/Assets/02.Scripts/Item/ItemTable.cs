@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// 개별 아이템 정보
 [System.Serializable]
 public class DropItem
 {
@@ -21,7 +20,6 @@ public class ItemTable : ScriptableObject
 
     private int _totalWeight = 0;
 
-    // 가중치 합계를 캐싱 (OnValidate는 에디터에서만 호출됨)
     private void OnEnable()
     {
         CalculateTotalWeight();
@@ -38,15 +36,12 @@ public class ItemTable : ScriptableObject
 
     public GameObject DropItem()
     {
-        // 드롭 여부 판정
         if (Random.Range(0f, 1f) > _dropProbability)
             return null;
 
-        // 첫 호출 시 가중치 계산 (런타임용)
         if (_totalWeight < 0)
             CalculateTotalWeight();
 
-        // 가중치 기반 랜덤 선택
         int randomValue = Random.Range(0, _totalWeight);
         int cumulativeWeight = 0;
 

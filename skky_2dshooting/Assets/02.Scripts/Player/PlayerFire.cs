@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-    // 스페이스바를 누르면 총알 발사
-
-    // 필요 속성
     [Header("총알 프리팹")]
     public GameObject BulletPrefab;
     public GameObject SubBulletPrefab;
@@ -24,7 +21,9 @@ public class PlayerFire : MonoBehaviour
     private float _mainCoolTimer;
     private float _subCoolTimer;
 
-    private float _speedUpTimer = 5f;
+    private bool _isAttackSpeedUp = false;
+    private float _speedMultiflier = 0.5f;
+    private float _attackSpeedUpTimer = 5f;
     private float _startMainCoolTime;
     private float _startSubCoolTime;
     private float _maxMainCoolTime = 0.3f;
@@ -42,29 +41,48 @@ public class PlayerFire : MonoBehaviour
     {
         ChangeAuto();
         CoolDown();
+        UpdateAttackSpeedUp();
     }
     private void CoolDown()
     {
         _mainCoolTimer -= Time.deltaTime;
         _subCoolTimer -= Time.deltaTime;
-        // 메인 쿨다운
         if (_mainCoolTimer <= 0f && (_autoFire || Input.GetKey(KeyCode.Space)))
         {
             _mainCoolTimer = MainCoolTime;
             Fire();
         }
 
-        // 서브 쿨다운
         if (_subCoolTimer <= 0f && (_autoFire || Input.GetKey(KeyCode.Space)))
         {
             _subCoolTimer = SubCoolTime;
             SubFire();
         }
     }
-    public void AttackSpeedUp(float attackSpeedValue)
+    public void GetAttackSpeedUp()
     {
-        MainCoolTime = Mathf.Clamp(_startMainCoolTime * attackSpeedValue, _maxMainCoolTime, _startMainCoolTime);
-        SubCoolTime = Mathf.Clamp(_startSubCoolTime * attackSpeedValue, _maxSubCoolTime, _startSubCoolTime);
+        _attackSpeedUpTimer = 5f;
+        _isAttackSpeedUp = true;
+    }
+
+    private void UpdateAttackSpeedUp()
+    {
+        if (_isAttackSpeedUp)
+        {
+            _attackSpeedUpTimer -= Time.deltaTime;
+
+            if (_attackSpeedUpTimer > 0f)
+            {
+                MainCoolTime = Mathf.Clamp(_startMainCoolTime * _speedMultiflier, _maxMainCoolTime, _startMainCoolTime);
+                SubCoolTime = Mathf.Clamp(_startSubCoolTime * _speedMultiflier, _maxSubCoolTime, _startSubCoolTime);
+            }
+            else
+            {
+                MainCoolTime = _startMainCoolTime;
+                SubCoolTime = _startSubCoolTime;
+                _isAttackSpeedUp = false;
+            }
+        }
     }
 
     private void ChangeAuto()
@@ -80,14 +98,14 @@ public class PlayerFire : MonoBehaviour
     }
     private void SubFire()
     {
-        GameObject subBulletLeft = Instantiate(SubBulletPrefab, SubFirePositionLeft.position, Quaternion.EulerAngles(Vector3.zero));
+        GameObject subBulletLeft = Instantiate(SubBulletPrefab, SubFirePositionLeft.position, Quaternion.identity);
         subBulletLeft.GetComponent<SubBullet>().IsLeft = true;
-        GameObject subBulletRight = Instantiate(SubBulletPrefab, SubFirePositionRight.position, Quaternion.EulerAngles(Vector3.zero));
+        GameObject subBulletRight = Instantiate(SubBulletPrefab, SubFirePositionRight.position, Quaternion.identity);
         subBulletRight.GetComponent<SubBullet>().IsLeft = false;
     }
     private void Fire()
     {
-        GameObject bulletLeft = Instantiate(BulletPrefab, FirePositionLeft.position, Quaternion.EulerAngles(Vector3.zero));
-        GameObject bulletRight = Instantiate(BulletPrefab, FirePositionRight.position, Quaternion.EulerAngles(Vector3.zero));
+        GameObject bulletLeft = Instantiate(BulletPrefab, FirePositionLeft.position, Quaternion.identity);
+        GameObject bulletRight = Instantiate(BulletPrefab, FirePositionRight.position, Quaternion.identity);
     }
 }

@@ -45,10 +45,9 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 몬스터는 플레이어만 죽인다.
         if (!collision.gameObject.CompareTag("Player")) return;
         Player player = collision.gameObject.GetComponent<Player>();
         player.Hit(Damage);
-        Destroy(this.gameObject); // 나 사망
+        Destroy(this.gameObject); 
     }
 }

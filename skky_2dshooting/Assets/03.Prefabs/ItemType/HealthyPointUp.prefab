@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5565596571672274072}
   - component: {fileID: 7874507977956770910}
   - component: {fileID: -4351899142443635213}
+  - component: {fileID: 2891629943714888774}
   m_Layer: 0
   m_Name: HealthyPointUp
   m_TagString: Untagged
@@ -137,3 +138,19 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &2891629943714888774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963698871553213938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f83e9b5cd753e14691afb33ff71334e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurveDuration: 2
+  CurveAmount: 0.5
+  CurveHeightAmount: 0.3
+  CurveWidthAmount: 0.5

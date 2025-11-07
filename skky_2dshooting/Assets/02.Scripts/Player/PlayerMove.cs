@@ -24,16 +24,26 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private Vector2 _initPosition = Vector2.zero;
 
+    private bool _isMoveSpeedUp = false;
+    private float _speedUpAmount = 1.5f;
+    private float _moveSpeedUpTimer = 5f;
+    private float _startMoveSpeed;
+    private float _maxMoveSpeed;
+
     // 게임 오브젝트가 생성될 때 (단 한번)
     private void Start()
     {
         transform.position = _initPosition;
+        _startMoveSpeed = Speed;
         _currentSpeed = Speed;
+        _maxMoveSpeed = Speed + _speedUpAmount;
     }
 
     // 게임 오브젝트가 게임을 시작한 후 최대한 많이 실행 (지속적으로)
     private void Update()
     {
+        UpdateMoveSpeedUp();
+        HandleMoveSpeed();
         if (Input.GetKey(KeyCode.R))
         {
             MovePlayer(true);
@@ -42,7 +52,6 @@ public class PlayerMove : MonoBehaviour
         {
             MovePlayer(false);
         }
-        HandleMoveSpeed();
     }
 
     private void HandleMoveSpeed()
@@ -57,9 +66,28 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    public void MoveSpeedUp(int value)
+    public void GetMoveSpeedUp()
     {
-        Speed += value;
+        _moveSpeedUpTimer = 5f; 
+        _isMoveSpeedUp = true;
+    }
+
+    private void UpdateMoveSpeedUp()
+    {
+        if (_isMoveSpeedUp)
+        {
+            _moveSpeedUpTimer -= Time.deltaTime;
+
+            if (_moveSpeedUpTimer > 0f)
+            {
+                Speed = _startMoveSpeed + _speedUpAmount; 
+            }
+            else
+            {
+                Speed = _startMoveSpeed; 
+                _isMoveSpeedUp = false;
+            }
+        }
     }
 
     private void MovePlayer(bool isOrigin = false)
