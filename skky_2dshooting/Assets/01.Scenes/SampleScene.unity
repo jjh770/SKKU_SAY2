@@ -159,6 +159,8 @@ MonoBehaviour:
   _maxSpeed: 10
   _speedChangeAmount: 0.5
   _initPosition: {x: 0, y: -4}
+  _detectAttackRange: 10
+  _detectAvoidRange: 4
 --- !u!212 &55209738
 SpriteRenderer:
   m_ObjectHideFlags: 0

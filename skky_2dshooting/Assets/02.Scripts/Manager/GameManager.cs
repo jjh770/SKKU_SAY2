@@ -21,12 +21,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-    }
-
-    public void Start()
-    {
         _cameraHalfHeight = Camera.main.orthographicSize;
         _cameraHalfWidth = Camera.main.orthographicSize * Camera.main.aspect;
     }
-
 }
