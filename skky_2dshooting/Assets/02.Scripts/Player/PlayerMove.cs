@@ -22,6 +22,8 @@ public class PlayerMove : MonoBehaviour
     private float _moveSpeedUpTimer = 5f;
     private float _startMoveSpeed;
 
+    private bool _autoMove = false;
+
     private void Start()
     {
         transform.position = _initPosition;
@@ -32,27 +34,33 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         UpdateMoveSpeedUp();
-        HandleMoveSpeed();
-        if (Input.GetKey(KeyCode.R))
+
+        if (_autoMove)
         {
-            MovePlayer(true);
+            AutoMoving();
         }
         else
         {
-            MovePlayer(false);
+            HandleMoveSpeed();
+            if (Input.GetKey(KeyCode.R))
+            {
+                MovePlayer(true);
+            }
+            else
+            {
+                MovePlayer(false);
+            }
         }
     }
 
-    private void HandleMoveSpeed()
+    public void AutoMode(bool isThatAuto)
     {
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            _currentSpeed = Speed * _speedAcceleration;
-        }
-        else
-        {
-            _currentSpeed = Speed;
-        }
+        _autoMove = isThatAuto;
+    }
+
+    private void AutoMoving()
+    {
+
     }
 
     public void GetMoveSpeedUp()
@@ -76,6 +84,18 @@ public class PlayerMove : MonoBehaviour
                 Speed = _startMoveSpeed; 
                 _isMoveSpeedUp = false;
             }
+        }
+    }
+
+    private void HandleMoveSpeed()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _currentSpeed = Speed * _speedAcceleration;
+        }
+        else
+        {
+            _currentSpeed = Speed;
         }
     }
 

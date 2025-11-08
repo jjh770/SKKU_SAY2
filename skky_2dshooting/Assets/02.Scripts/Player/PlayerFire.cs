@@ -27,7 +27,7 @@ public class PlayerFire : MonoBehaviour
     private float _startMainCoolTime;
     private float _startSubCoolTime;
 
-    private bool _autoFire = true;
+    private bool _autoFire = false;
 
     private void Start()
     {
@@ -37,10 +37,10 @@ public class PlayerFire : MonoBehaviour
 
     private void Update()
     {
-        ChangeAuto();
         CoolDown();
         UpdateAttackSpeedUp();
     }
+
     private void CoolDown()
     {
         _mainCoolTimer -= Time.deltaTime;
@@ -57,6 +57,7 @@ public class PlayerFire : MonoBehaviour
             SubFire();
         }
     }
+
     public void GetAttackSpeedUp()
     {
         _attackSpeedUpTimer = 5f;
@@ -83,17 +84,11 @@ public class PlayerFire : MonoBehaviour
         }
     }
 
-    private void ChangeAuto()
+    public void AutoMode(bool isThatAuto)
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            _autoFire = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            _autoFire = false;
-        }
+        _autoFire = isThatAuto;
     }
+
     private void SubFire()
     {
         GameObject subBulletLeft = Instantiate(SubBulletPrefab, SubFirePositionLeft.position, Quaternion.identity);
@@ -101,6 +96,7 @@ public class PlayerFire : MonoBehaviour
         GameObject subBulletRight = Instantiate(SubBulletPrefab, SubFirePositionRight.position, Quaternion.identity);
         subBulletRight.GetComponent<SubBullet>().IsLeft = false;
     }
+
     private void Fire()
     {
         GameObject bulletLeft = Instantiate(BulletPrefab, FirePositionLeft.position, Quaternion.identity);
