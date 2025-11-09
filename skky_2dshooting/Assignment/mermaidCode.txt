@@ -1,0 +1,48 @@
+flowchart TD
+    Start[게임 시작] -->  ModeCheck[입력: 모드 전환 확인]
+
+    ModeCheck -- 1키 입력 --> AutoMode[자동 모드 활성화]
+    ModeCheck -- 2키 입력 --> ManualMode[수동 모드 활성화]
+
+    AutoMode --> PlayerMoveAuto[자동 이동 활성화]
+    AutoMode --> PlayerFireAuto[자동 공격 활성화]
+
+    %% PlayerMove 자동 이동 흐름
+    PlayerMoveAuto --> DetectAvoid{회피 범위 내 적 탐지?}
+    DetectAvoid -- 적 있음 --> DodgeMove[회피 좌우 1만큼 이동]
+    DetectAvoid -- 적 없음 --> DetectAttack{공격 범위 내 적 탐지?}
+
+    DodgeMove --> CheckScreenBounds{화면 밖인가?}
+    CheckScreenBounds -- 화면 밖 --> OppositeSideMove[반대 방향으로 회피]
+    CheckScreenBounds -- 화면 안 --> OppositeMove[원래 방향으로 회피]
+
+    OppositeMove -- 적 사망--> DetectAvoid
+    OppositeSideMove -- 적 사망 --> DetectAvoid
+
+    MoveCenter[가운데로 이동]
+
+    DetectAttack -- 적 있음 --> MoveToEnemyX[적 X좌표로 이동]
+    DetectAttack -- 적 없음 --> MoveCenter
+
+    MoveToEnemyX --> MoveCenter
+
+    MoveCenter -- 적 탐지 --> DetectAvoid
+
+    %% PlayerFire 자동 공격 흐름
+    PlayerFireAuto --> CoolDownLoop[쿨다운 감소 및 공격 판정]
+
+    CoolDownLoop --> MainCoolCheck{메인 총알 쿨타임 완료?}
+    CoolDownLoop --> SubCoolCheck{서브 총알 쿨타임 완료?}
+
+    MainCoolCheck -- 쿨타임 돌았음 --> FireMain[메인 총알 발사]
+    FireMain --> ResetMainCoolTimer[메인 쿨타임 초기화]
+
+    ResetMainCoolTimer --> UpdateAttackSpeed
+
+    SubCoolCheck -- 쿨타임 돌았음 --> FindEnemy[가장 가까운 적 판별]
+    FindEnemy -- 가장 가까운 적 --> FireSub[서브 총알 발사]
+    FireSub --> ResetSubCoolTimer[서브 쿨타임 초기화]
+
+    ResetSubCoolTimer --> UpdateAttackSpeed
+
+    UpdateAttackSpeed[공격 속도 업 상태 업데이트] --> CoolDownLoop
