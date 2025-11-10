@@ -144,8 +144,12 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-        // 가장 가까운 적이 있을 때
-        if (nearestAvoidEnemy != null)
+        // 가장 가까운 적이 없을 때 회피 모드 해제
+        if (nearestAvoidEnemy == null)
+        {
+            _isAvoiding = false;
+        }
+        else
         {
             // 적 오브젝트와의 x축 거리 계산
             Vector2 enemyPos = nearestAvoidEnemy.transform.position;
@@ -154,8 +158,12 @@ public class PlayerMove : MonoBehaviour
             // 회피 모드일 때는 더 큰 임계값 사용
             float thresholdToUse = _isAvoiding ? _avoidanceThreshold * 1.3f : _avoidanceThreshold;
 
-            // 아직 안전거리를 확보하지 못했다면 회피
-            if (xDistance < thresholdToUse)
+            // 아직 안전거리를 확보했다면 회피 종료
+            if (xDistance >= thresholdToUse)
+            {
+                _isAvoiding = false;
+            }
+            else
             {
                 // 쿨다운이 끝났을 때만 새로운 회피 방향 계산
                 if (_avoidCooldownTimer <= 0)
@@ -181,16 +189,6 @@ public class PlayerMove : MonoBehaviour
 
                 return;
             }
-            else
-            {
-                // 안전거리 확보 완료
-                _isAvoiding = false;
-            }
-        }
-        else
-        {
-            // 회피할 적 없음
-            _isAvoiding = false;
         }
 
         // 회피할 적이 없을 때 공격할 적 탐지
