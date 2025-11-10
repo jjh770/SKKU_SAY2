@@ -31,6 +31,14 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private float _avoidanceThreshold = 1f;
 
+    [Header("회피 쿨다운 (떨림 방지)")]
+    [SerializeField]
+    private float _avoidCooldownDuration = 0.3f; // 회피 방향을 유지할 시간
+    // 회피 
+    private float _avoidCooldownTimer = 0f;
+    private Vector2 _lockedAvoidDirection = Vector2.zero; // 고정된 회피 방향
+    private bool _isAvoiding = false;
+
     private bool _isMoveSpeedUp = false;
     private float _speedUpAmount = 1.5f;
     private float _moveSpeedUpTimer = 5f;
@@ -109,6 +117,12 @@ public class PlayerMove : MonoBehaviour
         float moveSpeed = Speed;
         Vector2 currentPosition = transform.position;
 
+        // 쿨다운 감소 
+        if (_avoidCooldownTimer > 0)
+        {
+            _avoidCooldownTimer -= Time.deltaTime;
+        }
+
         //  회피해야하는 가장 가까운 적 오브젝트
         GameObject nearestAvoidEnemy = null;
         // 회피 감지 거리
@@ -136,24 +150,46 @@ public class PlayerMove : MonoBehaviour
             Vector2 enemyPos = nearestAvoidEnemy.transform.position;
             float xDistance = Mathf.Abs(currentPosition.x - enemyPos.x);
 
-            // 아직 안전거리를 확보하지 못했다면 회피
-            if (xDistance < _avoidanceThreshold)
-            {
-                float leftPosX = enemyPos.x - _avoidanceThreshold;
-                float rightPosX = enemyPos.x + _avoidanceThreshold;
-                // 더 가까운 방향으로 회피 선택
-                float distToLeft = Mathf.Abs(currentPosition.x - leftPosX);
-                float distToRight = Mathf.Abs(currentPosition.x - rightPosX);
+            // 회피 모드일 때는 더 큰 임계값 사용
+            float thresholdToUse = _isAvoiding ? _avoidanceThreshold * 1.3f : _avoidanceThreshold;
 
-                float selectDir = distToLeft < distToRight ? leftPosX : rightPosX;
+            // 아직 안전거리를 확보하지 못했다면 회피
+            if (xDistance < thresholdToUse)
+            {
+                // 쿨다운이 끝났을 때만 새로운 회피 방향 계산
+                if (_avoidCooldownTimer <= 0)
+                {
+                    float leftPosX = enemyPos.x - _avoidanceThreshold;
+                    float rightPosX = enemyPos.x + _avoidanceThreshold;
+                    // 더 가까운 방향으로 회피 선택
+                    float distToLeft = Mathf.Abs(currentPosition.x - leftPosX);
+                    float distToRight = Mathf.Abs(currentPosition.x - rightPosX);
+
+                    float selectDir = distToLeft < distToRight ? leftPosX : rightPosX;
+
+                    // 회피 방향 고정 및 쿨다운 시작
+                    _lockedAvoidDirection = new Vector2(selectDir, currentPosition.y);
+                    _avoidCooldownTimer = _avoidCooldownDuration;
+                    _isAvoiding = true;
+                }
+
                 // 최종 이동
-                Vector2 targetPos = new Vector2(selectDir, currentPosition.y);
-                Vector2 newPos = Vector2.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+                Vector2 newPos = Vector2.MoveTowards(transform.position, _lockedAvoidDirection, moveSpeed * Time.deltaTime);
                 // 화면 밖으로 나간다? -> 반대편으로 이동
-                transform.position = WrapPosition(newPos); 
+                transform.position = WrapPosition(newPos);
 
                 return;
             }
+            else
+            {
+                // 안전거리 확보 완료
+                _isAvoiding = false;
+            }
+        }
+        else
+        {
+            // 회피할 적 없음
+            _isAvoiding = false;
         }
 
         // 회피할 적이 없을 때 공격할 적 탐지
