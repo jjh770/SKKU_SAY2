@@ -10,6 +10,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private ItemTable _itemTable;
 
+    // 사망 플래그
+    private bool _isDead = false; 
+
     private void Update()
     {
         CheckIsOut();
@@ -25,13 +28,25 @@ public class Enemy : MonoBehaviour
     }
     public void Hit(float damage)
     {
+        if (_isDead) return; // 이미 죽었으면 무시
+
         Health -= damage;
         if (Health <= 0)
         {
-            TryDropItem();
-            Destroy(this.gameObject);
+            Die();
+
         }
     }
+
+    private void Die()
+    {
+        if (_isDead) return;
+        _isDead = true;
+
+        TryDropItem();
+        Destroy(this.gameObject);
+    }
+
     private void TryDropItem()
     {
         if (_itemTable == null) return;
@@ -45,9 +60,11 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (_isDead) return;
+
         if (!collision.gameObject.CompareTag("Player")) return;
         Player player = collision.gameObject.GetComponent<Player>();
         player.Hit(Damage);
-        Destroy(this.gameObject); 
+        Die();
     }
 }
