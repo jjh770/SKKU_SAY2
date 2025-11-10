@@ -113,5 +113,6 @@ public class SubBullet : MonoBehaviour
         transform.position = Vector3.Lerp(point1, point2, t);
 
         _lastDirection = (transform.position - prevPos).normalized;
+        transform.up = _lastDirection;
     }
 }

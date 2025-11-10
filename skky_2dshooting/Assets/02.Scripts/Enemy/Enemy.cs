@@ -10,8 +10,14 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private ItemTable _itemTable;
 
-    private bool _isDead = false; 
+    private bool _isDead = false;
 
+    private Animator _animator;
+
+    private void Start()
+    {
+        _animator = gameObject.GetComponent<Animator>();
+    }
     private void Update()
     {
         CheckIsOut();
@@ -27,13 +33,14 @@ public class Enemy : MonoBehaviour
     }
     public void Hit(float damage)
     {
-        if (_isDead) return; 
+        if (_isDead) return;
+
+        _animator.SetTrigger("Hit");
 
         Health -= damage;
         if (Health <= 0)
         {
             Die();
-
         }
     }
 

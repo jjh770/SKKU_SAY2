@@ -24,7 +24,7 @@ public class RushMovement : EnemyMovement
         Vector3 targetPosition = target.transform.position;
         _direction = targetPosition - myPosition;
         _direction.Normalize();
-        transform.up = _direction;
+        transform.up = -_direction;
     }
 
     protected override void Move()
