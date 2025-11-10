@@ -31,12 +31,13 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private float _avoidanceThreshold = 1f;
 
+    // 회피 방향을 유지할 시간
     [Header("회피 쿨다운 (떨림 방지)")]
     [SerializeField]
-    private float _avoidCooldownDuration = 0.3f; // 회피 방향을 유지할 시간
-    // 회피 
+    private float _avoidCooldownDuration = 0.3f;
+    // 쿨다운 타이머, 회피 방향, 회피중인가?
     private float _avoidCooldownTimer = 0f;
-    private Vector2 _lockedAvoidDirection = Vector2.zero; // 고정된 회피 방향
+    private Vector2 _lockedAvoidDirection = Vector2.zero; 
     private bool _isAvoiding = false;
 
     private bool _isMoveSpeedUp = false;
@@ -144,6 +145,7 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
+        // 깊은 if 중첩 방지를 위한 조기 return 적용
         // 가장 가까운 적이 없을 때 회피 모드 해제
         if (nearestAvoidEnemy == null)
         {
@@ -252,45 +254,45 @@ public class PlayerMove : MonoBehaviour
 
     private void UpdateMoveSpeedUp()
     {
-        if (_isMoveSpeedUp)
-        {
-            _moveSpeedUpTimer -= Time.deltaTime;
+        if (!_isMoveSpeedUp) return;
 
-            if (_moveSpeedUpTimer > 0f)
-            {
-                Speed = _startMoveSpeed + _speedUpAmount;
-            }
-            else
-            {
-                Speed = _startMoveSpeed;
-                _isMoveSpeedUp = false;
-            }
+        _moveSpeedUpTimer -= Time.deltaTime;
+
+        if (_moveSpeedUpTimer > 0f)
+        {
+            Speed = _startMoveSpeed + _speedUpAmount;
+        }
+        else
+        {
+            Speed = _startMoveSpeed;
+            _isMoveSpeedUp = false;
         }
     }
+
 
     private void HandleMoveSpeed()
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
             _currentSpeed = Speed * _speedAcceleration;
+            return;
         }
-        else
-        {
-            _currentSpeed = Speed;
-        }
+
+        _currentSpeed = Speed;
     }
+
 
     private void MovePlayerOrigin()
     {
         if (Mathf.Abs(transform.position.x) < 0.01f && Mathf.Abs(transform.position.y) < 0.01f)
         {
             transform.position = _initPosition;
+            return;
         }
-        else
-        {
-            transform.Translate((_initPosition - (Vector2)transform.position).normalized * _currentSpeed * Time.deltaTime);
-        }
+
+        transform.Translate((_initPosition - (Vector2)transform.position).normalized * _currentSpeed * Time.deltaTime);
     }
+
     private void MovePlayer()
     {
         Vector2 newPosition = ManualDirection();
