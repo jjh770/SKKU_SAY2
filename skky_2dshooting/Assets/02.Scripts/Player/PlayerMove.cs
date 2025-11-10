@@ -50,6 +50,8 @@ public class PlayerMove : MonoBehaviour
     private float _camHalfWidth;
     private float _camHalfHeight;
 
+    private Animator _animator;
+
     private void Start()
     {
         transform.position = _initPosition;
@@ -57,6 +59,7 @@ public class PlayerMove : MonoBehaviour
         _currentSpeed = Speed;
         _camHalfWidth = GameManager.Instance.CameraHalfWidth;
         _camHalfHeight = GameManager.Instance.CameraHalfHeight;
+        _animator = gameObject.GetComponent<Animator>();
     }
 
     private void Update()
@@ -297,6 +300,8 @@ public class PlayerMove : MonoBehaviour
     {
         Vector2 newPosition = ManualDirection();
         transform.position = WrapPosition(newPosition);
+
+
     }
 
     private Vector2 ManualDirection()
@@ -306,6 +311,16 @@ public class PlayerMove : MonoBehaviour
 
         Vector2 direction = new Vector2(h, v);
         direction.Normalize();
+
+        // 첫번째 방식 : Play 메서드를 이용한 강제 애니메이션 적용
+        //if (direction.x < 0) _animator.Play("Left");
+        //else if (direction.x == 0) _animator.Play("Idle");
+        //else if (direction.x > 0) _animator.Play("Right");
+        // 이 방식의 장점은 쉽고 빠르게 구현이 가능하다.
+        // 이 방식의 단점은 Fade, Timing, State가 무시되고, 남용하기 쉬워서 어디서 애니메이션을 수정하는 지 알 수 없게 됨.
+
+        // 두번째 방식 : 파라미터를 이용한 애니메이션 상태 전환
+        _animator.SetInteger("x", (int)direction.x);
 
         Vector2 position = transform.position;
         Vector2 newPosition = position + direction * _currentSpeed * Time.deltaTime;
