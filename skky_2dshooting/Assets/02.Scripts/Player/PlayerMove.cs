@@ -69,13 +69,14 @@ public class PlayerMove : MonoBehaviour
         else
         {
             HandleMoveSpeed();
+            // 플래그 인수 제거 (매개변수 true/false 대신 명확한 메서드 이름 사용)
             if (Input.GetKey(KeyCode.R))
             {
-                MovePlayer(true);
+                MovePlayerOrigin();
             }
             else
             {
-                MovePlayer(false);
+                MovePlayer();
             }
         }
     }
@@ -281,7 +282,24 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    private void MovePlayer(bool isOrigin = false)
+    private void MovePlayerOrigin()
+    {
+        if (Mathf.Abs(transform.position.x) < 0.01f && Mathf.Abs(transform.position.y) < 0.01f)
+        {
+            transform.position = _initPosition;
+        }
+        else
+        {
+            transform.Translate((_initPosition - (Vector2)transform.position).normalized * _currentSpeed * Time.deltaTime);
+        }
+    }
+    private void MovePlayer()
+    {
+        Vector2 newPosition = ManualDirection();
+        transform.position = WrapPosition(newPosition);
+    }
+
+    private Vector2 ManualDirection()
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -291,21 +309,6 @@ public class PlayerMove : MonoBehaviour
 
         Vector2 position = transform.position;
         Vector2 newPosition = position + direction * _currentSpeed * Time.deltaTime;
-
-        if (isOrigin)
-        {
-            if (Mathf.Abs(transform.position.x) < 0.01f && Mathf.Abs(transform.position.y) < 0.01f)
-            {
-                transform.position = _initPosition;
-            }
-            else
-            {
-                transform.Translate((_initPosition - (Vector2)transform.position).normalized * _currentSpeed * Time.deltaTime);
-            }
-        }
-        else
-        {
-            transform.position = WrapPosition(newPosition);
-        }
+        return newPosition;
     }
 }
