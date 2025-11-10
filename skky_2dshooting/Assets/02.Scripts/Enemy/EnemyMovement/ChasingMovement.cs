@@ -4,7 +4,8 @@ using UnityEngine;
 public class ChasingMovement : EnemyMovement
 {
     private GameObject _target = null;
-    private float distance;
+    private float _distance;
+    private bool isChasing = true;
     private void Start()
     {
         _target = GameObject.FindWithTag("Player");
@@ -19,13 +20,21 @@ public class ChasingMovement : EnemyMovement
     private void SetDirection()
     {
         if (_target == null) return;
+
         Vector3 myPosition = transform.position;
         Vector3 targetPosition = _target.transform.position;
-        distance = Vector2.Distance(targetPosition, myPosition);
-        if (distance > 3f)
+        _distance = Vector2.Distance(targetPosition, myPosition);
+
+        if (isChasing && _distance > 2f)
         {
             _direction = targetPosition - myPosition;
             _direction.Normalize();
+            transform.up = _direction; 
+        }
+        else if (isChasing && _distance <= 2f)
+        {
+            isChasing = false;
         }
     }
+
 }

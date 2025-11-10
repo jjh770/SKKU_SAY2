@@ -56,7 +56,7 @@ public class Bullet : MonoBehaviour
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            enemy.Hit(15f);
+            enemy.Hit(20f);
         }
     }
 }

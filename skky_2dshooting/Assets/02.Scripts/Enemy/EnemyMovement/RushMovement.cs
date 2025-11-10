@@ -4,7 +4,7 @@ public class RushMovement : EnemyMovement
 {
     private float _createTime;
     private float _waitTime = 3.0f;
-    private float _defaultSpeed = 12.0f;
+    private float _defaultSpeed = 10f;
     private void Start()
     {
         _speed = _defaultSpeed;

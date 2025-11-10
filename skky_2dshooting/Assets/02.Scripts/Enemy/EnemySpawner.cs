@@ -21,8 +21,8 @@ public class EnemySpawner : MonoBehaviour
     private float _spawnTimer = 0.0f;
 
     [Header("스폰 쿨타임")]
-    private float _minSpawnCoolTime = 1.0f;
-    private float _maxSpawnCoolTime = 1.5f;
+    private float _minSpawnCoolTime = 0.7f;
+    private float _maxSpawnCoolTime = 1.0f;
 
     [Header("스폰 확률")]
     private int _totalWeight = 0;

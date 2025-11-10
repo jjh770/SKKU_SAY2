@@ -88,7 +88,7 @@ public class SubBullet : MonoBehaviour
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            enemy.Hit(10f);
+            enemy.Hit(15f);
         }
     }
 
