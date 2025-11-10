@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private ItemTable _itemTable;
 
-    // 사망 플래그
     private bool _isDead = false; 
 
     private void Update()
@@ -28,7 +27,7 @@ public class Enemy : MonoBehaviour
     }
     public void Hit(float damage)
     {
-        if (_isDead) return; // 이미 죽었으면 무시
+        if (_isDead) return; 
 
         Health -= damage;
         if (Health <= 0)

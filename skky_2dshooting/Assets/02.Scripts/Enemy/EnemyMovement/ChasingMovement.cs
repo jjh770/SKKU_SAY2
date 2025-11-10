@@ -5,7 +5,7 @@ public class ChasingMovement : EnemyMovement
 {
     private GameObject _target = null;
     private float _distance;
-    private bool isChasing = true;
+    private bool _isChasing = true;
     private void Start()
     {
         _target = GameObject.FindWithTag("Player");
@@ -25,15 +25,15 @@ public class ChasingMovement : EnemyMovement
         Vector3 targetPosition = _target.transform.position;
         _distance = Vector2.Distance(targetPosition, myPosition);
 
-        if (isChasing && _distance > 2f)
+        if (_isChasing && _distance > 2f)
         {
             _direction = targetPosition - myPosition;
             _direction.Normalize();
             transform.up = _direction; 
         }
-        else if (isChasing && _distance <= 2f)
+        else if (_isChasing && _distance <= 2f)
         {
-            isChasing = false;
+            _isChasing = false;
         }
     }
 
