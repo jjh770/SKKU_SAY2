@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 180611289}
   - component: {fileID: 180611290}
   m_Layer: 0
-  m_Name: Backgrounds_2
+  m_Name: Backgrounds_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1085,7 +1085,7 @@ GameObject:
   - component: {fileID: 888643932}
   - component: {fileID: 888643933}
   m_Layer: 0
-  m_Name: Backgrounds_0
+  m_Name: Backgrounds_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1129,7 +1129,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 8348d73000267a6489613c59986ac189, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1177,7 +1177,7 @@ GameObject:
   - component: {fileID: 1141740717}
   - component: {fileID: 1141740718}
   m_Layer: 0
-  m_Name: Backgrounds_1
+  m_Name: Backgrounds_Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
