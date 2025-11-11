@@ -47,13 +47,13 @@ public class Bullet : MonoBehaviour
         transform.position = newPosition;     
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
         Destroy(this.gameObject); 
 
-        Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)
         {
             enemy.Hit(20f);

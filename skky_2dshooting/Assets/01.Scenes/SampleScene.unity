@@ -250,10 +250,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 2860508320393129059, guid: 63556e96bd8b07f4ab0dcdd34e1d5131, type: 3}
   SubBulletPrefab: {fileID: 2860508320393129059, guid: c168913f10bc5a7479e7158b9bb2eba0, type: 3}
+  BoomPrefab: {fileID: 4824617154862228199, guid: d7403231ab4c59c4c996905f901b8442, type: 3}
   FirePositionLeft: {fileID: 748717455}
   FirePositionRight: {fileID: 731026235}
   SubFirePositionLeft: {fileID: 313629085}
   SubFirePositionRight: {fileID: 193940904}
+  BoomCoolTime: 10
   MainCoolTime: 0.6
   SubCoolTime: 0.4
 --- !u!50 &55209741

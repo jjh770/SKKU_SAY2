@@ -85,7 +85,7 @@ public class SubBullet : MonoBehaviour
 
         Destroy(this.gameObject);
 
-        Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)
         {
             enemy.Hit(15f);
