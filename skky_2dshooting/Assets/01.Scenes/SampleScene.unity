@@ -542,8 +542,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40bd4b5f97a3dd4dae2a44091f507cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundMaterial: {fileID: 2100000, guid: a84d59daf810da24fb01a054a9e969ea, type: 2}
-  ScrollSpeed: 0.1
+  _scrollDirection: {x: 0, y: 1}
+  _scrollSpeed: 0.1
 --- !u!1 &193940903
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,8 +1189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40bd4b5f97a3dd4dae2a44091f507cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundMaterial: {fileID: 2100000, guid: 8348d73000267a6489613c59986ac189, type: 2}
-  ScrollSpeed: 0.2
+  _scrollDirection: {x: 0, y: 1}
+  _scrollSpeed: 0.2
 --- !u!4 &1122075759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8899451006611938241, guid: da6aa18381584f845b9a1df5b7c86dd3, type: 3}
@@ -1296,8 +1296,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40bd4b5f97a3dd4dae2a44091f507cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundMaterial: {fileID: 2100000, guid: 6d3a4a06e468af14590a3fda215d083a, type: 2}
-  ScrollSpeed: 0.15
+  _scrollDirection: {x: 0, y: 1}
+  _scrollSpeed: 0.15
 --- !u!1 &1207924361
 GameObject:
   m_ObjectHideFlags: 0
