@@ -6,6 +6,7 @@ public class PlayerFire : MonoBehaviour
     [Header("총알 프리팹")]
     public GameObject BulletPrefab;
     public GameObject SubBulletPrefab;
+    public GameObject BoomPrefab;
 
     [Header("메인 총구 프리팹")]
     public Transform FirePositionLeft;
@@ -16,8 +17,10 @@ public class PlayerFire : MonoBehaviour
     public Transform SubFirePositionRight;
 
     [Header("쿨다운")]
+    public float BoomCoolTime = 10f;
     public float MainCoolTime = 0.6f;
     public float SubCoolTime = 0.4f;
+    private float _boomCoolTimer;
     private float _mainCoolTimer;
     private float _subCoolTimer;
 
@@ -45,16 +48,21 @@ public class PlayerFire : MonoBehaviour
     {
         _mainCoolTimer -= Time.deltaTime;
         _subCoolTimer -= Time.deltaTime;
+        _boomCoolTimer -= Time.deltaTime;
         if (_mainCoolTimer <= 0f && (_autoFire || Input.GetKey(KeyCode.Space)))
         {
             _mainCoolTimer = MainCoolTime;
             Fire();
         }
-
         if (_subCoolTimer <= 0f && (_autoFire || Input.GetKey(KeyCode.Space)))
         {
             _subCoolTimer = SubCoolTime;
             SubFire();
+        }
+        if (_boomCoolTimer <= 0f && Input.GetKey(KeyCode.Alpha3))
+        {
+            _boomCoolTimer = BoomCoolTime;
+            BoomFire();
         }
     }
 
@@ -82,6 +90,11 @@ public class PlayerFire : MonoBehaviour
                 _isAttackSpeedUp = false;
             }
         }
+    }
+
+    private void BoomFire()
+    {
+        GameObject boom = Instantiate(BoomPrefab, Vector3.zero, Quaternion.identity);
     }
 
     public void AutoMode(bool isThatAuto)
