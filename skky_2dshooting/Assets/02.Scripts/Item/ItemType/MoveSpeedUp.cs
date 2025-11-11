@@ -1,14 +1,10 @@
 using UnityEngine;
 
-public class MoveSpeedUp : MonoBehaviour
+public class MoveSpeedUp : ItemBase
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void ApplyItemEffect(GameObject player)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerMove playerMove = collision.gameObject.GetComponent<PlayerMove>();
-            playerMove.GetMoveSpeedUp();
-            Destroy(this.gameObject);
-        }
+        PlayerMove playerMove = player.GetComponent<PlayerMove>();
+        playerMove.GetMoveSpeedUp();
     }
 }

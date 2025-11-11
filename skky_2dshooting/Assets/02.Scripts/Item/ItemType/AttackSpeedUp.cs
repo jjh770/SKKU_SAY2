@@ -1,15 +1,10 @@
 using UnityEngine;
 
-public class AttackSpeedUp : MonoBehaviour
+public class AttackSpeedUp : ItemBase
 {
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void ApplyItemEffect(GameObject player)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerFire playerFire = collision.gameObject.GetComponent<PlayerFire>();
-            playerFire.GetAttackSpeedUp();
-            Destroy(this.gameObject);
-        }
+        PlayerFire playerFire = player.GetComponent<PlayerFire>();
+        playerFire.GetAttackSpeedUp();
     }
 }

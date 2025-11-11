@@ -1,16 +1,12 @@
 using UnityEngine;
 
-public class HealthyPointUp : MonoBehaviour
+public class HealthyPointUp : ItemBase
 {
     private int _healthyPointValue;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void ApplyItemEffect(GameObject player)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Player player = collision.gameObject.GetComponent<Player>();
-            player.HealthyPointUp(_healthyPointValue);
-            Destroy(this.gameObject);
-        }
+        Player playerComponent = player.GetComponent<Player>();
+        playerComponent.HealthyPointUp(_healthyPointValue);
     }
 }
