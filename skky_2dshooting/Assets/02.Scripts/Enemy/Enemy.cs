@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour
     [Header("아이템 드롭")]
     [SerializeField]
     private ItemTable _itemTable;
-
+    [Header("폭발 이펙트")]
+    public GameObject ExplosionPrefab;
     private bool _isDead = false;
 
     private Animator _animator;
@@ -50,7 +51,13 @@ public class Enemy : MonoBehaviour
         _isDead = true;
 
         TryDropItem();
+        MakeExplosionEffect();
         Destroy(this.gameObject);
+    }
+
+    private void MakeExplosionEffect()
+    {
+        Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
     }
 
     private void TryDropItem()
