@@ -29,7 +29,9 @@ public class ChasingMovement : EnemyMovement
         {
             _direction = targetPosition - myPosition;
             _direction.Normalize();
-            transform.up = _direction; 
+
+            float angle = Mathf.Atan2(_direction.x, -_direction.y) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
         else if (_isChasing && _distance <= 2f)
         {
