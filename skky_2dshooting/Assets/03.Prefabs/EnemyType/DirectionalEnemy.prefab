@@ -182,7 +182,7 @@ MonoBehaviour:
   Health: 100
   Damage: 1
   _itemTable: {fileID: 11400000, guid: 45da61e7e56fc114c8fbc3e5711c803c, type: 2}
-  ExplosionPrefab: {fileID: 8194992990867289339, guid: 99bc28c0d45f51c4fbac01080b73edc7, type: 3}
+  ExplosionPrefab: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
 --- !u!95 &6393674717614854220
 Animator:
   serializedVersion: 7

@@ -94,7 +94,7 @@ public class PlayerFire : MonoBehaviour
 
     private void BoomFire()
     {
-        GameObject boom = Instantiate(BoomPrefab, Vector3.zero, Quaternion.identity);
+        Instantiate(BoomPrefab, Vector3.zero, Quaternion.identity);
     }
 
     public void AutoMode(bool isThatAuto)
