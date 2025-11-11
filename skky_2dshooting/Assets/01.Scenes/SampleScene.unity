@@ -452,6 +452,7 @@ GameObject:
   m_Component:
   - component: {fileID: 180611289}
   - component: {fileID: 180611290}
+  - component: {fileID: 180611291}
   m_Layer: 0
   m_Name: Backgrounds_Back
   m_TagString: Untagged
@@ -497,7 +498,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: a84d59daf810da24fb01a054a9e969ea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -529,6 +530,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &180611291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180611288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40bd4b5f97a3dd4dae2a44091f507cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackgroundMaterial: {fileID: 2100000, guid: a84d59daf810da24fb01a054a9e969ea, type: 2}
+  ScrollSpeed: 0.1
 --- !u!1 &193940903
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,6 +1099,7 @@ GameObject:
   m_Component:
   - component: {fileID: 888643932}
   - component: {fileID: 888643933}
+  - component: {fileID: 888643934}
   m_Layer: 0
   m_Name: Backgrounds_Front
   m_TagString: Untagged
@@ -1161,6 +1177,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &888643934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888643931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40bd4b5f97a3dd4dae2a44091f507cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackgroundMaterial: {fileID: 2100000, guid: 8348d73000267a6489613c59986ac189, type: 2}
+  ScrollSpeed: 0.2
 --- !u!4 &1122075759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8899451006611938241, guid: da6aa18381584f845b9a1df5b7c86dd3, type: 3}
@@ -1176,6 +1206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1141740717}
   - component: {fileID: 1141740718}
+  - component: {fileID: 1141740719}
   m_Layer: 0
   m_Name: Backgrounds_Middle
   m_TagString: Untagged
@@ -1221,7 +1252,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 6d3a4a06e468af14590a3fda215d083a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1253,6 +1284,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1141740719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141740716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40bd4b5f97a3dd4dae2a44091f507cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackgroundMaterial: {fileID: 2100000, guid: 6d3a4a06e468af14590a3fda215d083a, type: 2}
+  ScrollSpeed: 0.15
 --- !u!1 &1207924361
 GameObject:
   m_ObjectHideFlags: 0
