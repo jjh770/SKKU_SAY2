@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -6,11 +5,14 @@ public class Player : MonoBehaviour
     private float _health = 3;
     private PlayerFire _playerFire;
     private PlayerMove _playerMove;
+    private ScoreManager scoreManager;
 
     private void Start()
     {
         _playerFire = GetComponent<PlayerFire>();
         _playerMove = GetComponent<PlayerMove>();
+        scoreManager = FindAnyObjectByType<ScoreManager>();
+
     }
     private void Update()
     {
@@ -41,7 +43,13 @@ public class Player : MonoBehaviour
 
         if (_health <= 0)
         {
-            Destroy(gameObject);
+            PlayerDie();
         }
+    }
+
+    private void PlayerDie()
+    {
+        scoreManager.SaveBestScore();
+        Destroy(gameObject);
     }
 }

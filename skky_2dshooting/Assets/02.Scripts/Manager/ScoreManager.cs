@@ -9,13 +9,19 @@ public class ScoreManager : MonoBehaviour
     // - 현재 점수 UI(Text 컴포넌트) (규칙 : UI 요소는 항상 변수명 뒤에 UI를 붙인다.)
     [SerializeField]
     private Text _currentScoreTextUI;
+    [SerializeField]
+    private Text _bestScoreTextUI;
     // - 현재 점수 (int)
+    private int _startScore = 0;
     private int _currentScore = 0;
+    private int _bestScore = 0;
 
     private const string ScoreKey = "Score";
+    private const string BestScoreKey = "BestScore";
 
     private void Start()
     {
+        SetStartScore();
         Load();
         Refresh();
     }
@@ -31,22 +37,16 @@ public class ScoreManager : MonoBehaviour
         Save();
     }
 
-    private void Refresh()
+    public void SaveBestScore()
     {
-        //_currentScoreTextUI.text = $"현재 점수 : {_currentScore.ToString("0,0")}";
-        _currentScoreTextUI.text = $"현재 점수 : {_currentScore:N0}";
+        _bestScore = _currentScore;
+        BestScoreSave();
     }
 
-    private void Update()
+    private void Refresh()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            Save();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Load();
-        }
+        _currentScoreTextUI.text = $"현재 점수 : {_currentScore:N0}";
+        _bestScoreTextUI.text = $"최고 점수 : {_bestScore:N0}";
     }
 
     private void Save()
@@ -56,16 +56,26 @@ public class ScoreManager : MonoBehaviour
         // 저장할 때는 저장할 이름(key)와 값(value)을 같이 저장한다.
         // 저장 : Set
         // 로드 : Get
-
         PlayerPrefs.SetInt(ScoreKey, _currentScore);
-        Debug.Log("저장되었습니다.");
+    }
+
+    private void BestScoreSave()
+    {
+        if (_currentScore < _bestScore) return;
+
+        PlayerPrefs.SetInt(BestScoreKey, _bestScore);
+    }
+
+    private void SetStartScore()
+    {
+        _currentScore = _startScore;
     }
 
     private void Load()
     {
         // 값을 불러올 때는 저장할 때 사용한 이름(key)을 사용한다.
         // 만약 해당 이름으로 저장된 값이 없다면, 기본값(default value)을 반환한다.
-        _currentScore = PlayerPrefs.GetInt(ScoreKey, 0); // 저장된 값이 없으면 0을 반환
+        _bestScore = PlayerPrefs.GetInt(BestScoreKey);
         Refresh();
     }
 }
