@@ -1,16 +1,15 @@
-using UnityEngine;
+using System;
 
-public class ScoreData : MonoBehaviour
+[Serializable]
+public class UserData
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public int CurrentScore;
+    public int BestScore;
 
-    // Update is called once per frame
-    void Update()
+    // 생성자
+    public UserData(int score, int bestScore)
     {
-        
+        this.CurrentScore = score;
+        this.BestScore = bestScore;
     }
 }

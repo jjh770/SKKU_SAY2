@@ -1,5 +1,7 @@
 using DG.Tweening;
+using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering.LookDev;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
@@ -19,11 +21,13 @@ public class ScoreManager : MonoBehaviour
 
     private bool _isPlayerDead = false;
 
-    private const string ScoreKey = "Score";
-    private const string BestScoreKey = "BestScore";
+    private UserData _userData;
+    private const string _saveKey = "UserData";
 
     private void Start()
     {
+        _userData = new UserData(_startScore, _bestScore);
+
         SetStartScore();
         Load();
         Refresh();
@@ -56,7 +60,16 @@ public class ScoreManager : MonoBehaviour
         // 저장할 때는 저장할 이름(key)와 값(value)을 같이 저장한다.
         // 저장 : Set
         // 로드 : Get
-        PlayerPrefs.SetInt(ScoreKey, _currentScore);
+
+        // UserData를 JSON 문자열로 변환
+        string jsonData = JsonUtility.ToJson(_userData);
+        File.WriteAllText(Application.dataPath + "/save.json", jsonData);
+
+        // JSON 문자열을 PlayerPrefs에 저장
+        PlayerPrefs.SetString(_saveKey, jsonData);
+        PlayerPrefs.Save();
+
+        Debug.Log($"데이터 저장 완료: {jsonData}");
     }
 
     public void SaveBestScore()
@@ -64,20 +77,41 @@ public class ScoreManager : MonoBehaviour
         if (_currentScore < _bestScore) return;
 
         _bestScore = _currentScore;
-        PlayerPrefs.SetInt(BestScoreKey, _bestScore);
+        _userData.BestScore = _bestScore;
+
+        Save();
     }
 
     private void SetStartScore()
     {
         _currentScore = _startScore;
+        _userData.CurrentScore = _currentScore;
     }
 
     private void Load()
     {
         // 값을 불러올 때는 저장할 때 사용한 이름(key)을 사용한다.
         // 만약 해당 이름으로 저장된 값이 없다면, 기본값(default value)을 반환한다.
-        _bestScore = PlayerPrefs.GetInt(BestScoreKey);
-        Refresh();
+        // 저장된 데이터가 있는지 확인
+        if (PlayerPrefs.HasKey(_saveKey))
+        {
+            // PlayerPrefs에서 JSON 문자열 로드
+            string jsonData = PlayerPrefs.GetString(_saveKey);
+
+            // JSON 문자열을 UserData 객체로 변환
+            _userData = JsonUtility.FromJson<UserData>(jsonData);
+
+            // UserData에서 값 복원
+            _currentScore = _userData.CurrentScore;
+            _bestScore = _userData.BestScore;
+        }
+        else
+        {
+            // 저장된 데이터가 없으면 기본값으로 초기화
+            _userData = new UserData(0, 0);
+            _currentScore = 0;
+            _bestScore = 0;
+        }
     }
 
     public void PlayerDie()
