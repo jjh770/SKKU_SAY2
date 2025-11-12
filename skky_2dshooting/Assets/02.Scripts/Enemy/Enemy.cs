@@ -50,6 +50,12 @@ public class Enemy : MonoBehaviour
         if (_isDead) return;
         _isDead = true;
 
+        ScoreManager scoreManager = FindAnyObjectByType<ScoreManager>();
+        scoreManager.AddScore(100);
+        // 응집도를 높혀라
+        // 응집도 : "데이터"와 "데이터를 조작하는 로직"이 얼마나 잘 모였나
+        // 응집도를 높이로 필요한 것만 외부에 노출시키는 것을 캡슐화
+
         TryDropItem();
         MakeExplosionEffect();
         Destroy(this.gameObject);
