@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Boom : MonoBehaviour
 {
-    [SerializeField] private float _duration = 4f;
+    [SerializeField] private float _duration = 3.5f;
     [SerializeField] private float _waitDuration = 1f;
     [SerializeField] private float _maxScale = 1.5f;
     [SerializeField] private AnimationCurve _scaleCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);

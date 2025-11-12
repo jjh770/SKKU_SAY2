@@ -8,12 +8,13 @@ public class Player : MonoBehaviour
     private PlayerMove _playerMove;
     private ScoreManager _scoreManager;
 
+    [SerializeField]
+    private AudioSource _gameOverSound;
     private void Start()
     {
         _playerFire = GetComponent<PlayerFire>();
         _playerMove = GetComponent<PlayerMove>();
         _scoreManager = FindAnyObjectByType<ScoreManager>();
-
     }
     private void Update()
     {
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
 
     private void PlayerDie()
     {
+        SoundManager.Instance.PlaySFX(_gameOverSound.clip);
         _scoreManager.PlayerDie();
         _scoreManager.SaveBestScore();
         Destroy(gameObject);
