@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,8 @@ public class ScoreManager : MonoBehaviour
     private int _currentScore = 0;
     private int _bestScore = 0;
 
+    private bool _isPlayerDead = false;
+
     private const string ScoreKey = "Score";
     private const string BestScoreKey = "BestScore";
 
@@ -31,16 +34,13 @@ public class ScoreManager : MonoBehaviour
     {
         if (score <= 0) return;
 
+        _currentScoreTextUI.rectTransform.DOKill(true);
+        _currentScoreTextUI.rectTransform.localScale = Vector3.one;
+        _currentScoreTextUI.rectTransform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 10, 1);
+
         _currentScore += score;
         Refresh();
-
         Save();
-    }
-
-    public void SaveBestScore()
-    {
-        _bestScore = _currentScore;
-        BestScoreSave();
     }
 
     private void Refresh()
@@ -59,10 +59,11 @@ public class ScoreManager : MonoBehaviour
         PlayerPrefs.SetInt(ScoreKey, _currentScore);
     }
 
-    private void BestScoreSave()
+    public void SaveBestScore()
     {
         if (_currentScore < _bestScore) return;
 
+        _bestScore = _currentScore;
         PlayerPrefs.SetInt(BestScoreKey, _bestScore);
     }
 
@@ -77,5 +78,16 @@ public class ScoreManager : MonoBehaviour
         // 만약 해당 이름으로 저장된 값이 없다면, 기본값(default value)을 반환한다.
         _bestScore = PlayerPrefs.GetInt(BestScoreKey);
         Refresh();
+    }
+
+    public void PlayerDie()
+    {
+        _isPlayerDead = true;
+
+    }
+
+    public bool CheckPlayerDead()
+    {
+        return _isPlayerDead;
     }
 }

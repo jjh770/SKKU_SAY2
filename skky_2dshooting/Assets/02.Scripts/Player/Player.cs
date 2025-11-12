@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour
 
     private void PlayerDie()
     {
+        scoreManager.PlayerDie();
         scoreManager.SaveBestScore();
         Destroy(gameObject);
     }
