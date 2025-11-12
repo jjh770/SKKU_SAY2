@@ -13,14 +13,15 @@ public class Enemy : MonoBehaviour
     public GameObject ExplosionPrefab;
     [Header("적 사망시 점수")]
     [SerializeField]
-    private int _score = 1000000;
+    private int _score = 100;
     private bool _isDead = false;
 
     private Animator _animator;
-    
+    private ScoreManager _scoreManager;
     private void Start()
     {
         _animator = gameObject.GetComponent<Animator>();
+        _scoreManager = FindAnyObjectByType<ScoreManager>();
     }
     private void Update()
     {
@@ -53,15 +54,16 @@ public class Enemy : MonoBehaviour
         if (_isDead) return;
         _isDead = true;
 
-        ScoreManager scoreManager = FindAnyObjectByType<ScoreManager>();
-        scoreManager.AddScore(_score);
         // 응집도를 높혀라
         // 응집도 : "데이터"와 "데이터를 조작하는 로직"이 얼마나 잘 모였나
         // 응집도를 높이로 필요한 것만 외부에 노출시키는 것을 캡슐화
-
-        TryDropItem();
         MakeExplosionEffect();
         Destroy(this.gameObject);
+
+        if (_scoreManager.CheckPlayerDead()) return;
+        _scoreManager.AddScore(_score);
+
+        TryDropItem();
     }
 
     private void MakeExplosionEffect()

@@ -197,7 +197,7 @@ MonoBehaviour:
   Damage: 1
   _itemTable: {fileID: 11400000, guid: 45da61e7e56fc114c8fbc3e5711c803c, type: 2}
   ExplosionPrefab: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
-  _score: 1000000
+  _score: 700
 --- !u!95 &1704346009545090090
 Animator:
   serializedVersion: 7
