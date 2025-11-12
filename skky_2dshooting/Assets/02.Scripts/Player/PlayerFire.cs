@@ -32,6 +32,10 @@ public class PlayerFire : MonoBehaviour
 
     private bool _autoFire = true;
 
+    [Header("사운드")]
+    public AudioSource MainBulletSound;
+    public AudioSource SubBulletSound;
+
     private void Start()
     {
         _startMainCoolTime = MainCoolTime;
@@ -104,6 +108,7 @@ public class PlayerFire : MonoBehaviour
 
     private void SubFire()
     {
+        SubBulletSound.Play();
         GameObject subBulletLeft = Instantiate(SubBulletPrefab, SubFirePositionLeft.position, Quaternion.identity);
         subBulletLeft.GetComponent<SubBullet>().IsLeft = true;
         GameObject subBulletRight = Instantiate(SubBulletPrefab, SubFirePositionRight.position, Quaternion.identity);
@@ -112,6 +117,7 @@ public class PlayerFire : MonoBehaviour
 
     private void Fire()
     {
+        MainBulletSound.Play();
         GameObject bulletLeft = Instantiate(BulletPrefab, FirePositionLeft.position, Quaternion.identity);
         GameObject bulletRight = Instantiate(BulletPrefab, FirePositionRight.position, Quaternion.identity);
     }
