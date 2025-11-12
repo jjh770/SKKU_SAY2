@@ -12,37 +12,44 @@ public class ScoreManager : MonoBehaviour
     // - 현재 점수 (int)
     private int _currentScore = 0;
 
+    private const string ScoreKey = "Score";
+
     private void Start()
     {
+        Load();
         Refresh();
     }
 
+    // 하나의 메서드는 한 가지 일만 잘 하면 된다.
     public void AddScore(int score)
     {
         if (score <= 0) return;
 
         _currentScore += score;
         Refresh();
+
+        Save();
     }
 
     private void Refresh()
     {
-        _currentScoreTextUI.text = $"현재 점수 : {_currentScore.ToString("0,0")}";
+        //_currentScoreTextUI.text = $"현재 점수 : {_currentScore.ToString("0,0")}";
+        _currentScoreTextUI.text = $"현재 점수 : {_currentScore:N0}";
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            TestSave();
+            Save();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            TestLoad();
+            Load();
         }
     }
 
-    private void TestSave()
+    private void Save()
     {
         // 유니티에서 값을 저장할 때 'PlayerPrefs'라는 기능을 제공한다.
         // 저장 가능한 자료형은 int, float, string 3가지이다.
@@ -50,15 +57,15 @@ public class ScoreManager : MonoBehaviour
         // 저장 : Set
         // 로드 : Get
 
-        PlayerPrefs.SetInt("score", _currentScore);
+        PlayerPrefs.SetInt(ScoreKey, _currentScore);
         Debug.Log("저장되었습니다.");
     }
 
-    private void TestLoad()
+    private void Load()
     {
         // 값을 불러올 때는 저장할 때 사용한 이름(key)을 사용한다.
         // 만약 해당 이름으로 저장된 값이 없다면, 기본값(default value)을 반환한다.
-        _currentScore = PlayerPrefs.GetInt("score", 0); // 저장된 값이 없으면 0을 반환
+        _currentScore = PlayerPrefs.GetInt(ScoreKey, 0); // 저장된 값이 없으면 0을 반환
         Refresh();
     }
 }
