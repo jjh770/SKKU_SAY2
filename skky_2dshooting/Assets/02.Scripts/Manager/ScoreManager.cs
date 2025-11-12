@@ -1,7 +1,5 @@
 using DG.Tweening;
-using System.IO;
 using UnityEngine;
-using UnityEngine.Rendering.LookDev;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
@@ -22,7 +20,7 @@ public class ScoreManager : MonoBehaviour
     private bool _isPlayerDead = false;
 
     private UserData _userData;
-    private const string _saveKey = "UserData";
+    private const string SaveKey = "UserData";
 
     private void Start()
     {
@@ -63,10 +61,8 @@ public class ScoreManager : MonoBehaviour
 
         // UserData를 JSON 문자열로 변환
         string jsonData = JsonUtility.ToJson(_userData);
-        File.WriteAllText(Application.dataPath + "/save.json", jsonData);
-
         // JSON 문자열을 PlayerPrefs에 저장
-        PlayerPrefs.SetString(_saveKey, jsonData);
+        PlayerPrefs.SetString(SaveKey, jsonData);
         PlayerPrefs.Save();
 
         Debug.Log($"데이터 저장 완료: {jsonData}");
@@ -93,10 +89,10 @@ public class ScoreManager : MonoBehaviour
         // 값을 불러올 때는 저장할 때 사용한 이름(key)을 사용한다.
         // 만약 해당 이름으로 저장된 값이 없다면, 기본값(default value)을 반환한다.
         // 저장된 데이터가 있는지 확인
-        if (PlayerPrefs.HasKey(_saveKey))
+        if (PlayerPrefs.HasKey(SaveKey))
         {
             // PlayerPrefs에서 JSON 문자열 로드
-            string jsonData = PlayerPrefs.GetString(_saveKey);
+            string jsonData = PlayerPrefs.GetString(SaveKey);
 
             // JSON 문자열을 UserData 객체로 변환
             _userData = JsonUtility.FromJson<UserData>(jsonData);

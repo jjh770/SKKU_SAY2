@@ -17,11 +17,11 @@ public class Enemy : MonoBehaviour
     private bool _isDead = false;
 
     private Animator _animator;
-    private ScoreManager scoreManager;
+    private ScoreManager _scoreManager;
     private void Start()
     {
         _animator = gameObject.GetComponent<Animator>();
-        scoreManager = FindAnyObjectByType<ScoreManager>();
+        _scoreManager = FindAnyObjectByType<ScoreManager>();
     }
     private void Update()
     {
@@ -60,8 +60,8 @@ public class Enemy : MonoBehaviour
         MakeExplosionEffect();
         Destroy(this.gameObject);
 
-        if (scoreManager.CheckPlayerDead()) return;
-        scoreManager.AddScore(_score);
+        if (_scoreManager.CheckPlayerDead()) return;
+        _scoreManager.AddScore(_score);
 
         TryDropItem();
     }

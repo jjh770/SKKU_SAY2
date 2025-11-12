@@ -6,13 +6,13 @@ public class Player : MonoBehaviour
     private float _health = 3;
     private PlayerFire _playerFire;
     private PlayerMove _playerMove;
-    private ScoreManager scoreManager;
+    private ScoreManager _scoreManager;
 
     private void Start()
     {
         _playerFire = GetComponent<PlayerFire>();
         _playerMove = GetComponent<PlayerMove>();
-        scoreManager = FindAnyObjectByType<ScoreManager>();
+        _scoreManager = FindAnyObjectByType<ScoreManager>();
 
     }
     private void Update()
@@ -50,8 +50,8 @@ public class Player : MonoBehaviour
 
     private void PlayerDie()
     {
-        scoreManager.PlayerDie();
-        scoreManager.SaveBestScore();
+        _scoreManager.PlayerDie();
+        _scoreManager.SaveBestScore();
         Destroy(gameObject);
     }
 }
