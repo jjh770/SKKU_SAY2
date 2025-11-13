@@ -11,11 +11,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip _gameOverSound;
 
-    private DG.Tweening.Sequence _dieSequence;
-
     private void Start()
     {
-        MakeDieSequence();
         _playerFire = GetComponent<PlayerFire>();
         _playerMove = GetComponent<PlayerMove>();
         _scoreManager = FindAnyObjectByType<ScoreManager>();
@@ -53,24 +50,25 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void MakeDieSequence()
+    private void PlayerDie()
     {
-        _dieSequence = DOTween.Sequence()
+        SoundManager.Instance.PlaySFX(_gameOverSound);
+        _scoreManager.PlayerDie();
+        _scoreManager.SaveBestScore();
+
+        // 추가 조작을 막기 위해 관련 컴포넌트 비활성화
+        _playerMove.enabled = false;
+        _playerFire.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        // 사망 시점의 위치를 기준으로 시퀀스 생성 및 재생
+        DOTween.Sequence()
             .Append(transform.DOMoveY(transform.position.y - 1f, 1f))
             .Join(transform.DORotate(new Vector3(0, 0, 1080), 1f, RotateMode.FastBeyond360))
             .Join(GetComponent<SpriteRenderer>().material.DOFade(0, 1f))
             .AppendCallback(() =>
             {
                 Destroy(gameObject);
-            })
-            .Pause();
-    }
-
-    private void PlayerDie()
-    {
-        SoundManager.Instance.PlaySFX(_gameOverSound);
-        _scoreManager.PlayerDie();
-        _scoreManager.SaveBestScore();
-        _dieSequence.Play();
+            });
     }
 }

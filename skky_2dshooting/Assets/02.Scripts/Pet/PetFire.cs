@@ -3,12 +3,15 @@ using UnityEngine;
 public class PetFire : MonoBehaviour
 {
     [Header("펫 총알 프리팹")]
-    public GameObject PetBulletPrefab;
+    [SerializeField]
+    private GameObject PetBulletPrefab;
     [Header("펫 총구 프리팹")]
-    public Transform PetFirePosition;
+    [SerializeField]
+    private Transform PetFirePosition;
     [Header("펫 쿨다운")]
     [Range(0.5f, 1.5f)]
-    public float PetCoolTime = 2f;
+    [SerializeField]
+    private float PetCoolTime = 2f;
     private float _petCoolTimer;
 
     private void Start()

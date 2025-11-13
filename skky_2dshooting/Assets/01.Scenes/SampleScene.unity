@@ -1341,7 +1341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PetBulletPrefab: {fileID: 2860508320393129059, guid: 0a06dcd1bab99ce42912261cdf675e91, type: 3}
   PetFirePosition: {fileID: 846933782}
-  PetCoolTime: 1.041
+  PetCoolTime: 0.926
 --- !u!1 &614139892
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,7 +1728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PetBulletPrefab: {fileID: 2860508320393129059, guid: 0a06dcd1bab99ce42912261cdf675e91, type: 3}
   PetFirePosition: {fileID: 34056868}
-  PetCoolTime: 0.682
+  PetCoolTime: 1.189
 --- !u!1 &846933781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2211,7 +2211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PetBulletPrefab: {fileID: 2860508320393129059, guid: 0a06dcd1bab99ce42912261cdf675e91, type: 3}
   PetFirePosition: {fileID: 309213673}
-  PetCoolTime: 1.261
+  PetCoolTime: 1.304
 --- !u!1 &1207924361
 GameObject:
   m_ObjectHideFlags: 0

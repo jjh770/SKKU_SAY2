@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class PetBullet : MonoBehaviour
 {
+    [SerializeField]
     private float _petBulletSpeed = 10f;
-
+    [SerializeField]
+    private float _petBulletPower = 5f;
     private void Update()
     {
         MovePetBullet();
@@ -33,7 +35,7 @@ public class PetBullet : MonoBehaviour
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)
         {
-            enemy.Hit(5f);
+            enemy.Hit(_petBulletPower);
         }
     }
 }
