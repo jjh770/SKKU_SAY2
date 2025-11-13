@@ -25,15 +25,6 @@ public class Bullet : MonoBehaviour
     {
         SetSpeed();
         MoveBulletAcceleration();
-        CheckIsOut();
-    }
-    private void CheckIsOut()
-    {
-        if (transform.position.y > GameManager.Instance.CameraHalfHeight + 1f
-            || transform.position.y < -GameManager.Instance.CameraHalfHeight - 1f)
-        {
-            gameObject.SetActive(false);
-        }
     }
     private void SetSpeed()
     {
@@ -52,8 +43,7 @@ public class Bullet : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        gameObject.SetActive(false);
-        BulletFactory.Instance.BulletToPool(gameObject);
+        BulletFactory.Instance.ReturnBullet(BulletType.Bullet, gameObject);
 
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)

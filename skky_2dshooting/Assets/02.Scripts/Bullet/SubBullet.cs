@@ -23,14 +23,18 @@ public class SubBullet : MonoBehaviour
     private Vector3 _lastDirection;
     private bool _curveFinished = false;
 
-    void Start()
+    private void OnEnable()
     {
         _speed = StartSpeed;
         _startPos = transform.position;
         _targetPosition = new Vector3(0, GameManager.Instance.CameraHalfHeight, 0);
+
+        _curveTime = 0f;
+        _curveFinished = false;
+        _lastDirection = Vector3.up;
     }
 
-    void Update()
+    private void Update()
     {
         _speed += Time.deltaTime * ((EndSpeed - StartSpeed) / Acceleration);
         _speed = Mathf.Min(_speed, EndSpeed);
@@ -44,7 +48,6 @@ public class SubBullet : MonoBehaviour
             transform.position += _lastDirection * _speed * Time.deltaTime;
         }
 
-        CheckIsOut();
         FindNearestEnemy();
     }
 
@@ -68,22 +71,12 @@ public class SubBullet : MonoBehaviour
         }
     }
 
-    private void CheckIsOut()
-    {
-        if (GameManager.Instance != null)
-        {
-            if (transform.position.y > GameManager.Instance.CameraHalfHeight + 1f)
-            {
-                Destroy(this.gameObject);
-            }
-        }
-    }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        Destroy(this.gameObject);
+        BulletFactory.Instance.ReturnBullet(BulletType.Sub, gameObject);
 
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)

@@ -1,11 +1,14 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-
+public enum BulletType
+{
+    Bullet,
+    Sub,
+    Pet,
+}
 public class BulletFactory : MonoBehaviour
 {
     public static BulletFactory Instance { get; private set; }
-
     private void Awake()
     {
         if (Instance != null)
@@ -16,80 +19,81 @@ public class BulletFactory : MonoBehaviour
         Instance = this;
         PoolInit();
     }
-    [Header("총알 프리팹")] // 복사해올 총알 프리팹 게임 오브젝트
-    [SerializeField] private GameObject BulletPrefab;
-    [SerializeField] private GameObject SubBulletPrefab;
+    [Header("필살기 프리팹")] // 필살기는 어차피 1개
     [SerializeField] private GameObject BoomPrefab;
-    [SerializeField] private GameObject PetBulletPrefab;
 
-    [Header("풀링")] public int PoolSize = 30;
-    //private GameObject[] _bulletObjectPool; // 게임 내 총알을 담아둘 풀 : 탄창
-    private Queue<GameObject> _bulletObjectPool;
+    [System.Serializable]
+    public class PoolInfo
+    {
+        public BulletType Type;
+        public GameObject Prefab;
+        public int poolSize = 5;
+    }
 
-    // Awake vs Start vs Lazy
-    // Awake : 게임이 막 시작될 때 
-    // Start : 첫번째 프레임이 호출되기 바로 직전
+    [SerializeField] private List<PoolInfo> poolInfos;
+    private Dictionary<BulletType, Queue<GameObject>> _typePools;
+    
+
     private void PoolInit()
     {
-        // 1. 탄창을 총알을 담을 수 있는 크기의 배열을 만들어줌.
-        // 2. 탄창 크기만큼 반복해서
-        for (int i = 0; i < PoolSize; i++)
+        _typePools = new Dictionary<BulletType, Queue<GameObject>>();
+
+        foreach (var info in poolInfos)
         {
-            // 3. 총알을 생성한다.
-            GameObject bulletObject = Instantiate(BulletPrefab);
+            Queue<GameObject> bulletPool = new Queue<GameObject>();
 
-            // 4. 생성한 총알을 탄창(풀)에 담는다.
-            _bulletObjectPool.Enqueue(bulletObject);
-
-            // 5. 비활성화 한다.
-            bulletObject.SetActive(false);
-        }
-    }
-
-    public GameObject MakeBullet(Vector3 position)
-    {
-        // 필요하다면 여기서 생성 이펙트도 생성하고
-        // 필요하다면 인자값으로 데미지도 받아서 넘겨주고
-
-        // 1. 탄창 안에 있는 총알들 중에서
-        for (int i = 0; i < PoolSize; i++)
-        {
-            GameObject bulletObject = _bulletObjectPool.Dequeue();
-
-            // 2. 비활성화된 총알 하나를 찾기
-            if (bulletObject.activeInHierarchy == false)
+            for (int i = 0; i < info.poolSize; i++)
             {
-                // 3. 위치를 수정하고 활성화시킴
-                bulletObject.transform.position = position;
-                bulletObject.SetActive(true);
-
-                // 총알을 발사 했으므로 중지
-                return bulletObject;
+                GameObject bulletObject = Instantiate(info.Prefab, transform);
+                bulletObject.SetActive(false);
+                bulletPool.Enqueue(bulletObject);
             }
+            _typePools.Add(info.Type, bulletPool);
         }
-
-        Debug.LogError("탄창에 총알 개수가 부족합니다.");
-        return null;
     }
 
-    public void BulletToPool(GameObject bullet)
+    public GameObject MakeBullet(BulletType type, Vector3 position)
     {
-        _bulletObjectPool.Enqueue(bullet);
+        if (!_typePools.ContainsKey(type)) return null;
+
+        Queue<GameObject> bulletPool = _typePools[type];
+        GameObject bulletObject;
+
+        if (bulletPool.Count > 0)
+        {
+            bulletObject = bulletPool.Dequeue();
+        }
+        else
+        {
+            PoolInfo info = poolInfos.Find(x => x.Type == type);
+            bulletObject = Instantiate(info.Prefab, transform);
+        }
+        bulletObject.transform.position = position;
+        bulletObject.SetActive(true);
+        return bulletObject;
     }
 
-    public GameObject MakeSubBullet(Vector3 position)
+    public void ReturnBullet(BulletType type, GameObject bulletObject)
     {
-        return Instantiate(SubBulletPrefab, position, Quaternion.identity);
+        if (_typePools.ContainsKey(type))
+        {
+            bulletObject.transform.rotation = Quaternion.identity;
+            bulletObject.transform.SetParent(transform);  
+
+            Rigidbody2D rigidBody = bulletObject.GetComponent<Rigidbody2D>();
+            if (rigidBody != null)
+            {
+                rigidBody.linearVelocity = Vector2.zero;
+                rigidBody.angularVelocity = 0f;
+            }
+
+            bulletObject.SetActive(false);
+            _typePools[type].Enqueue(bulletObject);
+        }
     }
 
     public GameObject MakeBoom(Vector3 position)
     {
-        return Instantiate(BoomPrefab, position, Quaternion.identity);
+        return Instantiate(BoomPrefab, position, Quaternion.identity, transform);
     }
-
-    public GameObject MakePetBullet(Vector3 position)
-    {
-        return Instantiate(PetBulletPrefab, position, Quaternion.identity);
-    }
-
 }

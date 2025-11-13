@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-
-
     [Header("메인 총구 프리팹")]
     public Transform FirePositionLeft;
     public Transform FirePositionRight;
@@ -110,8 +108,8 @@ public class PlayerFire : MonoBehaviour
     private void SubFire()
     {
         SoundManager.Instance.PlaySFX(SubBulletSound);
-        GameObject subBulletLeft = BulletFactory.Instance.MakeSubBullet(SubFirePositionLeft.position);
-        GameObject subBulletRight = BulletFactory.Instance.MakeSubBullet(SubFirePositionRight.position);
+        GameObject subBulletLeft = BulletFactory.Instance.MakeBullet(BulletType.Sub, SubFirePositionLeft.position);
+        GameObject subBulletRight = BulletFactory.Instance.MakeBullet(BulletType.Sub, SubFirePositionRight.position);
         subBulletLeft.GetComponent<SubBullet>().IsLeft = true;
         subBulletRight.GetComponent<SubBullet>().IsLeft = false;
     }
@@ -119,7 +117,7 @@ public class PlayerFire : MonoBehaviour
     private void Fire()
     {
         SoundManager.Instance.PlaySFX(MainBulletSound);
-        BulletFactory.Instance.MakeBullet(FirePositionLeft.position);
-        BulletFactory.Instance.MakeBullet(FirePositionRight.position);
+        BulletFactory.Instance.MakeBullet(BulletType.Bullet, FirePositionLeft.position);
+        BulletFactory.Instance.MakeBullet(BulletType.Bullet, FirePositionRight.position);
     }
 }
