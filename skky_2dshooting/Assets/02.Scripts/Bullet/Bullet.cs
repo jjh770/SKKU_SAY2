@@ -29,9 +29,10 @@ public class Bullet : MonoBehaviour
     }
     private void CheckIsOut()
     {
-        if (transform.position.y > GameManager.Instance.CameraHalfHeight + 1f)
+        if (transform.position.y > GameManager.Instance.CameraHalfHeight + 1f
+            || transform.position.y < -GameManager.Instance.CameraHalfHeight - 1f)
         {
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
         }
     }
     private void SetSpeed()
@@ -51,7 +52,7 @@ public class Bullet : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        Destroy(this.gameObject); 
+        gameObject.SetActive(false);
 
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)
