@@ -3,7 +3,6 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
-
     private AudioSource _sfxSource;
 
     private void Awake()

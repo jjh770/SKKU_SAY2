@@ -3,10 +3,7 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-    [Header("총알 프리팹")]
-    public GameObject BulletPrefab;
-    public GameObject SubBulletPrefab;
-    public GameObject BoomPrefab;
+
 
     [Header("메인 총구 프리팹")]
     public Transform FirePositionLeft;
@@ -37,6 +34,7 @@ public class PlayerFire : MonoBehaviour
     public AudioClip MainBulletSound;
     public AudioClip SubBulletSound;
     public AudioClip BoomSound;
+
 
     private void Start()
     {
@@ -101,7 +99,7 @@ public class PlayerFire : MonoBehaviour
     private void BoomFire()
     {
         SoundManager.Instance.PlaySFX(BoomSound);
-        Instantiate(BoomPrefab, Vector3.zero, Quaternion.identity);
+        BulletFactory.Instance.MakeBoom(Vector3.zero);
     }
 
     public void AutoMode(bool isThatAuto)
@@ -112,16 +110,16 @@ public class PlayerFire : MonoBehaviour
     private void SubFire()
     {
         SoundManager.Instance.PlaySFX(SubBulletSound);
-        GameObject subBulletLeft = Instantiate(SubBulletPrefab, SubFirePositionLeft.position, Quaternion.identity);
+        GameObject subBulletLeft = BulletFactory.Instance.MakeSubBullet(SubFirePositionLeft.position);
+        GameObject subBulletRight = BulletFactory.Instance.MakeSubBullet(SubFirePositionRight.position);
         subBulletLeft.GetComponent<SubBullet>().IsLeft = true;
-        GameObject subBulletRight = Instantiate(SubBulletPrefab, SubFirePositionRight.position, Quaternion.identity);
         subBulletRight.GetComponent<SubBullet>().IsLeft = false;
     }
 
     private void Fire()
     {
         SoundManager.Instance.PlaySFX(MainBulletSound);
-        GameObject bulletLeft = Instantiate(BulletPrefab, FirePositionLeft.position, Quaternion.identity);
-        GameObject bulletRight = Instantiate(BulletPrefab, FirePositionRight.position, Quaternion.identity);
+        BulletFactory.Instance.MakeBullet(FirePositionLeft.position);
+        BulletFactory.Instance.MakeBullet(FirePositionRight.position);
     }
 }

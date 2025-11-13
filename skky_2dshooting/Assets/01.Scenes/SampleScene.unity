@@ -748,7 +748,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 614139893}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &299975603
 MonoBehaviour:
@@ -1271,7 +1271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FollowPosition: {x: 0, y: 0, z: 0}
   ParentTransform: {fileID: 814785987}
-  FollowDelay: 30
+  FollowDelay: 40
 --- !u!212 &542898449
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1342,7 +1342,7 @@ MonoBehaviour:
   PetBulletPrefab: {fileID: 2860508320393129059, guid: 0a06dcd1bab99ce42912261cdf675e91, type: 3}
   PetFirePosition: {fileID: 846933782}
   PetCoolTime: 0.926
---- !u!1 &614139892
+--- !u!1 &584558519
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1350,30 +1350,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 614139893}
+  - component: {fileID: 584558521}
+  - component: {fileID: 584558520}
   m_Layer: 0
-  m_Name: Manager
+  m_Name: BulletFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &614139893
+--- !u!114 &584558520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584558519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa99a1edaed3364b89840d6a4b643a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletPrefab: {fileID: 2860508320393129059, guid: 63556e96bd8b07f4ab0dcdd34e1d5131, type: 3}
+  SubBulletPrefab: {fileID: 2860508320393129059, guid: c168913f10bc5a7479e7158b9bb2eba0, type: 3}
+  BoomPrefab: {fileID: 4824617154862228199, guid: d7403231ab4c59c4c996905f901b8442, type: 3}
+  PetBulletPrefab: {fileID: 2860508320393129059, guid: 0a06dcd1bab99ce42912261cdf675e91, type: 3}
+--- !u!4 &584558521
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 614139892}
+  m_GameObject: {fileID: 584558519}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 299975602}
-  - {fileID: 1922313869}
-  - {fileID: 1049594744}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
@@ -1658,7 +1672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FollowPosition: {x: 0, y: 0, z: 0}
   ParentTransform: {fileID: 55209739}
-  FollowDelay: 30
+  FollowDelay: 40
 --- !u!212 &814785989
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1966,12 +1980,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1049594743}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 614139893}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1049594745
 MonoBehaviour:
@@ -2141,7 +2155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FollowPosition: {x: 0, y: 0, z: 0}
   ParentTransform: {fileID: 542898447}
-  FollowDelay: 30
+  FollowDelay: 40
 --- !u!212 &1199960196
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2389,12 +2403,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1922313868}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 614139893}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1922313870
 MonoBehaviour:
@@ -2552,10 +2566,13 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 299975602}
+  - {fileID: 1922313869}
+  - {fileID: 1049594744}
   - {fileID: 55209739}
   - {fileID: 174630001}
   - {fileID: 1207924362}
   - {fileID: 354227750}
   - {fileID: 23133857}
   - {fileID: 402966690}
-  - {fileID: 614139893}
+  - {fileID: 584558521}
