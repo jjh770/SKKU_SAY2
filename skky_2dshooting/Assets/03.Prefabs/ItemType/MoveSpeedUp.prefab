@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemEffectPrefab: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
-  _moveUpSound: {fileID: 9107032274734131967}
+  _moveUpSound: {fileID: 8300000, guid: e824cd0aabbe2764e82afb6007f82a63, type: 3}
 --- !u!212 &7702744728660641932
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -26,6 +26,7 @@ public class PlayerFire : MonoBehaviour
 
     private bool _isAttackSpeedUp = false;
     private float _speedMultiflier = 0.7f;
+
     private float _attackSpeedUpTimer = 5f;
     private float _startMainCoolTime;
     private float _startSubCoolTime;
@@ -33,9 +34,9 @@ public class PlayerFire : MonoBehaviour
     private bool _autoFire = true;
 
     [Header("사운드")]
-    public AudioSource MainBulletSound;
-    public AudioSource SubBulletSound;
-    public AudioSource BoomSound;
+    public AudioClip MainBulletSound;
+    public AudioClip SubBulletSound;
+    public AudioClip BoomSound;
 
     private void Start()
     {
@@ -99,7 +100,7 @@ public class PlayerFire : MonoBehaviour
 
     private void BoomFire()
     {
-        SoundManager.Instance.PlaySFX(BoomSound.clip);
+        SoundManager.Instance.PlaySFX(BoomSound);
         Instantiate(BoomPrefab, Vector3.zero, Quaternion.identity);
     }
 
@@ -110,7 +111,7 @@ public class PlayerFire : MonoBehaviour
 
     private void SubFire()
     {
-        SoundManager.Instance.PlaySFX(SubBulletSound.clip);
+        SoundManager.Instance.PlaySFX(SubBulletSound);
         GameObject subBulletLeft = Instantiate(SubBulletPrefab, SubFirePositionLeft.position, Quaternion.identity);
         subBulletLeft.GetComponent<SubBullet>().IsLeft = true;
         GameObject subBulletRight = Instantiate(SubBulletPrefab, SubFirePositionRight.position, Quaternion.identity);
@@ -119,7 +120,7 @@ public class PlayerFire : MonoBehaviour
 
     private void Fire()
     {
-        SoundManager.Instance.PlaySFX(MainBulletSound.clip);
+        SoundManager.Instance.PlaySFX(MainBulletSound);
         GameObject bulletLeft = Instantiate(BulletPrefab, FirePositionLeft.position, Quaternion.identity);
         GameObject bulletRight = Instantiate(BulletPrefab, FirePositionRight.position, Quaternion.identity);
     }

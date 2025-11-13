@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private int _score = 100;
     [Header("적 사망 사운드")]
-    public AudioSource EnemyDieSound;
+    public AudioClip EnemyDieSound;
 
     private bool _isDead = false;
 
@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour
         // 응집도 : "데이터"와 "데이터를 조작하는 로직"이 얼마나 잘 모였나
         // 응집도를 높이로 필요한 것만 외부에 노출시키는 것을 캡슐화
         // AudioClip을 미리 public/SerializeField로 선언
-        SoundManager.Instance.PlaySFX(EnemyDieSound.clip);
+        SoundManager.Instance.PlaySFX(EnemyDieSound);
         MakeExplosionEffect();
         Destroy(this.gameObject);
 

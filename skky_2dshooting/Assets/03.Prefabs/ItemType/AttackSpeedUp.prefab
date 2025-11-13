@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemEffectPrefab: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
-  _attackUpSound: {fileID: 5173040660873193909}
+  _attackUpSound: {fileID: 8300000, guid: 1f406efb8e90d2748a51131d1a127fad, type: 3}
 --- !u!58 &3496767861898287478
 CircleCollider2D:
   m_ObjectHideFlags: 0

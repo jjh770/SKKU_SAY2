@@ -3,7 +3,7 @@ using UnityEngine;
 public class HealthyPointUp : ItemBase
 {
     [SerializeField]
-    private AudioSource _healthyUpSound;
+    private AudioClip _healthyUpSound;
     private int _healthyPointValue;
 
     protected override void ApplyItemEffect(GameObject player)
@@ -13,6 +13,6 @@ public class HealthyPointUp : ItemBase
     }
     protected override void ApplyItemSound()
     {
-        SoundManager.Instance.PlaySFX(_healthyUpSound.clip);
+        SoundManager.Instance.PlaySFX(_healthyUpSound);
     }
 }

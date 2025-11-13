@@ -3,7 +3,7 @@ using UnityEngine;
 public class MoveSpeedUp : ItemBase
 {
     [SerializeField]
-    private AudioSource _moveUpSound;
+    private AudioClip _moveUpSound;
     protected override void ApplyItemEffect(GameObject player)
     {
         PlayerMove playerMove = player.GetComponent<PlayerMove>();
@@ -11,6 +11,6 @@ public class MoveSpeedUp : ItemBase
     }
     protected override void ApplyItemSound()
     {
-        SoundManager.Instance.PlaySFX(_moveUpSound.clip);
+        SoundManager.Instance.PlaySFX(_moveUpSound);
     }
 }

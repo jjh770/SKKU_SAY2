@@ -314,7 +314,7 @@ MonoBehaviour:
   _itemTable: {fileID: 11400000, guid: 45da61e7e56fc114c8fbc3e5711c803c, type: 2}
   ExplosionPrefab: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
   _score: 200
-  EnemyDieSound: {fileID: 977361082195302966}
+  EnemyDieSound: {fileID: 8300000, guid: b397da8b4e6d74549a5e1d59c0d2332c, type: 3}
 --- !u!95 &6393674717614854220
 Animator:
   serializedVersion: 7
