@@ -53,6 +53,7 @@ public class Bullet : MonoBehaviour
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
         gameObject.SetActive(false);
+        BulletFactory.Instance.BulletToPool(gameObject);
 
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)

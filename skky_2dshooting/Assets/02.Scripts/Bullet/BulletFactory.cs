@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -22,7 +23,8 @@ public class BulletFactory : MonoBehaviour
     [SerializeField] private GameObject PetBulletPrefab;
 
     [Header("풀링")] public int PoolSize = 30;
-    private GameObject[] _bulletObjectPool; // 게임 내 총알을 담아둘 풀 : 탄창
+    //private GameObject[] _bulletObjectPool; // 게임 내 총알을 담아둘 풀 : 탄창
+    private Queue<GameObject> _bulletObjectPool;
 
     // Awake vs Start vs Lazy
     // Awake : 게임이 막 시작될 때 
@@ -30,7 +32,6 @@ public class BulletFactory : MonoBehaviour
     private void PoolInit()
     {
         // 1. 탄창을 총알을 담을 수 있는 크기의 배열을 만들어줌.
-        _bulletObjectPool = new GameObject[PoolSize];
         // 2. 탄창 크기만큼 반복해서
         for (int i = 0; i < PoolSize; i++)
         {
@@ -38,13 +39,12 @@ public class BulletFactory : MonoBehaviour
             GameObject bulletObject = Instantiate(BulletPrefab);
 
             // 4. 생성한 총알을 탄창(풀)에 담는다.
-            _bulletObjectPool[i] = bulletObject;
+            _bulletObjectPool.Enqueue(bulletObject);
 
             // 5. 비활성화 한다.
             bulletObject.SetActive(false);
         }
     }
-
 
     public GameObject MakeBullet(Vector3 position)
     {
@@ -54,7 +54,7 @@ public class BulletFactory : MonoBehaviour
         // 1. 탄창 안에 있는 총알들 중에서
         for (int i = 0; i < PoolSize; i++)
         {
-            GameObject bulletObject = _bulletObjectPool[i];
+            GameObject bulletObject = _bulletObjectPool.Dequeue();
 
             // 2. 비활성화된 총알 하나를 찾기
             if (bulletObject.activeInHierarchy == false)
@@ -70,6 +70,11 @@ public class BulletFactory : MonoBehaviour
 
         Debug.LogError("탄창에 총알 개수가 부족합니다.");
         return null;
+    }
+
+    public void BulletToPool(GameObject bullet)
+    {
+        _bulletObjectPool.Enqueue(bullet);
     }
 
     public GameObject MakeSubBullet(Vector3 position)
