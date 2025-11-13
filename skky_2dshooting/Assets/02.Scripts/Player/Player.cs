@@ -1,5 +1,5 @@
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -9,7 +9,8 @@ public class Player : MonoBehaviour
     private ScoreManager _scoreManager;
 
     [SerializeField]
-    private AudioSource _gameOverSound;
+    private AudioClip _gameOverSound;
+
     private void Start()
     {
         _playerFire = GetComponent<PlayerFire>();
@@ -51,9 +52,23 @@ public class Player : MonoBehaviour
 
     private void PlayerDie()
     {
-        SoundManager.Instance.PlaySFX(_gameOverSound.clip);
+        SoundManager.Instance.PlaySFX(_gameOverSound);
         _scoreManager.PlayerDie();
         _scoreManager.SaveBestScore();
-        Destroy(gameObject);
+
+        // 추가 조작을 막기 위해 관련 컴포넌트 비활성화
+        _playerMove.enabled = false;
+        _playerFire.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        // 사망 시점의 위치를 기준으로 시퀀스 생성 및 재생
+        DOTween.Sequence()
+            .Append(transform.DOMoveY(transform.position.y - 1f, 1f))
+            .Join(transform.DORotate(new Vector3(0, 0, 1080), 1f, RotateMode.FastBeyond360))
+            .Join(GetComponent<SpriteRenderer>().material.DOFade(0, 1f))
+            .AppendCallback(() =>
+            {
+                Destroy(gameObject);
+            });
     }
 }
