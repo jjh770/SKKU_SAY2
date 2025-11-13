@@ -1,5 +1,5 @@
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -9,9 +9,13 @@ public class Player : MonoBehaviour
     private ScoreManager _scoreManager;
 
     [SerializeField]
-    private AudioSource _gameOverSound;
+    private AudioClip _gameOverSound;
+
+    private DG.Tweening.Sequence _dieSequence;
+
     private void Start()
     {
+        MakeDieSequence();
         _playerFire = GetComponent<PlayerFire>();
         _playerMove = GetComponent<PlayerMove>();
         _scoreManager = FindAnyObjectByType<ScoreManager>();
@@ -49,11 +53,24 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void MakeDieSequence()
+    {
+        _dieSequence = DOTween.Sequence()
+            .Append(transform.DOMoveY(transform.position.y - 1f, 1f))
+            .Join(transform.DORotate(new Vector3(0, 0, 1080), 1f, RotateMode.FastBeyond360))
+            .Join(GetComponent<SpriteRenderer>().material.DOFade(0, 1f))
+            .AppendCallback(() =>
+            {
+                Destroy(gameObject);
+            })
+            .Pause();
+    }
+
     private void PlayerDie()
     {
-        SoundManager.Instance.PlaySFX(_gameOverSound.clip);
+        SoundManager.Instance.PlaySFX(_gameOverSound);
         _scoreManager.PlayerDie();
         _scoreManager.SaveBestScore();
-        Destroy(gameObject);
+        _dieSequence.Play();
     }
 }
