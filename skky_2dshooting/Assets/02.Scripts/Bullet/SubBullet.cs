@@ -76,7 +76,7 @@ public class SubBullet : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        BulletFactory.Instance.ReturnBullet(BulletType.Sub, gameObject);
+        BulletFactory.Instance.ReturnBullet(EBulletType.Sub, gameObject);
 
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)

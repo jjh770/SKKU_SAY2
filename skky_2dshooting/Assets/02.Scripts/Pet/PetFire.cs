@@ -34,6 +34,6 @@ public class PetFire : MonoBehaviour
 
     private void PetShoot()
     {
-        BulletFactory.Instance.MakeBullet(BulletType.Pet, PetFirePosition.position);
+        BulletFactory.Instance.MakeBullet(EBulletType.Pet, PetFirePosition.position);
     }
 }

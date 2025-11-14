@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("적 타입")]
+    private EEnemyType _enemyType;
     [Header("적 스탯")]
     public float Health = 100f;
+    private float _maxHealth = 100f;
     [Header("적 충돌 데미지")]
     public float Damage = 1f;
     [Header("아이템 드롭")]
@@ -21,24 +24,25 @@ public class Enemy : MonoBehaviour
 
     private Animator _animator;
     private ScoreManager _scoreManager;
-    private void Start()
+
+    private void Awake()
     {
         _animator = gameObject.GetComponent<Animator>();
         _scoreManager = FindAnyObjectByType<ScoreManager>();
     }
-    private void Update()
+    // 풀에서 다시 나올 때 초기화
+    private void OnEnable()
     {
-        CheckIsOut();
-    }
-    private void CheckIsOut()
-    {
-        if (transform.position.y < -GameManager.Instance.CameraHalfHeight - 1f
-            || transform.position.x > GameManager.Instance.CameraHalfWidth + 1f
-            || transform.position.x < -GameManager.Instance.CameraHalfWidth - 1f)
+        Health = _maxHealth;
+        _isDead = false;
+
+        if (_animator != null)
         {
-            Destroy(this.gameObject);
+            _animator.Rebind();
+            _animator.Update(0f);
         }
     }
+
     public void Hit(float damage)
     {
         if (_isDead) return;
@@ -60,10 +64,9 @@ public class Enemy : MonoBehaviour
         // 응집도를 높혀라
         // 응집도 : "데이터"와 "데이터를 조작하는 로직"이 얼마나 잘 모였나
         // 응집도를 높이로 필요한 것만 외부에 노출시키는 것을 캡슐화
-        // AudioClip을 미리 public/SerializeField로 선언
         SoundManager.Instance.PlaySFX(EnemyDieSound);
         MakeExplosionEffect();
-        Destroy(this.gameObject);
+        EnemyFactory.Instance.ReturnEnemy(_enemyType, gameObject);
 
         if (_scoreManager.CheckPlayerDead()) return;
         _scoreManager.AddScore(_score);
@@ -85,6 +88,16 @@ public class Enemy : MonoBehaviour
         {
             Instantiate(droppedItem, transform.position, Quaternion.identity);
         }
+    }
+
+    public void CheckEnemyType(EEnemyType type)
+    {
+        _enemyType = type;
+    }
+
+    public EEnemyType GetEnemyType()
+    {
+        return _enemyType;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

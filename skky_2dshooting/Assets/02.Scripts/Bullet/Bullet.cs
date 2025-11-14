@@ -43,7 +43,7 @@ public class Bullet : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        BulletFactory.Instance.ReturnBullet(BulletType.Bullet, gameObject);
+        BulletFactory.Instance.ReturnBullet(EBulletType.Bullet, gameObject);
 
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)
