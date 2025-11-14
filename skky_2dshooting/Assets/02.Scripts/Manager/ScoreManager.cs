@@ -37,11 +37,14 @@ public class ScoreManager : MonoBehaviour
 
     private int _thisGameScore = 0;
     private bool _isBossSpawned = false;
+    private int _bossSpawnScore = 5000;
 
     private bool _isPlayerDead = false;
 
     private UserData _userData;
     private const string SaveKey = "UserData";
+
+    public event System.Action OnBossSpawnRequired;
 
     private void Start()
     {
@@ -63,9 +66,9 @@ public class ScoreManager : MonoBehaviour
 
         _currentScore += score;
         _thisGameScore += score;
-        if (_thisGameScore >= 5000 && !_isBossSpawned)
+        if (_thisGameScore >= _bossSpawnScore && !_isBossSpawned)
         {
-            FindAnyObjectByType<EnemySpawner>().SpawnBoss();
+            OnBossSpawnRequired?.Invoke();
             _isBossSpawned = true;
         }
         Refresh();
@@ -76,7 +79,6 @@ public class ScoreManager : MonoBehaviour
     {
         _currentScoreTextUI.text = $"현재 점수 : {_currentScore:N0}";
         _bestScoreTextUI.text = $"최고 점수 : {_bestScore:N0}";
-        Debug.Log($"이번 게임 점수 : {_thisGameScore}");
     }
 
     private void Save()

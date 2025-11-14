@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: 0
   Health: 500
+  _maxHealth: 1000
   Damage: 1
   _itemTable: {fileID: 11400000, guid: 45da61e7e56fc114c8fbc3e5711c803c, type: 2}
   ExplosionPrefab: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}

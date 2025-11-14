@@ -7,8 +7,8 @@ public class Enemy : MonoBehaviour
     private EEnemyType _enemyType;
     [Header("적 스탯")]
     public float Health = 100f;
-    private float _maxHealth = 100f;
-    private float _maxBossHealth = 1000f;
+    [SerializeField]
+    private float _maxHealth;
     [Header("적 충돌 데미지")]
     public float Damage = 1f;
     [Header("아이템 드롭")]
@@ -35,14 +35,7 @@ public class Enemy : MonoBehaviour
     // 풀에서 다시 나올 때 초기화
     private void OnEnable()
     { 
-        if (_enemyType == EEnemyType.BossMovement)
-        {
-            Health = _maxBossHealth;
-        }
-        else
-        {
-            Health = _maxHealth;
-        }
+        Health = _maxHealth;
         _isDead = false;
 
         if (_animator != null)

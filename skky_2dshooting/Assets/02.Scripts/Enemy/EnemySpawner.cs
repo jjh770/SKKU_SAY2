@@ -41,6 +41,7 @@ public class EnemySpawner : MonoBehaviour
             _totalWeight += weight;
         }
         _player = GameObject.FindWithTag("Player");
+        ScoreManager.Instance.OnBossSpawnRequired += SpawnBoss;
     }
 
     private void Update()
@@ -95,5 +96,10 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         return (EEnemyType)type;
+    }
+
+    private void OnDestroy()
+    {
+        ScoreManager.Instance.OnBossSpawnRequired -= SpawnBoss;
     }
 }
