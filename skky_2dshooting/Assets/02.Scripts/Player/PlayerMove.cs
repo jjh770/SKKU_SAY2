@@ -43,7 +43,7 @@ public class PlayerMove : MonoBehaviour
     private float _moveSpeedUpTimer = 5f;
     private float _startMoveSpeed;
 
-    private bool _autoMove = false;
+    private bool _autoMove = true;
 
     private float _camHalfWidth;
     private float _camHalfHeight;
