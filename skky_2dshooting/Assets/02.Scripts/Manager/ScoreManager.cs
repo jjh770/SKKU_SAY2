@@ -94,8 +94,6 @@ public class ScoreManager : MonoBehaviour
         // JSON 문자열을 PlayerPrefs에 저장
         PlayerPrefs.SetString(SaveKey, jsonData);
         PlayerPrefs.Save();
-
-        Debug.Log($"데이터 저장 완료: {jsonData}");
     }
 
     public void SaveBestScore()

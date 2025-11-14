@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -45,12 +43,16 @@ public class PlayerMove : MonoBehaviour
     private float _moveSpeedUpTimer = 5f;
     private float _startMoveSpeed;
 
-    private bool _autoMove = true;
+    private bool _autoMove = false;
 
     private float _camHalfWidth;
     private float _camHalfHeight;
 
     private Animator _animator;
+
+    [Header("조이스틱")]
+    public Joystick JoyStick;
+
 
     private void Start()
     {
@@ -304,8 +306,12 @@ public class PlayerMove : MonoBehaviour
 
     private Vector2 ManualDirection()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        //float h = Input.GetAxis("Horizontal");
+        //float v = Input.GetAxis("Vertical");
+
+        float h = JoyStick.Horizontal;
+        float v = JoyStick.Vertical;
+
 
         Vector2 direction = new Vector2(h, v);
         direction.Normalize();
