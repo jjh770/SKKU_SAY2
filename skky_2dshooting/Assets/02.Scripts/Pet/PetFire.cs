@@ -34,6 +34,6 @@ public class PetFire : MonoBehaviour
 
     private void PetShoot()
     {
-        GameObject petBullet = Instantiate(PetBulletPrefab, PetFirePosition.position, Quaternion.identity);
+        BulletFactory.Instance.MakeBullet(BulletType.Pet, PetFirePosition.position);
     }
 }

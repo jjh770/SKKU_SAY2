@@ -9,7 +9,6 @@ public class PetBullet : MonoBehaviour
     private void Update()
     {
         MovePetBullet();
-        CheckIsOut();
     }
 
     private void MovePetBullet()
@@ -19,18 +18,12 @@ public class PetBullet : MonoBehaviour
         Vector2 newPosition = position + direction * _petBulletSpeed * Time.deltaTime;
         transform.position = newPosition;
     }
-    private void CheckIsOut()
-    {
-        if (transform.position.y > GameManager.Instance.CameraHalfHeight + 1f)
-        {
-            Destroy(this.gameObject);
-        }
-    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        Destroy(this.gameObject);
+        BulletFactory.Instance.ReturnBullet(BulletType.Pet, gameObject);
 
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)

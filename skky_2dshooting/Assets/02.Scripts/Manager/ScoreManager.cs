@@ -4,6 +4,24 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
+    // 매니저는 단 하나여야만 한다
+    // 전역적인 접근점을 제공해야함.
+    // 게임 개발에서는 보통 Manager(관리자) 클래스를 보통 싱글 톤 패턴으로 사용하는 것이 관행이다.
+    // 인스턴스가 단 하나임을 보장하고 접근이 용이하게 하기 위해 싱글톤 패턴을 사용.
+
+    private static ScoreManager _instance;
+    public static ScoreManager Instance => _instance;
+    //public static ScoreManager Instance = null;
+
+    private void Awake()
+    {
+        if (_instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        _instance = this;
+    }
     // 목표 :적을 죽일 때마다 점수를 올리고, 현재 점수를 UI에 표시한다.
 
     // 필요 속성
