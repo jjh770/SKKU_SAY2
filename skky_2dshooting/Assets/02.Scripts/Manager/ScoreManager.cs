@@ -35,6 +35,9 @@ public class ScoreManager : MonoBehaviour
     private int _currentScore = 0;
     private int _bestScore = 0;
 
+    private int _thisGameScore = 0;
+    private bool _isBossSpawned = false;
+
     private bool _isPlayerDead = false;
 
     private UserData _userData;
@@ -59,6 +62,12 @@ public class ScoreManager : MonoBehaviour
         _currentScoreTextUI.rectTransform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 10, 1);
 
         _currentScore += score;
+        _thisGameScore += score;
+        if (_thisGameScore >= 5000 && !_isBossSpawned)
+        {
+            FindAnyObjectByType<EnemySpawner>().SpawnBoss();
+            _isBossSpawned = true;
+        }
         Refresh();
         Save();
     }
@@ -67,6 +76,7 @@ public class ScoreManager : MonoBehaviour
     {
         _currentScoreTextUI.text = $"현재 점수 : {_currentScore:N0}";
         _bestScoreTextUI.text = $"최고 점수 : {_bestScore:N0}";
+        Debug.Log($"이번 게임 점수 : {_thisGameScore}");
     }
 
     private void Save()

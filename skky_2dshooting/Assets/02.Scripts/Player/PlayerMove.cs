@@ -300,8 +300,6 @@ public class PlayerMove : MonoBehaviour
     {
         Vector2 newPosition = ManualDirection();
         transform.position = WrapPosition(newPosition);
-
-
     }
 
     private Vector2 ManualDirection()
