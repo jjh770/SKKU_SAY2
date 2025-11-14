@@ -19,18 +19,19 @@ public class BulletFactory : MonoBehaviour
         Instance = this;
         PoolInit();
     }
-    [Header("필살기 프리팹")] // 필살기는 어차피 1개
-    [SerializeField] private GameObject BoomPrefab;
+    // 필살기는 어차피 1개.
+    [Header("필살기 프리팹")] 
+    [SerializeField] private GameObject _boomPrefab;
 
     [System.Serializable]
     public class PoolInfo
     {
         public BulletType Type;
         public GameObject Prefab;
-        public int poolSize = 5;
+        public int PoolSize = 10;
     }
 
-    [SerializeField] private List<PoolInfo> poolInfos;
+    [SerializeField] private List<PoolInfo> _poolInfos;
     private Dictionary<BulletType, Queue<GameObject>> _typePools;
     
 
@@ -38,11 +39,11 @@ public class BulletFactory : MonoBehaviour
     {
         _typePools = new Dictionary<BulletType, Queue<GameObject>>();
 
-        foreach (var info in poolInfos)
+        foreach (var info in _poolInfos)
         {
             Queue<GameObject> bulletPool = new Queue<GameObject>();
 
-            for (int i = 0; i < info.poolSize; i++)
+            for (int i = 0; i < info.PoolSize; i++)
             {
                 GameObject bulletObject = Instantiate(info.Prefab, transform);
                 bulletObject.SetActive(false);
@@ -65,7 +66,7 @@ public class BulletFactory : MonoBehaviour
         }
         else
         {
-            PoolInfo info = poolInfos.Find(x => x.Type == type);
+            PoolInfo info = _poolInfos.Find(x => x.Type == type);
             bulletObject = Instantiate(info.Prefab, transform);
         }
         bulletObject.transform.position = position;
@@ -94,6 +95,6 @@ public class BulletFactory : MonoBehaviour
 
     public GameObject MakeBoom(Vector3 position)
     {
-        return Instantiate(BoomPrefab, position, Quaternion.identity, transform);
+        return Instantiate(_boomPrefab, position, Quaternion.identity, transform);
     }
 }

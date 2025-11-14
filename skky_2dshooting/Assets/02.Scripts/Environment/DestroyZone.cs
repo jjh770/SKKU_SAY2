@@ -6,17 +6,17 @@ public class DestroyZone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        switch (other.name)
+        if (other.CompareTag("Bullet"))
         {
-            case "Bullet(Clone)":
-                BulletFactory.Instance.ReturnBullet(BulletType.Bullet, other.gameObject);
-                break;
-            case "SubBullet(Clone)":
-                BulletFactory.Instance.ReturnBullet(BulletType.Sub, other.gameObject);
-                break;
-            case "PetBullet(Clone)":
-                BulletFactory.Instance.ReturnBullet(BulletType.Pet, other.gameObject);
-                break;
+            BulletFactory.Instance.ReturnBullet(BulletType.Bullet, other.gameObject);
+        }
+        else if (other.CompareTag("SubBullet"))
+        {
+            BulletFactory.Instance.ReturnBullet(BulletType.Sub, other.gameObject);
+        }
+        else if (other.CompareTag("PetBullet"))
+        {
+            BulletFactory.Instance.ReturnBullet(BulletType.Pet, other.gameObject);
         }
     }
 }

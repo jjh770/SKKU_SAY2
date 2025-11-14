@@ -455,7 +455,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -465,7 +465,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &55209743
 MonoBehaviour:
@@ -1578,17 +1578,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa99a1edaed3364b89840d6a4b643a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoomPrefab: {fileID: 4824617154862228199, guid: d7403231ab4c59c4c996905f901b8442, type: 3}
-  poolInfos:
+  _boomPrefab: {fileID: 4824617154862228199, guid: d7403231ab4c59c4c996905f901b8442, type: 3}
+  _poolInfos:
   - Type: 0
     Prefab: {fileID: 2860508320393129059, guid: 63556e96bd8b07f4ab0dcdd34e1d5131, type: 3}
-    poolSize: 30
+    PoolSize: 10
   - Type: 1
     Prefab: {fileID: 2860508320393129059, guid: c168913f10bc5a7479e7158b9bb2eba0, type: 3}
-    poolSize: 30
+    PoolSize: 10
   - Type: 2
     Prefab: {fileID: 2860508320393129059, guid: 0a06dcd1bab99ce42912261cdf675e91, type: 3}
-    poolSize: 30
+    PoolSize: 10
 --- !u!4 &584558521
 Transform:
   m_ObjectHideFlags: 0
