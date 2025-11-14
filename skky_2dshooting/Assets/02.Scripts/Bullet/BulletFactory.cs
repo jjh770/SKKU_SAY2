@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-public enum BulletType
+public enum EBulletType
 {
     Bullet,
     Sub,
@@ -26,18 +26,18 @@ public class BulletFactory : MonoBehaviour
     [System.Serializable]
     public class PoolInfo
     {
-        public BulletType Type;
+        public EBulletType Type;
         public GameObject Prefab;
         public int PoolSize = 10;
     }
 
     [SerializeField] private List<PoolInfo> _poolInfos;
-    private Dictionary<BulletType, Queue<GameObject>> _typePools;
+    private Dictionary<EBulletType, Queue<GameObject>> _typePools;
     
 
     private void PoolInit()
     {
-        _typePools = new Dictionary<BulletType, Queue<GameObject>>();
+        _typePools = new Dictionary<EBulletType, Queue<GameObject>>();
 
         foreach (var info in _poolInfos)
         {
@@ -53,7 +53,7 @@ public class BulletFactory : MonoBehaviour
         }
     }
 
-    public GameObject MakeBullet(BulletType type, Vector3 position)
+    public GameObject MakeBullet(EBulletType type, Vector3 position)
     {
         if (!_typePools.ContainsKey(type)) return null;
 
@@ -74,7 +74,7 @@ public class BulletFactory : MonoBehaviour
         return bulletObject;
     }
 
-    public void ReturnBullet(BulletType type, GameObject bulletObject)
+    public void ReturnBullet(EBulletType type, GameObject bulletObject)
     {
         if (_typePools.ContainsKey(type))
         {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum EMovementType
+public enum EEnemyType
 {
     DirectionalMovement,
     ChasingMovement,
@@ -11,9 +11,6 @@ public class EnemySpawner : MonoBehaviour
 {
     private GameObject _player = null;
     private GameObject _enemy = null;
-    [Header("적 프리팹")]
-    [SerializeField]
-    private GameObject[] _enemyPrefab;
 
     [Header("스폰 시간")]
     [SerializeField]
@@ -66,12 +63,12 @@ public class EnemySpawner : MonoBehaviour
         if (_player == null) return;
 
         ResetCoolTime();
-        EMovementType type = GetMovementType();
-        _enemy = Instantiate(_enemyPrefab[(int)type]);
+        EEnemyType type = GetEnemyType();
+        _enemy = EnemyFactory.Instance.GetEnemy(type);
         _enemy.transform.position = new Vector2(UnityEngine.Random.Range(_minSpawnX, _maxSpawnX), UnityEngine.Random.Range(_minSpawnY, _maxSpawnY));
     }
 
-    private EMovementType GetMovementType()
+    private EEnemyType GetEnemyType()
     {
         float randomValue = UnityEngine.Random.value;
         float totalValue = 0.0f;
@@ -85,6 +82,6 @@ public class EnemySpawner : MonoBehaviour
                 break;
             }
         }
-        return (EMovementType)type;
+        return (EEnemyType)type;
     }
 }

@@ -23,7 +23,7 @@ public class PetBullet : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        BulletFactory.Instance.ReturnBullet(BulletType.Pet, gameObject);
+        BulletFactory.Instance.ReturnBullet(EBulletType.Pet, gameObject);
 
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)

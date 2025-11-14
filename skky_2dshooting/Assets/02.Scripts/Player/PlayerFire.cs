@@ -108,8 +108,8 @@ public class PlayerFire : MonoBehaviour
     private void SubFire()
     {
         SoundManager.Instance.PlaySFX(SubBulletSound);
-        GameObject subBulletLeft = BulletFactory.Instance.MakeBullet(BulletType.Sub, SubFirePositionLeft.position);
-        GameObject subBulletRight = BulletFactory.Instance.MakeBullet(BulletType.Sub, SubFirePositionRight.position);
+        GameObject subBulletLeft = BulletFactory.Instance.MakeBullet(EBulletType.Sub, SubFirePositionLeft.position);
+        GameObject subBulletRight = BulletFactory.Instance.MakeBullet(EBulletType.Sub, SubFirePositionRight.position);
         subBulletLeft.GetComponent<SubBullet>().IsLeft = true;
         subBulletRight.GetComponent<SubBullet>().IsLeft = false;
     }
@@ -117,7 +117,7 @@ public class PlayerFire : MonoBehaviour
     private void Fire()
     {
         SoundManager.Instance.PlaySFX(MainBulletSound);
-        BulletFactory.Instance.MakeBullet(BulletType.Bullet, FirePositionLeft.position);
-        BulletFactory.Instance.MakeBullet(BulletType.Bullet, FirePositionRight.position);
+        BulletFactory.Instance.MakeBullet(EBulletType.Bullet, FirePositionLeft.position);
+        BulletFactory.Instance.MakeBullet(EBulletType.Bullet, FirePositionRight.position);
     }
 }
