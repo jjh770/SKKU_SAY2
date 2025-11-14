@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
@@ -114,7 +113,7 @@ public class PlayerFire : MonoBehaviour
         subBulletRight.GetComponent<SubBullet>().IsLeft = false;
     }
 
-    private void Fire()
+    public void Fire()
     {
         SoundManager.Instance.PlaySFX(MainBulletSound);
         BulletFactory.Instance.MakeBullet(EBulletType.Bullet, FirePositionLeft.position);
