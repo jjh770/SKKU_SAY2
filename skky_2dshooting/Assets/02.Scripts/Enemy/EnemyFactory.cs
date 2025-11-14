@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,7 +48,6 @@ public class EnemyFactory : MonoBehaviour
     {
         if (!_enemyPools.ContainsKey(enemyType)) return null;
 
-        Queue<GameObject> enemyPool = _enemyPools[enemyType];
         GameObject enemyObject;
 
         if (_enemyPools[enemyType].Count > 0)
