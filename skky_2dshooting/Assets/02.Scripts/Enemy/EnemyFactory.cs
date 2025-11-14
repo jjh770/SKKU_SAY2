@@ -16,33 +16,55 @@ public class EnemyFactory : MonoBehaviour
         Instance = this;
         InitializePools();  
     }
-
+    [System.Serializable]
+    public class EnemyPoolInfo
+    {
+        public EEnemyType Type;
+        public GameObject Prefab;
+        public int PoolSize = 5;
+    }
     [Header("적 프리팹")]
-    [SerializeField] private GameObject[] _enemyPrefab;
+    [SerializeField] private List<EnemyPoolInfo> _enemyInfos;
     private Dictionary<EEnemyType, Queue<GameObject>> _enemyPools;
 
     private void InitializePools()
     {
         _enemyPools = new Dictionary<EEnemyType, Queue<GameObject>>();
 
-        for (int i = 0; i < _enemyPrefab.Length; i++)
+        foreach (var info in _enemyInfos)
         {
-            _enemyPools.Add((EEnemyType)i, new Queue<GameObject>());
+            Queue<GameObject> enemyPool = new Queue<GameObject>();
+            for (int i = 0; i < info.PoolSize; i++)
+            {
+                GameObject enemyObject = Instantiate(info.Prefab, transform);
+                enemyObject.GetComponent<Enemy>().SetEnemyType(info.Type);
+                enemyObject.SetActive(false);
+                enemyPool.Enqueue(enemyObject);
+            }
+            _enemyPools.Add(info.Type, enemyPool);
         }
     }
 
     public GameObject GetEnemy(EEnemyType enemyType)
     {
+        if (!_enemyPools.ContainsKey(enemyType)) return null;
+
+        Queue<GameObject> enemyPool = _enemyPools[enemyType];
+        GameObject enemyObject;
+
         if (_enemyPools[enemyType].Count > 0)
         {
-            GameObject enemy = _enemyPools[enemyType].Dequeue();
-            enemy.SetActive(true);
-            enemy.GetComponent<Enemy>().CheckEnemyType(enemyType);
-            return enemy;
+            enemyObject = _enemyPools[enemyType].Dequeue();
         }
-        GameObject newEnemy = Instantiate(_enemyPrefab[(int)enemyType], transform);
-        newEnemy.GetComponent<Enemy>().CheckEnemyType(enemyType);  // 추가!
-        return newEnemy;
+        else
+        {
+            EnemyPoolInfo enemyInfo = _enemyInfos.Find(x => x.Type == enemyType);
+            enemyObject = Instantiate(enemyInfo.Prefab, transform);
+            enemyObject.GetComponent<Enemy>().SetEnemyType(enemyType);
+        }
+
+        enemyObject.SetActive(true);
+        return enemyObject;
     }
     public void ReturnEnemy(EEnemyType enemyType, GameObject enemy)
     {

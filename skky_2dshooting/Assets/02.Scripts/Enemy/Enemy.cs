@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void CheckEnemyType(EEnemyType type)
+    public void SetEnemyType(EEnemyType type)
     {
         _enemyType = type;
     }
