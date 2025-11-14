@@ -293,7 +293,7 @@ MonoBehaviour:
   _minSpeed: 1
   _maxSpeed: 10
   _speedChangeAmount: 0.5
-  _initPosition: {x: 0, y: -5}
+  _initPosition: {x: 0, y: -4.5}
   _detectAttackRange: 10
   _detectAvoidRange: 4
   _avoidanceThreshold: 1
@@ -362,7 +362,7 @@ Transform:
   m_GameObject: {fileID: 55209736}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4, z: 0}
+  m_LocalPosition: {x: 0, y: -4.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2587,7 +2587,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1122075759}
-  - {fileID: 1485546150}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1237812929
@@ -3052,12 +3051,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485546149}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1207924362}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1485546151
 MonoBehaviour:
@@ -3081,6 +3080,9 @@ MonoBehaviour:
   - Type: 2
     Prefab: {fileID: 3797397295862767673, guid: 36a685f30068de14993f86de15dce902, type: 3}
     PoolSize: 5
+  - Type: 3
+    Prefab: {fileID: 7609422237644797415, guid: ec650f15ed944114a9125087d4d55bc7, type: 3}
+    PoolSize: 1
 --- !u!1 &1913318831
 GameObject:
   m_ObjectHideFlags: 0
@@ -3487,4 +3489,5 @@ SceneRoots:
   - {fileID: 23133857}
   - {fileID: 402966690}
   - {fileID: 584558521}
+  - {fileID: 1485546150}
   - {fileID: 466608559}

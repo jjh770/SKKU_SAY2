@@ -3,10 +3,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Header("적 타입")]
+    [SerializeField]
     private EEnemyType _enemyType;
     [Header("적 스탯")]
     public float Health = 100f;
-    private float _maxHealth = 100f;
+    [SerializeField]
+    private float _maxHealth;
     [Header("적 충돌 데미지")]
     public float Damage = 1f;
     [Header("아이템 드롭")]
@@ -32,7 +34,7 @@ public class Enemy : MonoBehaviour
     }
     // 풀에서 다시 나올 때 초기화
     private void OnEnable()
-    {
+    { 
         Health = _maxHealth;
         _isDead = false;
 

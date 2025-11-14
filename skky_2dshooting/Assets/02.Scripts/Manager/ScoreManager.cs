@@ -35,10 +35,16 @@ public class ScoreManager : MonoBehaviour
     private int _currentScore = 0;
     private int _bestScore = 0;
 
+    private int _thisGameScore = 0;
+    private bool _isBossSpawned = false;
+    private int _bossSpawnScore = 5000;
+
     private bool _isPlayerDead = false;
 
     private UserData _userData;
     private const string SaveKey = "UserData";
+
+    public event System.Action OnBossSpawnRequired;
 
     private void Start()
     {
@@ -59,6 +65,12 @@ public class ScoreManager : MonoBehaviour
         _currentScoreTextUI.rectTransform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 10, 1);
 
         _currentScore += score;
+        _thisGameScore += score;
+        if (_thisGameScore >= _bossSpawnScore && !_isBossSpawned)
+        {
+            OnBossSpawnRequired?.Invoke();
+            _isBossSpawned = true;
+        }
         Refresh();
         Save();
     }

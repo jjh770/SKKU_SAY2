@@ -5,6 +5,7 @@ public enum EEnemyType
     DirectionalMovement,
     ChasingMovement,
     RushMovement,
+    BossMovement,
 }
 
 public class EnemySpawner : MonoBehaviour
@@ -23,13 +24,15 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("스폰 확률")]
     private int _totalWeight = 0;
-    private int[] _probabilityWeights = new int[] { 2, 1, 1 };
+    private int[] _probabilityWeights = new int[] { 2, 1, 1, 0 };
 
     [Header("스폰시 위치 오프셋")]
     private float _minSpawnX = -2.5f;
     private float _maxSpawnX = 2.5f;
     private float _minSpawnY = 4.0f;
     private float _maxSpawnY = 5.5f;
+
+    private Vector2 _bossSpawnVector = new Vector2(0, 7f);
 
     private void Start()
     {
@@ -38,6 +41,7 @@ public class EnemySpawner : MonoBehaviour
             _totalWeight += weight;
         }
         _player = GameObject.FindWithTag("Player");
+        ScoreManager.Instance.OnBossSpawnRequired += SpawnBoss;
     }
 
     private void Update()
@@ -66,6 +70,15 @@ public class EnemySpawner : MonoBehaviour
         EEnemyType type = GetEnemyType();
         _enemy = EnemyFactory.Instance.GetEnemy(type);
         _enemy.transform.position = new Vector2(UnityEngine.Random.Range(_minSpawnX, _maxSpawnX), UnityEngine.Random.Range(_minSpawnY, _maxSpawnY));
+        return;
+    }
+
+    public void SpawnBoss()
+    {
+        if (_player == null) return;
+
+        _enemy = EnemyFactory.Instance.GetEnemy(EEnemyType.BossMovement);
+        _enemy.transform.position = _bossSpawnVector;
     }
 
     private EEnemyType GetEnemyType()
@@ -83,5 +96,10 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         return (EEnemyType)type;
+    }
+
+    private void OnDestroy()
+    {
+        ScoreManager.Instance.OnBossSpawnRequired -= SpawnBoss;
     }
 }
