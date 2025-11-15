@@ -34,7 +34,6 @@ public class EnemySpawner : MonoBehaviour
 
     private Vector2 _bossSpawnVector = new Vector2(0, 7.5f);
     private bool _isBossSpawn = false;
-    private bool _isBossClear = false;
 
     private void Start()
     {
@@ -44,6 +43,7 @@ public class EnemySpawner : MonoBehaviour
         }
         _player = GameObject.FindWithTag("Player");
         ScoreManager.Instance.OnBossSpawnRequired += SpawnBoss;
+        Enemy.OnBossDeadFinished += FinishBossTurn;
     }
 
     private void Update()
@@ -76,12 +76,17 @@ public class EnemySpawner : MonoBehaviour
         return;
     }
 
-    public void SpawnBoss()
+    private void SpawnBoss()
     {
         if (_player == null) return;
         _isBossSpawn = true;
         _enemy = EnemyFactory.Instance.GetEnemy(EEnemyType.BossMovement);
         _enemy.transform.position = _bossSpawnVector;
+    }
+
+    private void FinishBossTurn()
+    {
+        _isBossSpawn = false;
     }
 
     private EEnemyType GetEnemyType()
@@ -104,5 +109,6 @@ public class EnemySpawner : MonoBehaviour
     private void OnDestroy()
     {
         ScoreManager.Instance.OnBossSpawnRequired -= SpawnBoss;
+        Enemy.OnBossDeadFinished -= FinishBossTurn;
     }
 }

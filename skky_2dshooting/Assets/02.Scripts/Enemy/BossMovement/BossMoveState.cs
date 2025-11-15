@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class BossMoveState : IBossState
+public class BossShootingState : IBossState
 {
     private BossMovement _boss;
     private float _speed;
 
-    public BossMoveState(BossMovement boss)
+    public BossShootingState(BossMovement boss)
     {
         _boss = boss;
         _speed = boss.DefaultSpeed;
@@ -14,7 +14,10 @@ public class BossMoveState : IBossState
     public void Enter()
     {
         // 최초 진입 시 방향 설정
-        //_boss.SetDirectionToPlayer();
+        _boss.ShootingMotion(() =>
+        {
+            _boss.SetState(new BossDefeatState(_boss));
+        });
         Debug.Log("Move");
     }
 

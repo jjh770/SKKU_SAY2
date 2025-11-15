@@ -3,31 +3,21 @@ using UnityEngine;
 public class BossDefeatState : IBossState
 {
     private BossMovement _boss;
-    private float _startTime;
-    private float _fallTime;
 
-    public BossDefeatState(BossMovement boss, float fallTime)
+    public BossDefeatState(BossMovement boss)
     {
         _boss = boss;
-        _fallTime = fallTime;
     }
 
     public void Enter()
     {
-        _startTime = Time.time;
+        _boss.DefeatMotion();
         Debug.Log("패배");
     }
 
     public void Update()
     {
-        if (Time.time - _startTime > _fallTime)
-        {
-            _boss.SetState(new BossMoveState(_boss));
-        }
-        else
-        {
-            //_boss.SetDirectionToPlayer();
-        }
+
     }
 
     public void Exit()

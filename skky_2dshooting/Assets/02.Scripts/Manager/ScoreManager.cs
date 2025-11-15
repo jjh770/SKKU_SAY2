@@ -37,7 +37,7 @@ public class ScoreManager : MonoBehaviour
 
     private int _thisGameScore = 0;
     private bool _isBossSpawned = false;
-    private int _bossSpawnScore = 5000;
+    private int _bossSpawnScore = 1000;
 
     private bool _isPlayerDead = false;
 
