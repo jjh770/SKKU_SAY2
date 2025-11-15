@@ -74,20 +74,19 @@ public class BulletFactory : MonoBehaviour
 
     public void ReturnBullet(EBulletType type, GameObject bulletObject)
     {
-        if (_typePools.ContainsKey(type))
+        if (!_typePools.ContainsKey(type)) return;
+
+        bulletObject.transform.rotation = Quaternion.identity;
+        bulletObject.transform.SetParent(transform);  
+
+        Rigidbody2D rigidBody = bulletObject.GetComponent<Rigidbody2D>();
+        if (rigidBody != null)
         {
-            bulletObject.transform.rotation = Quaternion.identity;
-            bulletObject.transform.SetParent(transform);  
-
-            Rigidbody2D rigidBody = bulletObject.GetComponent<Rigidbody2D>();
-            if (rigidBody != null)
-            {
-                rigidBody.linearVelocity = Vector2.zero;
-                rigidBody.angularVelocity = 0f;
-            }
-
-            bulletObject.SetActive(false);
-            _typePools[type].Enqueue(bulletObject);
+            rigidBody.linearVelocity = Vector2.zero;
+            rigidBody.angularVelocity = 0f;
         }
+
+        bulletObject.SetActive(false);
+        _typePools[type].Enqueue(bulletObject);
     }
 }

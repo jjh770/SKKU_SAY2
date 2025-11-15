@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyFactory : MonoBehaviour
 {
     public static EnemyFactory Instance { get; private set; }
-
+    
     private void Awake()
     {
         if (Instance != null)

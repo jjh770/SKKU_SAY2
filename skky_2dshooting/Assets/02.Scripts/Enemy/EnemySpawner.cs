@@ -32,7 +32,9 @@ public class EnemySpawner : MonoBehaviour
     private float _minSpawnY = 4.0f;
     private float _maxSpawnY = 5.5f;
 
-    private Vector2 _bossSpawnVector = new Vector2(0, 7f);
+    private Vector2 _bossSpawnVector = new Vector2(0, 7.5f);
+    private bool _isBossSpawn = false;
+    private bool _isBossClear = false;
 
     private void Start()
     {
@@ -65,6 +67,7 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy()
     {
         if (_player == null) return;
+        if (_isBossSpawn == true) return;
 
         ResetCoolTime();
         EEnemyType type = GetEnemyType();
@@ -76,7 +79,7 @@ public class EnemySpawner : MonoBehaviour
     public void SpawnBoss()
     {
         if (_player == null) return;
-
+        _isBossSpawn = true;
         _enemy = EnemyFactory.Instance.GetEnemy(EEnemyType.BossMovement);
         _enemy.transform.position = _bossSpawnVector;
     }
