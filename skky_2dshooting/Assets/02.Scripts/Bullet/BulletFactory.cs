@@ -5,6 +5,7 @@ public enum EBulletType
     Bullet,
     Sub,
     Pet,
+    Boom,
 }
 public class BulletFactory : MonoBehaviour
 {
@@ -19,9 +20,6 @@ public class BulletFactory : MonoBehaviour
         Instance = this;
         PoolInit();
     }
-    // 필살기는 어차피 1개.
-    [Header("필살기 프리팹")] 
-    [SerializeField] private GameObject _boomPrefab;
 
     [System.Serializable]
     public class PoolInfo
@@ -91,10 +89,5 @@ public class BulletFactory : MonoBehaviour
             bulletObject.SetActive(false);
             _typePools[type].Enqueue(bulletObject);
         }
-    }
-
-    public GameObject MakeBoom(Vector3 position)
-    {
-        return Instantiate(_boomPrefab, position, Quaternion.identity, transform);
     }
 }

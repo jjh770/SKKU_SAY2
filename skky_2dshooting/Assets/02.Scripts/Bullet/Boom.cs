@@ -8,7 +8,8 @@ public class Boom : MonoBehaviour
     [SerializeField] private float _maxScale = 1.5f;
     [SerializeField] private AnimationCurve _scaleCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [SerializeField] private float _boomDamage = 999f;
-    private void Awake()
+    
+    private void OnEnable()
     {
         transform.localScale = Vector3.zero;
         StartCoroutine(BoostingCoroutine());
