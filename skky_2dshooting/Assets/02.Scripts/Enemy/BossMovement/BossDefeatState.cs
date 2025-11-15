@@ -12,7 +12,6 @@ public class BossDefeatState : IBossState
     public void Enter()
     {
         _boss.DefeatMotion();
-        Debug.Log("패배");
     }
 
     public void Update()

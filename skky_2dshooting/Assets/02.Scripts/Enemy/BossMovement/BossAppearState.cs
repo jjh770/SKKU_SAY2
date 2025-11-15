@@ -18,7 +18,6 @@ public class BossAppearState : IBossState
         {
             _boss.SetState(new BossShootingState(_boss));
         });
-        Debug.Log("Appear");
     }
     // 말그대로 Update
     public void Update()

@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 // 현재 상태가 뭔지

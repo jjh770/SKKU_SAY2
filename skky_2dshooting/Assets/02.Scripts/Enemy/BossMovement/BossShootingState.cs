@@ -19,12 +19,11 @@ public class BossShootingState : IBossState
             _boss.SetState(new BossDefeatState(_boss));
         });
         _bossFire.IsBulletFire(true);
-        Debug.Log("Move");
     }
 
     public void Update()
     {
-        //_boss.MoveAlongDirection(_speed);
+
     }
 
     public void Exit()
