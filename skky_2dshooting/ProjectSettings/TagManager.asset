@@ -8,6 +8,10 @@ TagManager:
   - Bullet
   - SubBullet
   - PetBullet
+  - FxTemporaire
+  - BossDirectionalBullet
+  - BossCircleBullet
+  - BossDelayBullet
   layers:
   - Default
   - TransparentFX

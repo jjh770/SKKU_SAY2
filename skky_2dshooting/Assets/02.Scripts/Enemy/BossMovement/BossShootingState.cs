@@ -3,21 +3,22 @@ using UnityEngine;
 public class BossShootingState : IBossState
 {
     private BossMovement _boss;
-    private float _speed;
+    private BossFire _bossFire;
 
     public BossShootingState(BossMovement boss)
     {
         _boss = boss;
-        _speed = boss.DefaultSpeed;
+        _bossFire = _boss.GetComponent<BossFire>();
     }
 
     public void Enter()
     {
-        // 최초 진입 시 방향 설정
         _boss.ShootingMotion(() =>
         {
+            _bossFire.IsBulletFire(false);
             _boss.SetState(new BossDefeatState(_boss));
         });
+        _bossFire.IsBulletFire(true);
         Debug.Log("Move");
     }
 

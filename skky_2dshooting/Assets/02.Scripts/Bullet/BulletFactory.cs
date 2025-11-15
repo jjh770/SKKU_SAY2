@@ -6,6 +6,9 @@ public enum EBulletType
     Sub,
     Pet,
     Boom,
+    BossDirectional,
+    BossCircle,
+    BossDelay,
 }
 public class BulletFactory : MonoBehaviour
 {
@@ -44,6 +47,7 @@ public class BulletFactory : MonoBehaviour
             for (int i = 0; i < info.PoolSize; i++)
             {
                 GameObject bulletObject = Instantiate(info.Prefab, transform);
+
                 bulletObject.SetActive(false);
                 bulletPool.Enqueue(bulletObject);
             }
