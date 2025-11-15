@@ -96,7 +96,7 @@ public class PlayerFire : MonoBehaviour
     private void BoomFire()
     {
         SoundManager.Instance.PlaySFX(BoomSound);
-        BulletFactory.Instance.MakeBoom(Vector3.zero);
+        BulletFactory.Instance.MakeBullet(EBulletType.Boom, Vector3.zero);
     }
 
     public void AutoMode(bool isThatAuto)

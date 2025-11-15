@@ -5,6 +5,10 @@ public enum EBulletType
     Bullet,
     Sub,
     Pet,
+    Boom,
+    BossDirectional,
+    BossCircle,
+    BossDelay,
 }
 public class BulletFactory : MonoBehaviour
 {
@@ -19,9 +23,6 @@ public class BulletFactory : MonoBehaviour
         Instance = this;
         PoolInit();
     }
-    // 필살기는 어차피 1개.
-    [Header("필살기 프리팹")] 
-    [SerializeField] private GameObject _boomPrefab;
 
     [System.Serializable]
     public class PoolInfo
@@ -46,6 +47,7 @@ public class BulletFactory : MonoBehaviour
             for (int i = 0; i < info.PoolSize; i++)
             {
                 GameObject bulletObject = Instantiate(info.Prefab, transform);
+
                 bulletObject.SetActive(false);
                 bulletPool.Enqueue(bulletObject);
             }
@@ -76,25 +78,19 @@ public class BulletFactory : MonoBehaviour
 
     public void ReturnBullet(EBulletType type, GameObject bulletObject)
     {
-        if (_typePools.ContainsKey(type))
+        if (!_typePools.ContainsKey(type)) return;
+
+        bulletObject.transform.rotation = Quaternion.identity;
+        bulletObject.transform.SetParent(transform);  
+
+        Rigidbody2D rigidBody = bulletObject.GetComponent<Rigidbody2D>();
+        if (rigidBody != null)
         {
-            bulletObject.transform.rotation = Quaternion.identity;
-            bulletObject.transform.SetParent(transform);  
-
-            Rigidbody2D rigidBody = bulletObject.GetComponent<Rigidbody2D>();
-            if (rigidBody != null)
-            {
-                rigidBody.linearVelocity = Vector2.zero;
-                rigidBody.angularVelocity = 0f;
-            }
-
-            bulletObject.SetActive(false);
-            _typePools[type].Enqueue(bulletObject);
+            rigidBody.linearVelocity = Vector2.zero;
+            rigidBody.angularVelocity = 0f;
         }
-    }
 
-    public GameObject MakeBoom(Vector3 position)
-    {
-        return Instantiate(_boomPrefab, position, Quaternion.identity, transform);
+        bulletObject.SetActive(false);
+        _typePools[type].Enqueue(bulletObject);
     }
 }

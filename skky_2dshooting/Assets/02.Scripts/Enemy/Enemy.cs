@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -26,6 +28,9 @@ public class Enemy : MonoBehaviour
 
     private Animator _animator;
     private ScoreManager _scoreManager;
+
+    public static event Action OnBossDead;
+    public static event Action OnBossDeadFinished;
 
     private void Awake()
     {
@@ -66,19 +71,52 @@ public class Enemy : MonoBehaviour
         // 응집도를 높혀라
         // 응집도 : "데이터"와 "데이터를 조작하는 로직"이 얼마나 잘 모였나
         // 응집도를 높이로 필요한 것만 외부에 노출시키는 것을 캡슐화
-        SoundManager.Instance.PlaySFX(EnemyDieSound);
-        MakeExplosionEffect();
-        EnemyFactory.Instance.ReturnEnemy(_enemyType, gameObject);
-
+        if (_enemyType == EEnemyType.BossMovement)
+        {
+            StartCoroutine(MakeExplosionBossEffectSequence());
+            _animator.SetBool("BossDead", true);
+            OnBossDead?.Invoke();
+            StartCoroutine(BossReturnCoroutine());
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX(EnemyDieSound);
+            MakeExplosionEffect();
+            EnemyFactory.Instance.ReturnEnemy(_enemyType, gameObject);
+        }
         if (_scoreManager.CheckPlayerDead()) return;
         _scoreManager.AddScore(_score);
 
         TryDropItem();
     }
 
+    private IEnumerator BossReturnCoroutine()
+    {
+        yield return new WaitForSeconds(3f); // 연출 시간 만큼 대기
+        EnemyFactory.Instance.ReturnEnemy(_enemyType, gameObject);
+        OnBossDeadFinished?.Invoke();
+    }
+
     private void MakeExplosionEffect()
     {
         Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
+    }
+
+    private IEnumerator MakeExplosionBossEffectSequence()
+    {
+        int explosionCount = 10;
+        float totalDuration = 3f;
+        float interval = totalDuration / explosionCount;
+        Vector2 randomVector;
+
+        for (int i = 0; i < explosionCount; i++)
+        {
+            SoundManager.Instance.PlaySFX(EnemyDieSound);
+            randomVector = new Vector2(UnityEngine.Random.RandomRange(-1f, 1f), UnityEngine.Random.RandomRange(-1f, 1f));
+            Vector3 spawnPosition = transform.position + (Vector3)randomVector;
+            Instantiate(ExplosionPrefab, spawnPosition, Quaternion.identity);
+            yield return new WaitForSeconds(interval);
+        }
     }
 
     private void TryDropItem()

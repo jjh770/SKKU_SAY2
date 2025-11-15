@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyFactory : MonoBehaviour
 {
     public static EnemyFactory Instance { get; private set; }
-
+    
     private void Awake()
     {
         if (Instance != null)
@@ -66,6 +66,16 @@ public class EnemyFactory : MonoBehaviour
     }
     public void ReturnEnemy(EEnemyType enemyType, GameObject enemy)
     {
+        if (!_enemyPools.ContainsKey(enemyType)) return;
+        enemy.transform.rotation = Quaternion.identity;
+
+        Rigidbody2D rigidbody = enemy.GetComponent<Rigidbody2D>();
+        if (rigidbody != null)
+        {
+            rigidbody.linearVelocity = Vector2.zero;
+            rigidbody.angularVelocity = 0f;
+        }
+
         enemy.SetActive(false);
         _enemyPools[enemyType].Enqueue(enemy);
     }
