@@ -292,14 +292,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 3
   _speedAcceleration: 1.5
-  _minSpeed: 1
-  _maxSpeed: 10
-  _speedChangeAmount: 0.5
   _initPosition: {x: 0, y: -4.5}
   _detectAttackRange: 10
   _detectAvoidRange: 4
-  _avoidanceThreshold: 0.5
-  _avoidCooldownDuration: 0.15
+  _avoidanceThreshold: 1
+  _minDistanceToTarget: 0.2
+  _avoidSpeedMultiplier: 1
+  _stableAvoidDistance: 0.3
   JoyStick: {fileID: 2041746752}
 --- !u!212 &55209738
 SpriteRenderer:

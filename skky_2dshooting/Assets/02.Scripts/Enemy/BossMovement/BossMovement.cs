@@ -5,6 +5,7 @@ using UnityEngine;
 // 현재 상태가 뭔지
 public class BossMovement : MonoBehaviour
 {
+    private Vector2 _initPosition = new Vector2(0, 7.5f);
     private IBossState _currentState;
     private Vector2 _appearPosition = new Vector2(0, 3.5f);
     private float _appearTime = 3f;
@@ -19,14 +20,14 @@ public class BossMovement : MonoBehaviour
     private void OnEnable()
     {
         Enemy.OnBossDead += BossStageClear;
+        GetComponent<SpriteRenderer>().DOFade(1, 1f);
+        transform.position = _initPosition;
+        SetState(new BossAppearState(this));
     }
+
     private void OnDisable()
     {
         Enemy.OnBossDead -= BossStageClear;
-    }
-    private void Start()
-    {
-        SetState(new BossAppearState(this));
     }
 
     public void SetState(IBossState newState)

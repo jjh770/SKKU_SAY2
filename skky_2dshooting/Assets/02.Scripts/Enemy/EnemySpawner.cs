@@ -87,6 +87,7 @@ public class EnemySpawner : MonoBehaviour
     private void FinishBossTurn()
     {
         _isBossSpawn = false;
+        ScoreManager.Instance.BossDefeat();
     }
 
     private EEnemyType GetEnemyType()
