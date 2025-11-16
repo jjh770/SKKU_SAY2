@@ -16,8 +16,9 @@ public class SubBullet : MonoBehaviour
     [Header("베지어 곡선 설정")]
     public float CurveDuration = 1f;
     public float CurveAmount = 3f;
+    public float CurveHeightAmount = 0.2f;
+    public float CurveWidthAmount = 0.3f;
 
-    private Vector3 _startPos;
     private Vector3 _targetPosition ; 
     private float _curveTime = 0f;
     private Vector3 _lastDirection;
@@ -26,7 +27,6 @@ public class SubBullet : MonoBehaviour
     private void OnEnable()
     {
         _speed = StartSpeed;
-        _startPos = transform.position;
         _targetPosition = new Vector3(0, GameManager.Instance.CameraHalfHeight, 0);
 
         _curveTime = 0f;
@@ -97,15 +97,26 @@ public class SubBullet : MonoBehaviour
         }
 
         Vector3 prevPos = transform.position;
+        Vector3 targetPos = _targetPosition;
 
-        Vector3 mid = (_startPos + _targetPosition) / 2f;
-        mid += Vector3.right * (IsLeft ? -CurveAmount : CurveAmount);
+        Vector3 p0 = prevPos;
+        Vector3 p3 = targetPos;
 
-        Vector3 point1 = Vector3.Lerp(_startPos, mid, t);
-        Vector3 point2 = Vector3.Lerp(mid, _targetPosition, t);
-        transform.position = Vector3.Lerp(point1, point2, t);
+        Vector3 p1 = prevPos + -Vector3.up * CurveHeightAmount + Vector3.right * (IsLeft ? -CurveWidthAmount * 0.3f : CurveWidthAmount * 0.3f);
+        Vector3 p2 = prevPos + Vector3.up * CurveHeightAmount + Vector3.right * (IsLeft ? -CurveWidthAmount * 0.6f : CurveWidthAmount * 0.6f);
 
-        _lastDirection = (transform.position - prevPos).normalized;
-        transform.up = _lastDirection;
+        transform.position = BezierMove(p0, p1, p2, p3, t);
+    }
+
+    private Vector3 BezierMove(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    {
+        Vector3 m0 = Vector3.Lerp(p0, p1, t);
+        Vector3 m1 = Vector3.Lerp(p1, p2, t);
+        Vector3 m2 = Vector3.Lerp(p2, p3, t);
+
+        Vector3 b0 = Vector3.Lerp(m0, m1, t);
+        Vector3 b1 = Vector3.Lerp(m1, m2, t);
+
+        return Vector3.Lerp(b0, b1, t);
     }
 }

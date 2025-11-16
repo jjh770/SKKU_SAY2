@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5168353869319184407}
   m_Layer: 0
   m_Name: BossDelayBullet
-  m_TagString: BossDelayBullet
+  m_TagString: BossDirectionalBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

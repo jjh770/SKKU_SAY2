@@ -106,8 +106,10 @@ MonoBehaviour:
   EndSpeed: 10
   Acceleration: 3
   IsLeft: 0
-  CurveDuration: 1
-  CurveAmount: 3
+  CurveDuration: 3
+  CurveAmount: 2
+  CurveHeightAmount: 0.1
+  CurveWidthAmount: 0.15
 --- !u!58 &-7535805579749615108
 CircleCollider2D:
   m_ObjectHideFlags: 0

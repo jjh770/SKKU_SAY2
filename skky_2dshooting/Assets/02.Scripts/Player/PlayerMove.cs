@@ -138,7 +138,8 @@ public class PlayerMove : MonoBehaviour
         Collider2D[] avoidDetections = Physics2D.OverlapCircleAll(currentPosition, _detectAvoidRange);
         foreach (var detection in avoidDetections)
         {
-            if (detection.CompareTag("Enemy"))
+            if (detection.CompareTag("Enemy") || detection.CompareTag("BossDirectionalBullet") ||
+                detection.CompareTag("BossCircleBullet") || detection.CompareTag("BossDelayBullet"))
             {
                 float distance = Vector2.Distance(currentPosition, detection.transform.position);
                 if (distance < nearestAvoidDist)
@@ -306,11 +307,11 @@ public class PlayerMove : MonoBehaviour
 
     private Vector2 ManualDirection()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        //float h = Input.GetAxis("Horizontal");
+        //float v = Input.GetAxis("Vertical");
 
-        //float h = JoyStick.Horizontal;
-        //float v = JoyStick.Vertical;
+        float h = JoyStick.Horizontal;
+        float v = JoyStick.Vertical;
 
 
         Vector2 direction = new Vector2(h, v);
