@@ -27,7 +27,8 @@ public class PlayerMove : MonoBehaviour
 
     [Header("회피 안전거리")]
     [SerializeField]
-    private float _avoidanceThreshold = 1f;
+    private float _avoidanceEnemyThreshold = 1f;
+    private float _avoidanceBulletThreshold = 0.5f;
 
     // 회피 방향을 유지할 시간
     [Header("회피 쿨다운 (떨림 방지)")]
@@ -43,7 +44,7 @@ public class PlayerMove : MonoBehaviour
     private float _moveSpeedUpTimer = 5f;
     private float _startMoveSpeed;
 
-    private bool _autoMove = false;
+    private bool _autoMove = true;
 
     private float _camHalfWidth;
     private float _camHalfHeight;
@@ -134,12 +135,18 @@ public class PlayerMove : MonoBehaviour
         GameObject nearestAvoidEnemy = null;
         // 회피 감지 거리
         float nearestAvoidDist = _detectAvoidRange;
+        bool targetIsBullet = false;
+
         // 플레이어 기준으로 원 생성 (그 안에 들어오는 적 오브젝트 감지)
         Collider2D[] avoidDetections = Physics2D.OverlapCircleAll(currentPosition, _detectAvoidRange);
         foreach (var detection in avoidDetections)
         {
-            if (detection.CompareTag("Enemy") || detection.CompareTag("BossDirectionalBullet") ||
-                detection.CompareTag("BossCircleBullet") || detection.CompareTag("BossDelayBullet"))
+            bool isEnemy = detection.CompareTag("Enemy");
+            bool isBullet = detection.CompareTag("BossDirectionalBullet") ||
+                            detection.CompareTag("BossCircleBullet") ||
+                            detection.CompareTag("BossDelayBullet");
+
+            if (isEnemy || isBullet)
             {
                 float distance = Vector2.Distance(currentPosition, detection.transform.position);
                 if (distance < nearestAvoidDist)
@@ -147,6 +154,7 @@ public class PlayerMove : MonoBehaviour
                     // 가장 가까운 적 구분
                     nearestAvoidDist = distance;
                     nearestAvoidEnemy = detection.gameObject;
+                    targetIsBullet = isBullet;
                 }
             }
         }
@@ -156,6 +164,7 @@ public class PlayerMove : MonoBehaviour
         if (nearestAvoidEnemy == null)
         {
             _isAvoiding = false;
+            _avoidCooldownTimer = 0f;
         }
         else
         {
@@ -163,21 +172,26 @@ public class PlayerMove : MonoBehaviour
             Vector2 enemyPos = nearestAvoidEnemy.transform.position;
             float xDistance = Mathf.Abs(currentPosition.x - enemyPos.x);
 
-            // 회피 모드일 때는 더 큰 임계값 사용
-            float thresholdToUse = _isAvoiding ? _avoidanceThreshold * 1.3f : _avoidanceThreshold;
+            // 총알과 적에 따라 다른 임계값
+            float baseThreshold = targetIsBullet ? _avoidanceBulletThreshold : _avoidanceEnemyThreshold;  // ⭐ 조금 증가
+            float thresholdToUse = _isAvoiding ? baseThreshold * 1.3f : baseThreshold;
 
             // 아직 안전거리를 확보했다면 회피 종료
             if (xDistance >= thresholdToUse)
             {
                 _isAvoiding = false;
+                _avoidCooldownTimer = 0f;
             }
             else
             {
+                float distanceToTarget = Vector2.Distance(currentPosition, _lockedAvoidDirection);
+                bool reachedTarget = distanceToTarget < 0.2f;
+
                 // 쿨다운이 끝났을 때만 새로운 회피 방향 계산
-                if (_avoidCooldownTimer <= 0)
+                if (_avoidCooldownTimer <= 0 || reachedTarget)
                 {
-                    float leftPosX = enemyPos.x - _avoidanceThreshold;
-                    float rightPosX = enemyPos.x + _avoidanceThreshold;
+                    float leftPosX = enemyPos.x - thresholdToUse;
+                    float rightPosX = enemyPos.x + thresholdToUse;
                     // 더 가까운 방향으로 회피 선택
                     float distToLeft = Mathf.Abs(currentPosition.x - leftPosX);
                     float distToRight = Mathf.Abs(currentPosition.x - rightPosX);

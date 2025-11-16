@@ -26,6 +26,8 @@ public class PlayerFire : MonoBehaviour
     private float _startSubCoolTime;
 
     private bool _autoFire = true;
+    private bool _fireButtonPressed = false;
+    private bool _bombButtonPressed = false;
 
     [Header("사운드")]
     public AudioClip MainBulletSound;
@@ -43,6 +45,8 @@ public class PlayerFire : MonoBehaviour
     {
         CoolDown();
         UpdateAttackSpeedUp();
+        _fireButtonPressed = false;
+        _bombButtonPressed = false;
     }
 
     private void CoolDown()
@@ -50,21 +54,33 @@ public class PlayerFire : MonoBehaviour
         _mainCoolTimer -= Time.deltaTime;
         _subCoolTimer -= Time.deltaTime;
         _boomCoolTimer -= Time.deltaTime;
-        if (_mainCoolTimer <= 0f && (_autoFire || Input.GetKey(KeyCode.Space)))
+
+        bool canFire = _autoFire || Input.GetKey(KeyCode.Space) || _fireButtonPressed;
+        if (_mainCoolTimer <= 0f && canFire)
         {
             _mainCoolTimer = MainCoolTime;
             Fire();
         }
-        if (_subCoolTimer <= 0f && (_autoFire || Input.GetKey(KeyCode.Space)))
+        if (_subCoolTimer <= 0f)
         {
             _subCoolTimer = SubCoolTime;
             SubFire();
         }
-        if (_boomCoolTimer <= 0f && Input.GetKey(KeyCode.Alpha3))
+        if (_boomCoolTimer <= 0f && (Input.GetKey(KeyCode.Alpha3) || _bombButtonPressed))
         {
             _boomCoolTimer = BoomCoolTime;
             BoomFire();
         }
+    }
+
+    public void OnFireButtonPressed()
+    {
+        _fireButtonPressed = true;
+    }
+
+    public void OnBombButtonPressed()
+    {
+        _bombButtonPressed = true;
     }
 
     public void GetAttackSpeedUp()

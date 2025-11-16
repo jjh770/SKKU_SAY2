@@ -35,12 +35,16 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         _animator = gameObject.GetComponent<Animator>();
-        _scoreManager = FindAnyObjectByType<ScoreManager>();
+    }
+    private void Start()
+    {
+        _scoreManager = ScoreManager.Instance;
     }
     // 풀에서 다시 나올 때 초기화
     private void OnEnable()
-    { 
-        Health = _maxHealth;
+    {
+        float difficulty = _scoreManager != null ? _scoreManager.DifficultyMultiplier : 1f;
+        Health = _maxHealth * difficulty;
         _isDead = false;
 
         if (_animator != null)
