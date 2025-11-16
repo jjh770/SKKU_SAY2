@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float _health = 300;
+    private float _health = 3;
     private PlayerFire _playerFire;
     private PlayerMove _playerMove;
     private ScoreManager _scoreManager;

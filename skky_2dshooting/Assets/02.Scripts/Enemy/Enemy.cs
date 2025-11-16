@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die()
     {
         if (_isDead) return;
         _isDead = true;
