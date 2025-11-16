@@ -9,7 +9,6 @@ public class AutoButton : MonoBehaviour, IPointerUpHandler
     private PlayerMove _playerMove;
     private bool _isAutoMode = true;
     [SerializeField] private Image _autoButtonImage;
-    private Tweener _rotateTween;
     private void Start()
     {
         _playerFire = FindObjectOfType<PlayerFire>();

@@ -37,7 +37,7 @@ public class ScoreManager : MonoBehaviour
 
     private int _currentBossScore = 0;
     private bool _isBossSpawned = false;
-    private int _bossSpawnScore = 1000;
+    private int _bossSpawnScore = 10000;
     private int _bossSpawnCount = 0;
     public float DifficultyMultiplier { get; private set; } = 1f;
     private float _difficultyIncreaseRate = 1.5f;
