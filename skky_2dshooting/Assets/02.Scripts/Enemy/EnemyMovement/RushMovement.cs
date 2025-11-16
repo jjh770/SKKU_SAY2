@@ -22,7 +22,7 @@ public class RushMovement : EnemyMovement
     {
         if (_playerTransform == null)
         {
-            _enemyComponent.ReturnPool(EEnemyType.RushMovement);
+            _enemyComponent.Die();
             return;
         }
 

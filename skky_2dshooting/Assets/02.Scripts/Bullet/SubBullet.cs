@@ -106,6 +106,8 @@ public class SubBullet : MonoBehaviour
         Vector3 p2 = prevPos + Vector3.up * CurveHeightAmount + Vector3.right * (IsLeft ? -CurveWidthAmount * 0.6f : CurveWidthAmount * 0.6f);
 
         transform.position = BezierMove(p0, p1, p2, p3, t);
+        _lastDirection = (transform.position - prevPos).normalized;
+        transform.up = _lastDirection;
     }
 
     private Vector3 BezierMove(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)

@@ -63,12 +63,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void ReturnPool(EEnemyType enemyType)
-    {
-        EnemyFactory.Instance.ReturnEnemy(enemyType, gameObject);
-    }
-
-    private void Die()
+    public void Die()
     {
         if (_isDead) return;
         _isDead = true;
