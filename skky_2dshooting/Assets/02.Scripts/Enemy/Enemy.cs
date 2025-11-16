@@ -44,7 +44,6 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         float difficulty = _scoreManager != null ? _scoreManager.DifficultyMultiplier : 1f;
-        Debug.Log($"{difficulty} {_enemyType} ");
         Health = _maxHealth * difficulty;
         _isDead = false;
 
