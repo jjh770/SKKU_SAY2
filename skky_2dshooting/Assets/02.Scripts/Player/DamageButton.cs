@@ -23,7 +23,7 @@ public class DamageButton : MonoBehaviour, IPointerUpHandler
     {
         if (!_canUse) return;
 
-        if (!_scoreManager.TryUseScore(3000)) return;
+        if (!_scoreManager.TryUseScore(requiredScore)) return;
 
         // 데미지 부스트 활성화
         _playerFire.ActivateDamageBoost();

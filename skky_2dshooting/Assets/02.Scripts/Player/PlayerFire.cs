@@ -112,9 +112,6 @@ public class PlayerFire : MonoBehaviour
     // 화면의 모든 총알 데미지 업데이트
     private void UpdateAllBulletsDamage(float multiplier)
     {
-        // 모든 IBullet 인터페이스를 가진 오브젝트 찾기
-        IBullet[] bullets = FindObjectsOfType<MonoBehaviour>() as IBullet[];
-
         // Bullet
         Bullet[] mainBullets = FindObjectsOfType<Bullet>();
         foreach (var bullet in mainBullets)
