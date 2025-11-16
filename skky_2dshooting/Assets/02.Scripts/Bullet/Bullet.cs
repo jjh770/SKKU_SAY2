@@ -12,6 +12,9 @@ public class Bullet : MonoBehaviour
     public float EndSpeed = 7;
     [Header("총알 가속도")]
     public float Acceleration = 1.2f;
+    [Header("데미지")]
+    [SerializeField] private float _baseDamage = 20f;
+    private float _damageMultiplier = 1f;
 
     void Start()
     {
@@ -45,7 +48,12 @@ public class Bullet : MonoBehaviour
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)
         {
-            enemy.Hit(20f);
+            float finalDamage = _baseDamage * _damageMultiplier;
+            enemy.Hit(finalDamage);
         }
+    }
+    public void SetDamageMultiplier(float multiplier)
+    {
+        _damageMultiplier = multiplier;
     }
 }

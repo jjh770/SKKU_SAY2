@@ -85,6 +85,21 @@ public class ScoreManager : MonoBehaviour
         Save();
     }
 
+    public bool TryUseScore(int requiredScore)
+    {
+        if (_currentScore <= requiredScore) return false;
+
+        _currentScoreTextUI.rectTransform.DOKill(true);
+        _currentScoreTextUI.rectTransform.localScale = Vector3.one;
+        _currentScoreTextUI.rectTransform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 10, 1);
+
+        _currentScore -= requiredScore;
+
+        Refresh();
+        Save();
+        return true;
+    }
+
     public void BossDefeat()
     {
         _isBossSpawned = false;
