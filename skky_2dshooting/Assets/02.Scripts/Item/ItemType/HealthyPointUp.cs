@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class HealthyPointUp : ItemBase
 {
-    [SerializeField]
-    private AudioClip _healthyUpSound;
-    private int _healthyPointValue;
+    [SerializeField] private AudioClip _healthyUpSound;
+    [SerializeField] private int _healthyPointValue;
 
     protected override void ApplyItemEffect(GameObject player)
     {

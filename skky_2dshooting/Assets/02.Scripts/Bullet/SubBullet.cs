@@ -18,6 +18,9 @@ public class SubBullet : MonoBehaviour
     public float CurveAmount = 3f;
     public float CurveHeightAmount = 0.2f;
     public float CurveWidthAmount = 0.3f;
+    [Header("데미지")]
+    [SerializeField] private float _baseDamage = 15f;
+    private float _damageMultiplier = 1f;
 
     private Vector3 _targetPosition ; 
     private float _curveTime = 0f;
@@ -81,8 +84,13 @@ public class SubBullet : MonoBehaviour
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)
         {
-            enemy.Hit(15f);
+            float finalDamage = _baseDamage * _damageMultiplier;
+            enemy.Hit(finalDamage);
         }
+    }
+    public void SetDamageMultiplier(float multiplier)
+    {
+        _damageMultiplier = multiplier;
     }
 
     private void MoveCurve()

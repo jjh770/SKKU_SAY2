@@ -5,7 +5,7 @@ public class BossDirectionalBullet : MonoBehaviour
     [Header("총알 속도")]
     [SerializeField]
     private float _speed = 4f;
-    private float _playerHit = 1f;
+    private int _playerHit = 1;
     private Vector2 _moveDirection = Vector2.down;
 
     private void OnEnable()

@@ -18,6 +18,12 @@ public class PlayerFire : MonoBehaviour
     private float _mainCoolTimer;
     private float _subCoolTimer;
 
+    [Header("데미지 부스트")]
+    [SerializeField] private float _damageBoostMultiplier = 2f;
+    [SerializeField] private float _damageBoostDuration = 5f;
+    private bool _isDamageBoostActive = false;
+    private float _damageBoostTimer;
+
     private bool _isAttackSpeedUp = false;
     private float _speedMultiflier = 0.7f;
 
@@ -34,17 +40,20 @@ public class PlayerFire : MonoBehaviour
     public AudioClip SubBulletSound;
     public AudioClip BoomSound;
 
+    private Player _player;
 
     private void Start()
     {
         _startMainCoolTime = MainCoolTime;
         _startSubCoolTime = SubCoolTime;
+        _player = GetComponent<Player>();
     }
 
     private void Update()
     {
         CoolDown();
         UpdateAttackSpeedUp();
+        UpdateDamageBoost();
         _fireButtonPressed = false;
         _bombButtonPressed = false;
     }
@@ -70,6 +79,54 @@ public class PlayerFire : MonoBehaviour
         {
             _boomCoolTimer = BoomCoolTime;
             BoomFire();
+        }
+    }
+    private void UpdateDamageBoost()
+    {
+        if (_isDamageBoostActive)
+        {
+            _damageBoostTimer -= Time.deltaTime;
+
+            if (_damageBoostTimer <= 0f)
+            {
+                _isDamageBoostActive = false;
+                UpdateAllBulletsDamage(1f);  // 원래 데미지로
+            }
+        }
+    }
+    public void ActivateDamageBoost()
+    {
+        if (_isDamageBoostActive)
+        {
+            // 이미 활성화 중이면 타이머만 리셋
+            _damageBoostTimer = _damageBoostDuration;
+        }
+        else
+        {
+            _isDamageBoostActive = true;
+            _damageBoostTimer = _damageBoostDuration;
+            UpdateAllBulletsDamage(_damageBoostMultiplier);
+        }
+    }
+
+    // 화면의 모든 총알 데미지 업데이트
+    private void UpdateAllBulletsDamage(float multiplier)
+    {
+        // 모든 IBullet 인터페이스를 가진 오브젝트 찾기
+        IBullet[] bullets = FindObjectsOfType<MonoBehaviour>() as IBullet[];
+
+        // Bullet
+        Bullet[] mainBullets = FindObjectsOfType<Bullet>();
+        foreach (var bullet in mainBullets)
+        {
+            bullet.SetDamageMultiplier(multiplier);
+        }
+
+        // SubBullet
+        SubBullet[] subBullets = FindObjectsOfType<SubBullet>();
+        foreach (var bullet in subBullets)
+        {
+            bullet.SetDamageMultiplier(multiplier);
         }
     }
 
@@ -113,6 +170,7 @@ public class PlayerFire : MonoBehaviour
     {
         SoundManager.Instance.PlaySFX(BoomSound);
         BulletFactory.Instance.MakeBullet(EBulletType.Boom, Vector3.zero);
+        _player.BombHit(1);
     }
 
     public void AutoMode(bool isThatAuto)
@@ -127,12 +185,24 @@ public class PlayerFire : MonoBehaviour
         GameObject subBulletRight = BulletFactory.Instance.MakeBullet(EBulletType.Sub, SubFirePositionRight.position);
         subBulletLeft.GetComponent<SubBullet>().IsLeft = true;
         subBulletRight.GetComponent<SubBullet>().IsLeft = false;
+
+        if (_isDamageBoostActive)
+        {
+            subBulletLeft.GetComponent<SubBullet>().SetDamageMultiplier(_damageBoostMultiplier);
+            subBulletRight.GetComponent<SubBullet>().SetDamageMultiplier(_damageBoostMultiplier);
+        }
     }
 
     public void Fire()
     {
         SoundManager.Instance.PlaySFX(MainBulletSound);
-        BulletFactory.Instance.MakeBullet(EBulletType.Bullet, FirePositionLeft.position);
-        BulletFactory.Instance.MakeBullet(EBulletType.Bullet, FirePositionRight.position);
+        GameObject bulletLeft = BulletFactory.Instance.MakeBullet(EBulletType.Bullet, FirePositionLeft.position);
+        GameObject bulletRight = BulletFactory.Instance.MakeBullet(EBulletType.Bullet, FirePositionRight.position);
+
+        if (_isDamageBoostActive)
+        {
+            bulletLeft.GetComponent<Bullet>().SetDamageMultiplier(_damageBoostMultiplier);
+            bulletRight.GetComponent<Bullet>().SetDamageMultiplier(_damageBoostMultiplier);
+        }
     }
 }

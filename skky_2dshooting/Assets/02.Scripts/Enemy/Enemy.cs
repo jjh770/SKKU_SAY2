@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _maxHealth;
     [Header("적 충돌 데미지")]
-    public float Damage = 1f;
+    public int Damage = 1;
     [Header("아이템 드롭")]
     [SerializeField]
     private ItemTable _itemTable;

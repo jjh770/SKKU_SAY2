@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float _health = 3;
+    [Header("체력 설정")]
+    [SerializeField] private int _maxHealth = 3;
+    private int _currentHealth; 
+    
     private PlayerFire _playerFire;
     private PlayerMove _playerMove;
     private ScoreManager _scoreManager;
+    private HealthUI _healthUI;
 
     [SerializeField]
     private AudioClip _gameOverSound;
@@ -15,7 +19,11 @@ public class Player : MonoBehaviour
     {
         _playerFire = GetComponent<PlayerFire>();
         _playerMove = GetComponent<PlayerMove>();
-        _scoreManager = FindAnyObjectByType<ScoreManager>();
+        _scoreManager = ScoreManager.Instance;
+        _healthUI = FindAnyObjectByType<HealthUI>();
+
+        _currentHealth = _maxHealth;
+        _healthUI?.InitializeHearts(_maxHealth);
     }
     private void Update()
     {
@@ -38,16 +46,28 @@ public class Player : MonoBehaviour
 
     public void HealthyPointUp(int value)
     {
-        _health += value;
+        _currentHealth += value;
+        _currentHealth = Mathf.Min(_currentHealth, _maxHealth);
+        _healthUI?.UpdateHearts(_currentHealth);
     }
-    public void Hit(float damage)
-    {
-        _health -= damage;
 
-        if (_health <= 0)
+    public void Hit(int damage)
+    {
+        _currentHealth -= damage;
+
+        _healthUI.RemoveHeart(_currentHealth);
+
+        if (_currentHealth <= 0)
         {
             PlayerDie();
         }
+    }
+
+    public void BombHit(int damage)
+    {
+        if (_currentHealth == 1) return;
+        _currentHealth -= damage;
+        _healthUI.RemoveHeart(_currentHealth);
     }
 
     private void PlayerDie()
